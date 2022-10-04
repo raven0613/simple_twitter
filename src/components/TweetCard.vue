@@ -10,7 +10,7 @@
             <div class="tweet__top">
                 <span class="tweet__top--prim">Jane Cathy</span>
                 <span class="tweet__top--sec">@apple</span>
-                <span class="tweet__top--sec">- 3小時</span>
+                <span class="tweet__top--sec">．3小時</span>
             </div>
             <div class="tweet__info--content">
                 Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. 

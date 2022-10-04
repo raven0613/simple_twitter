@@ -12,6 +12,11 @@ const routes = [
     component: Main
   },
   {
+    path: '/1',
+    name: 'tweet-detail',
+    component: () => import('../views/TweetDetail.vue')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound

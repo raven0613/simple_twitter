@@ -1,0 +1,27 @@
+.main__header {
+    height: 4.6875rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "icon word";
+    padding-left: 1.5rem;
+    border-bottom: 1px solid gray;
+
+    &--icon {
+        grid-area: icon;
+        display: flex;
+        align-items: center;
+        img {
+            width: 3.125rem;
+            height: 3.125rem;
+            object-fit: cover;
+            border-radius: 25px;
+            margin-right: 0.5rem;
+        }
+    }
+    &--word {
+        grid-area: word;
+        line-height: 4.6875rem;
+        padding-left: 1rem;
+    }
+}

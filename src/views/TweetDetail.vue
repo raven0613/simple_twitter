@@ -10,11 +10,10 @@
 
                 </div>
                 <div class="tweets__container">
-                    <TweetCard />
-                    <TweetCard />
-                    <TweetCard />
-                    <TweetCard />
-                    <TweetCard />
+                    <ReplyCard />
+                    <ReplyCard />
+                    <ReplyCard />
+                    <ReplyCard />
                 </div>
             </main>
             <section class="right__container">
@@ -28,14 +27,14 @@
 </template>
 
 <script>
-import TweetCard from '../components/TweetCard.vue'
+import ReplyCard from '../components/ReplyCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import Header from '../components/Header.vue'
 
 export default {
     components: {
-        TweetCard,
+        ReplyCard,
         SideBar,
         RecommendUsers,
         Header
