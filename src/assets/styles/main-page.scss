@@ -57,16 +57,6 @@
     z-index: 1;
 }
 
-.model {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: black;
-    z-index: 2;
-}
-
 @media screen and (min-width: 600px) {
     .container {
         grid-template-columns: 1fr 30rem 1fr;
@@ -117,15 +107,6 @@
         border: black solid 1px;
         line-height: 3rem;
         text-align: center;
-    }
-
-    .model {
-        position: absolute;
-        width: 100%;
-        top: 3.5rem;
-        height: 18.75rem;
-        background-color: black;
-        z-index: 2;
     }
 }
 @media screen and (min-width: 992px) {
