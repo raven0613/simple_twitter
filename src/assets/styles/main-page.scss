@@ -5,24 +5,33 @@
 }
 
 .container {
+    position: absolute;
     width: 100%;
+    top:0;
+    bottom: 0;
     margin: auto;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 100vh;
+    grid-template-areas: "middle";
 }
 
 .left__container {
     display: none;
+    grid-area: left;
 }
-
 .main__container {
-    background-color: cornflowerblue;
+    background-color: beige;
     width: 100%;
     height: auto;
     position: relative;
     overflow-y: scroll;
+    grid-area: middle;
 }
+.right__container {
+    display: none;
+    grid-area: right;
+}
+
 .main__header {
     background-color: crimson;
     height: 4.6875rem;
@@ -36,16 +45,14 @@
     height: auto;
 }
 
-.right__container {
-    display: none;
-}
+
 
 .footer__controller {
     background-color: cadetblue;
     position: fixed;
     left: 0;
     right: 0;
-    height: 3rem;
+    height: 3.25rem;
     bottom: 0;
     z-index: 1;
 }
@@ -63,36 +70,30 @@
 @media screen and (min-width: 600px) {
     .container {
         grid-template-columns: 1fr 30rem 1fr;
+        grid-template-areas: "left middle right";
     }
     .left__container {
         width: 100%;
-        grid-column: 1/2;
         background-color: peru;
         display: flex;
         justify-content: flex-end;
-    }
-    .main__container {
-        grid-column: 2/3;
     }
     .footer__controller {
         display: none;
     }
 }
-
-
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 750px) {
     .container {
-        grid-template-columns: 1fr 6.75rem 30rem 12rem 1fr;
+        grid-template-columns: 1fr 35rem 1fr;
     }
-    .left__container {
-        grid-column: 2/3;
-    }
-    .main__container {
-        grid-column: 3/4;
+}
+
+@media screen and (min-width: 900px) {
+    .container {
+        grid-template-columns: 6.75rem 30rem 18rem;
     }
     .tweet__input {
         width: 100%;
-
     }
     .tweets__container {
         border: solid 1px gray;
@@ -100,9 +101,10 @@
 
     .right__container {
         width: 100%;
-        grid-column: 4/5;
         background-color: orchid;
         display: block;
+        padding-left: 1.5rem;
+        padding-top: 1rem;
     }
 
     .side-bar__panel {
@@ -127,39 +129,16 @@
         background-color: black;
         z-index: 2;
     }
-
-    .recommend__panel {
-        width: 10.5rem;
-        height: 35rem;
-        background-color: aquamarine;
-        margin-top: 1.5rem;
-        margin-left: 1.5rem;
-    }
 }
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 992px) {
     .container {
-        grid-template-columns: 1fr 6.75rem 33.5rem 15rem 1fr;
-    }
-    .recommend__panel {
-        width: 13.5rem;
+        grid-template-columns: 1fr 6.75rem 33.5rem 18.5rem 1fr;
+        grid-template-areas: ". left middle right .";
     }
 }
 
 @media screen and (min-width: 1200px) {
     .container {
-        grid-template-columns: 1fr 12.5rem 40rem 18.5625rem 1fr;
-    }
-
-    .left__container {
-    }
-
-    .right__container {
-    }
-
-    .recommend__panel {
-        height: 30rem;
-        width: 17.0625rem;
-        background-color: aquamarine;
-        margin-top: 1rem;
+        grid-template-columns: 1fr 12.5rem 40rem 17.0625rem 1fr;
     }
 }

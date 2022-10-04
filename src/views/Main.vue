@@ -18,11 +18,11 @@
                 </div>
             </main>
             <section class="right__container">
-                <div class="recommend__panel"></div>
+                <RecommendUsers />
             </section>
         </div>
         <footer class="footer__controller">
-
+            
         </footer>
     </div>
 </template>
@@ -30,13 +30,13 @@
 <script>
 import TweetCard from '../components/TweetCard.vue'
 import SideBar from '../components/SideBar.vue'
+import RecommendUsers from '../components/RecommendUsers.vue'
+
 export default {
     components: {
         TweetCard,
-        SideBar
-    },
-    data() {
-        
+        SideBar,
+        RecommendUsers
     },
 }
 </script>

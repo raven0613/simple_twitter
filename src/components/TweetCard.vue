@@ -4,6 +4,7 @@
             <img class="tweet__avatar--photo" src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
         </div>
         <div class="tweet__info">
+            
             <div class="tweet__top">
                 <span>Jane Cathy</span>
                 <span>@apple</span>
@@ -31,5 +32,10 @@ export default {
     data() {
         
     },
+    methods: {
+        onFocusInput () {
+            console.log('YO')
+        }
+    }
 }
 </script>
