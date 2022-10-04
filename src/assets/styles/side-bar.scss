@@ -4,9 +4,8 @@
 
 @media screen and (min-width: 600px) {
     .side-bar__panel {
-        height: 100vh;
+        height: 100%;
         width: 6.5rem;
-        border: 1px solid red;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -14,20 +13,70 @@
 
     .side-bar__container {
         width: 100%;
-        background-color: cadetblue;
+        height: auto;
+    }
+    .side-bar__icon {
+        width: 100%;
+        height: 3.625rem;
+        img {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0.75rem auto 1.375rem auto;
+        }
+    }
+    .side-bar__link {
+        width: 100%;
+        height: 3.625rem;
+        display: flex;
+        align-items: center;
+        img {
+            width: 1.5rem;
+            height: 2.5rem;
+            margin: auto;
+        }
+        span {
+            display: none;
+        }
     }
 
-    .side-bar__link {}
-
     .side-bar__button {
-        background-color: orange;
         height: 2.875rem;
         width: 100%;
+        span {
+            display: none;
+        }
     }
 }
 @media screen and (min-width: 1200px) {
     .side-bar__panel {
         margin-right: 1.25rem;
         width: 11.125rem;
+    }
+    .side-bar__icon {
+        img {
+            margin: 0.75rem auto 1.375rem 0.5rem;
+        }
+    }
+    .side-bar__link {
+        img {
+            width: 1.5rem;
+            height: 2.5rem;
+            margin: auto;
+        }
+        span {
+            display: block;
+            width: 8.625rem;
+            padding-left: 1rem;
+        }
+    }
+    .side-bar__button {
+        background-color: orange;
+        border-radius: 1.4375rem;
+        img {
+            display: none;
+        }
+        span {
+            display: block;
+        }
     }
 }

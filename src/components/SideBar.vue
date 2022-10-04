@@ -1,28 +1,30 @@
 <template>
     <div class="side-bar__panel">
         <div class="side-bar__container">
-            <router-link class="side-bar__icon">
+            <router-link to="#" class="side-bar__icon">
                 <img src="../assets/images/sidebar_logo.svg" alt="">
             </router-link>
-            <router-link class="side-bar__link">
+            <router-link to="#" class="side-bar__link">
                 <img src="../assets/images/sidebar_home.svg" alt="">
-                首頁
+                <span>首頁</span>
             </router-link>
-            <router-link class="side-bar__link">
-                <img src="../assets/images/sidebar_home.svg" alt="">
-                個人資料
+            <router-link to="#" class="side-bar__link">
+                <img src="../assets/images/sidebar_user.svg" alt="">
+                <span>個人資料</span>
             </router-link>
-            <router-link class="side-bar__link">
-                <img src="../assets/images/sidebar_home.svg" alt="">
-                設定
+            <router-link to="#" class="side-bar__link">
+                <img src="../assets/images/sidebar_setting.svg" alt="">
+                <span>設定</span>
             </router-link>
             <button type="button" class="side-bar__button">
-                推文
+                <img src="../assets/images/sidebar_tweet_ipad.svg" alt="">
+                <span>推文</span>
             </button>
         </div>
-        <button type="button">
-            登出
-        </button>
+        <router-link to="#" class="side-bar__link">
+            <img src="../assets/images/sidebar_logout.svg" alt="">
+            <span>登出</span>
+        </router-link>
     </div>
 </template>
 
