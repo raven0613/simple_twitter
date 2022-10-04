@@ -1,0 +1,243 @@
+// <div class="modal_container">
+//       <!-- 最上方的區塊 -->
+        
+        //   <div class="modal_input_container">
+        //     <img
+        //       src="../assets/images/cancel-orange.svg"
+        //       alt=""
+        //       class="modal_input--cancel"
+        //     />
+        //     <p class="modal_input--title">編輯個人資料</p>
+        //     <button class="modal_input--save">儲存</button>
+        // </div>
+
+//       <!-- 背景圖片跟個人照 -->
+//     <div class="user-info_image_container">
+//   <div class="user-info_background_container">
+//     <img
+//       src="../assets/images/user-bg.svg"
+//       alt=""
+//       class="user-info_background--photo"
+//     />
+//     <img src="" alt="" class="user-info_background--mask" />
+//     <div class="user-info_icons_background_container">
+//       <img
+//         src="../assets/images/add-photo.svg"
+//         alt=""
+//         class="user-info_background_icon"
+//       />
+//       <img
+//         src="../assets/images/cancel-white.svg"
+//         alt=""
+//         class="user-info_background_icon"
+//       />
+//     </div>
+//   </div>
+
+//   <div class="user-info_avatar_container">
+//     <img
+//       src="../assets/images/avatar.svg"
+//       alt=""
+//       class="user-info_avatar--photo"
+//     />
+//     <img src="" alt="" class="user-info_avatar--mask" />
+//     <div class="user-info_avatar_icons_container">
+//       <img
+//         src="../assets/images/add-photo.svg"
+//         alt=""
+//         class="user-info_avatar_icon"
+//       />
+//     </div>
+//   </div>
+// </div>
+
+//       <!-- 表格 -->
+//       <div class="form_input">
+//         <div class="form_input_container">
+//           <label for="name">名稱</label>
+//           <input/>
+//         </div>
+//       </div>
+//       <div class="form_input">
+//         <div class="form_input_container">
+//           <label for="introduction">自我介紹</label>
+//           <input/>
+//         </div>
+//       </div>
+//     </div>
+
+//手機版
+.modal {
+  &_container {
+    width: 100%;
+  }
+
+  &_input_container{
+    display: none;
+  }
+}
+
+
+.user-info {
+  &_image_container {
+    width: 100%;
+    position: relative;
+    margin-bottom: 3.5rem;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  &_background {
+    &_container {
+      height: 7.75rem;
+      width: 100%;
+      position: relative;
+    }
+
+    &--mask {
+      width: 100%;
+      height: 100%;
+      background-color: var(--title-main-color);
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+    }
+
+    &_icons_container {
+      // border: 1px solid salmon;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 4.6rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &_icon:nth-child(1) {
+      width: 1.25rem;
+      height: 1.25rem;
+      // border: 1px solid #000;
+    }
+
+    &_icon:nth-child(2) {
+      width: 1rem;
+      height: 1rem;
+      // border: 1px solid #000;
+    }
+  }
+
+
+
+  &_avatar {
+    &_container {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      position: absolute;
+      left: 1.5rem;
+      bottom: -2.5rem;
+    }
+
+    &--mask {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: var(--title-main-color);
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+    }
+
+    &_icons_container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &_icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .modal {
+    &_container {
+      z-index: 999;
+      width: 30rem;
+      margin: 0 auto;
+      border-radius: 14px;
+        border: 1px solid #000;
+    }
+
+    &_input {
+      &_container {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: 3.5625rem;
+        display: grid;
+        grid-template-columns: 3.375rem auto 6rem;
+        align-items: center;
+      }
+      &--cancel{
+        grid-column: 1 / 2;
+        width: 1rem;
+        margin: auto;
+      }
+      &--title{
+        grid-column: 2 / 3;
+        font-size: 1.125rem;
+        padding: 1rem;
+      }
+      &--save{
+        grid-column: 3 / 4;
+        width: 4rem;
+        height: 2.5rem;
+        color: var(--white);
+        background-color: var(--main-color);
+        border-radius: 50px;
+        margin: auto;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .modal {
+    &_container {
+      width: 35rem;
+    }
+
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .modal {
+    &_container {
+      width: 30rem;
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .modal {
+    &_container {
+      width: 33.5rem;
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .modal {
+    &_container {
+      width: 40rem;
+    }
+  }
+}
