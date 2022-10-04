@@ -1,0 +1,33 @@
+.side-bar__panel {
+    display: none;
+}
+
+@media screen and (min-width: 600px) {
+    .side-bar__panel {
+        height: 100vh;
+        width: 6.5rem;
+        border: 1px solid red;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .side-bar__container {
+        width: 100%;
+        background-color: cadetblue;
+    }
+
+    .side-bar__link {}
+
+    .side-bar__button {
+        background-color: orange;
+        height: 2.875rem;
+        width: 100%;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .side-bar__panel {
+        margin-right: 1.25rem;
+        width: 11.125rem;
+    }
+}

@@ -1,0 +1,48 @@
+.tweet__container {
+    display: flex;
+    width: 100%;
+    height: 10rem;
+    border-bottom: solid 1px gray;
+}
+
+.tweet__avatar {
+    width: 5rem;
+    height: 100%;
+    border-right: solid 1px gray;
+
+    &--photo {
+        object-fit: cover;
+        width: 3.125rem;
+        height: 3.125rem;
+        border-radius: 1.5625rem;
+        margin: auto;
+    }
+
+}
+.tweet__top {
+    align-items: flex-start;
+}
+
+.tweet__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet__bottom {
+    display: flex;
+    align-items: flex-end;
+    &--icon {
+        width: 0.8rem;
+        height: 0.8rem;
+        img {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+    span {
+        display: block;
+        line-height: 0.8rem;
+        font-size: 0.1rem;
+    }
+}
