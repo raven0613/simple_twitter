@@ -4,6 +4,11 @@
       <!-- 最上方的區塊 -->
       <div class="modal_input_container">
         <img
+          src="../assets/images/last-step.svg"
+          alt=""
+          class="modal_input--last-step"
+        />
+        <img
           src="../assets/images/cancel-orange.svg"
           alt=""
           class="modal_input--cancel"
@@ -67,8 +72,9 @@
               autofocus
             />
           </div>
+          <span class="form_text-length">8/50</span>
         </div>
-        <div class="form_input">
+        <div class="form_input" id="introduction_input">
           <div class="form_input_container">
             <label for="introduction">自我介紹</label>
             <input
@@ -81,6 +87,7 @@
               autofocus
             />
           </div>
+          <span class="form_text-length">0/160</span>
         </div>
       </form>
     </div>

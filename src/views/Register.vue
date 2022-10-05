@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="sign-form">
     <!-- 標題 -->
     <div class="entrance entrance_container">
       <div class="entrance_icon">

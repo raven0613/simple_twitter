@@ -4,6 +4,7 @@ import NotFound from '../views/NotFound'
 import Register from '../views/Register'
 import Login from '../views/Login'
 import Main from '../views/Main'
+import Setting from '../views/Setting'
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: Setting
   },
   {
     path: '/login',
