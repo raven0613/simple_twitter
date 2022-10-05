@@ -1,0 +1,25 @@
+:root{
+  --white: #FFFFFF;
+  --main-color: #FF6600 ; //(品牌色)
+  --main-second-color: #6C7570 ; //(Secondary)
+  --link-color: #0062FF; // (primary) 註冊+登入
+  --main-text-color: #171725; //(dark-100)
+  --main-second-color: #6C7570; //(Secondary)   user panel 跟隨中+跟隨者+帳號
+  --main-button-color: #44444F; //(dark-90)   個人資料+設定+登出
+
+  --tweet-second-color: #6C7570; //(Secondary)   發推+tweets 的次顏色(回覆+愛心+時間+有什麼新鮮事?)
+  --top-user-second-color: #92929D; //(dark-70)   推薦跟隨的 user id
+  --top-user-background-color: #FAFAFB; //(dark-20)   推薦跟隨的背景
+
+  --title-main-color: #171725; //(dark-100)   首頁+推薦跟隨+user 名字
+  --title-second-color: #6C7570; //(Secondary)   多少推文
+
+  --tab-text-color: #657786;   //推文+回覆+喜歡的內容+追隨者+正在追隨
+  --tab-hover-focus: #50B5FF; //  表格hover, focus
+  --tab-error: #FC5A5A; // 表格輸入有誤
+  --text-label-color:#696974;  // 表格label的文字顏色
+  --text-placeholder-color: #B5B5BE; //(dark-60)   settings placeholder
+  --text-area-color: #F5F8FA;   //settings placeholder+user edit placeholder
+  --background-gray: #171725; //40%   有 model 時的背景
+  --border-color: #E6ECF0;
+}

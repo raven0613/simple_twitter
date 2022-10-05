@@ -1,0 +1,28 @@
+.sign-form {
+  .form {
+    &_container {
+      width: 87.2%;
+      max-width: 22.25rem; //最大寬度跟平板畫面一樣
+      margin: 0 auto;
+    }
+
+    &_button_container {
+      margin-top: 0.5rem;
+      width: 100%;
+      max-width: 22.25rem; //最大寬度跟平板畫面一樣
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .sign-form {
+    .form {
+      &_container {
+        width: 22.25rem;
+        margin: 0 auto;
+      }
+    }
+  }
+}

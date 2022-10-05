@@ -1,0 +1,27 @@
+.setting-form {
+  margin-top: 1rem;
+
+  .form {
+    &_container{
+      width: 87.2%;
+    }
+    &_button {
+      width: 5.5rem;
+      height: 2.875rem;
+
+      &_container {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .setting-form {
+    .form {
+      &_container {
+        width: 92.8%;
+      }
+    }
+  }
+}
