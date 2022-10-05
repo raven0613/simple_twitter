@@ -15,6 +15,11 @@ const routes = [
     component: Main
   },
   {
+    path: '/1',
+    name: 'tweet-detail',
+    component: () => import('../views/TweetDetail.vue')
+  },
+  {
     path: '/register',
     name: 'register',
     component: Register

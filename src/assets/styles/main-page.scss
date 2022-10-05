@@ -20,23 +20,24 @@
     grid-area: left;
 }
 .main__container {
-    background-color: beige;
     width: 100%;
     height: auto;
     position: relative;
     overflow-y: scroll;
     grid-area: middle;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
 }
 .right__container {
     display: none;
     grid-area: right;
 }
 
-.main__header {
-    background-color: crimson;
-    height: 4.6875rem;
-    width: 100%;
-}
+// .main__header {
+//     background-color: crimson;
+//     height: 4.6875rem;
+//     width: 100%;
+// }
 .tweet__input {
     display: none;
 }
@@ -84,14 +85,10 @@
     .tweet__input {
         width: 100%;
     }
-    .tweets__container {
-        border: solid 1px gray;
-    }
 
     .right__container {
         width: 100%;
-        background-color: orchid;
-        // display: block;
+        display: block;
         padding-left: 1.5rem;
         padding-top: 1rem;
     }
@@ -100,15 +97,6 @@
         width: 100%;
         height: 25rem;
     }
-
-    .logout {
-        width: 100%;
-        height: 3rem;
-        border: black solid 1px;
-        line-height: 3rem;
-        text-align: center;
-    }
-
 }
 @media screen and (min-width: 992px) {
     .container {
