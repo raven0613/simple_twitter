@@ -1,6 +1,6 @@
 <template>
     <div class="recommend__panel">
-        <h1>推薦跟隨</h1>
+        <h4>推薦跟隨</h4>
         <div class="recommend__container">
 
             <div class="recommend__user">

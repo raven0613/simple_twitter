@@ -5,6 +5,7 @@ import Register from '../views/Register'
 import Login from '../views/Login'
 import Main from '../views/Main'
 import Setting from '../views/Setting'
+import AdminTweets from '../views/AdminTweets'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,21 @@ const routes = [
     path: '/f',
     name: 'user-follow',
     component: () => import('../views/Follow.vue')
+  },
+  {
+    path: '/u',
+    name: 'user-detail',
+    component: () => import('../views/UserDetail.vue')
+  },
+  {
+    path: '/adt',
+    name: 'admin-tweet',
+    component: AdminTweets
+  },
+  {
+    path: '/adu',
+    name: 'admin-user',
+    component: () => import('../views/AdminUsers.vue')
   },
   {
     path: '/register',

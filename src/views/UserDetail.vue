@@ -8,8 +8,8 @@
                 <UserEditModal v-if="false"/>
                 <Header />
                 <div class="tweet__input">
-                    
                 </div>
+                <HomeTabs />
                 <div class="tweets__container">
                     <TweetCard 
                     v-for="tweet in tweets" 
@@ -35,9 +35,8 @@ import TweetCard from '../components/TweetCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import Header from '../components/Header.vue'
+import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
-import tweetsAPI from '../apis/tweets.js'
-import { Toast } from '../utils/helpers.js'
 
 export default {
     components: {
@@ -45,32 +44,18 @@ export default {
         SideBar,
         RecommendUsers,
         Header,
+        HomeTabs,
         UserEditModal
     },
     data () {
         return {
-            tweets: [],
+            tweets: ['','','',''],
         }
     },
     created () {
-        this.fetchTweets()
     },
     methods: {
-        async fetchTweets () {
-            try {
-                const { data } = await tweetsAPI.getTweets()
-                if (data.status !== 'success') throw new Error(data.message)
-                console.log(data)
-                this.tweets = data.data.tweets
-            }
-            catch (error) {
-                console.log(error)
-                Toast.fire({
-                    icon: 'error',
-                    title: '無法取得推文,請稍後再試'
-                })
-            }
-        }
+
     }
 }
 </script>

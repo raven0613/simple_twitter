@@ -6,11 +6,11 @@
             </section>
             <main class="main__container">
                 <Header />
+                <HomeTabs />
                 <div class="tweets__container">
-                    <AdminTweets />
-                    <AdminTweets />
-                    <AdminTweets />
-                    <AdminTweets />
+                    <UserFollowCard />
+                    <UserFollowCard />
+                    <UserFollowCard />
                 </div>
             </main>
 
@@ -26,13 +26,13 @@
 <script>
 import SideBarAdmin from '../components/SideBarAdmin.vue'
 import Header from '../components/Header.vue'
-import AdminTweets from '../components/AdminTweets.vue'
+import UserFollowCard from '../components/UserFollowCard.vue'
 
 export default {
     components: {
         SideBarAdmin,
         Header,
-        AdminTweets
+        UserFollowCard,
     },
 }
 </script>

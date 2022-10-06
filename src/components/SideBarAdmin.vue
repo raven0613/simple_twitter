@@ -6,20 +6,12 @@
             </router-link>
             <router-link to="#" class="side-bar__link">
                 <img src="../assets/images/sidebar_home.svg" alt="">
-                <span>首頁</span>
+                <span>推文清單</span>
             </router-link>
             <router-link to="#" class="side-bar__link">
                 <img src="../assets/images/sidebar_user.svg" alt="">
-                <span>個人資料</span>
+                <span>使用者列表</span>
             </router-link>
-            <router-link to="#" class="side-bar__link">
-                <img src="../assets/images/sidebar_setting.svg" alt="">
-                <span>設定</span>
-            </router-link>
-            <button type="button" class="side-bar__button">
-                <img src="../assets/images/sidebar_tweet_ipad.svg" alt="">
-                <span>推文</span>
-            </button>
         </div>
 
         <router-link to="#" class="side-bar__link">
