@@ -1,0 +1,29 @@
+.footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 3.25rem;
+    bottom: 0;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4 , 1fr);
+    background-color: white;
+
+    &__button {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .footer {
+        display: none;
+    }
+}

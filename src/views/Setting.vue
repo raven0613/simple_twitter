@@ -15,21 +15,21 @@
                 
             </section>
         </div>
-        <footer class="footer__controller">
-            
-        </footer>
+        <Footer :current-page="`setting`"/>
     </div>
 </template>
 <script>
 import SettingPanel from './../components/SettingPanel'
 import SideBar from '../components/SideBar.vue'
 import MainHeader from '../components/MainHeader.vue'
+import Footer from '../components/Footer.vue'
 
 export default {
   components:{
     SettingPanel,
     SideBar,
-    MainHeader
+    MainHeader,
+    Footer
   }
 }
 </script>

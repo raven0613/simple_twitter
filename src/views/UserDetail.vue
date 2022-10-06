@@ -24,9 +24,7 @@
             <div class="modal__mask" v-if="false">
             </div>
         </div>
-        <footer class="footer__controller">
-            
-        </footer>
+        <Footer :current-page="`user`"/>
     </div>
 </template>
 
@@ -37,6 +35,7 @@ import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
+import Footer from '../components/Footer.vue'
 
 export default {
     components: {
@@ -45,7 +44,8 @@ export default {
         RecommendUsers,
         UserHeader,
         HomeTabs,
-        UserEditModal
+        UserEditModal,
+        Footer
     },
     data () {
         return {

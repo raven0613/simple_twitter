@@ -20,9 +20,7 @@
             <div class="modal__mask" v-if="false">
             </div>
         </div>
-        <footer class="footer__controller">
-            
-        </footer>
+        <Footer />
     </div>
 </template>
 
@@ -32,6 +30,7 @@ import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
 import UserFollowCard from '../components/UserFollowCard.vue'
 import HomeTabs from '../components/HomeTabs.vue'
+import Footer from '../components/Footer.vue'
 // import { Toast } from '../utils/helpers.js'
 
 
@@ -41,7 +40,8 @@ export default {
         RecommendUsers,
         UserHeader,
         UserFollowCard,
-        HomeTabs
+        HomeTabs,
+        Footer
     },
     data () {
         return {

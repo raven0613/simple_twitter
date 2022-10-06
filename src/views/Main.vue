@@ -24,9 +24,7 @@
             <div class="modal__mask" v-if="false">
             </div>
         </div>
-        <footer class="footer__controller">
-            
-        </footer>
+        <Footer :current-page="`main`"/>
     </div>
 </template>
 
@@ -36,6 +34,7 @@ import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import MainHeader from '../components/MainHeader.vue'
 import UserEditModal from '../components/UserEditModal.vue'
+import Footer from '../components/Footer.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
 
@@ -45,7 +44,8 @@ export default {
         SideBar,
         RecommendUsers,
         MainHeader,
-        UserEditModal
+        UserEditModal,
+        Footer
     },
     data () {
         return {

@@ -22,9 +22,7 @@
                 <RecommendUsers />
             </section>
         </div>
-        <footer class="footer__controller">
-            
-        </footer>
+        <Footer />
     </div>
 </template>
 
@@ -34,6 +32,7 @@ import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import MainHeader from '../components/MainHeader.vue'
 import MainTweet from '../components/MainTweet.vue'
+import Footer from '../components/Footer.vue'
 
 export default {
     components: {
@@ -41,7 +40,8 @@ export default {
         SideBar,
         RecommendUsers,
         MainHeader,
-        MainTweet
+        MainTweet,
+        Footer
     },
 }
 </script>
