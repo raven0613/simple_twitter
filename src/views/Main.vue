@@ -6,7 +6,7 @@
             </section>
             <main class="main__container">
                 <UserEditModal v-if="false"/>
-                <Header />
+                <MainHeader :content="`首頁`" :user-id="1"/>
                 <div class="tweet__input">
                     
                 </div>
@@ -34,7 +34,7 @@
 import TweetCard from '../components/TweetCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
-import Header from '../components/Header.vue'
+import MainHeader from '../components/MainHeader.vue'
 import UserEditModal from '../components/UserEditModal.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
@@ -44,7 +44,7 @@ export default {
         TweetCard,
         SideBar,
         RecommendUsers,
-        Header,
+        MainHeader,
         UserEditModal
     },
     data () {

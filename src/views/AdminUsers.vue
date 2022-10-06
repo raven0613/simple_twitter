@@ -5,7 +5,7 @@
                 <SideBarAdmin />
             </section>
             <main class="main__container">
-                <Header />
+                <MainHeader :content="`使用者列表`"/>
                 <HomeTabs />
                 <div class="tweets__container">
                     <UserFollowCard />
@@ -25,13 +25,13 @@
 
 <script>
 import SideBarAdmin from '../components/SideBarAdmin.vue'
-import Header from '../components/Header.vue'
+import MainHeader from '../components/MainHeader.vue'
 import UserFollowCard from '../components/UserFollowCard.vue'
 
 export default {
     components: {
         SideBarAdmin,
-        Header,
+        MainHeader,
         UserFollowCard,
     },
 }

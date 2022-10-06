@@ -4,7 +4,6 @@ import NotFound from '../views/NotFound'
 import Register from '../views/Register'
 import Login from '../views/Login'
 import Main from '../views/Main'
-import Setting from '../views/Setting'
 import AdminTweets from '../views/AdminTweets'
 
 Vue.use(VueRouter)
@@ -48,7 +47,7 @@ const routes = [
   {
     path: '/settings',
     name: 'settings',
-    component: Setting
+    component: () => import('../views/Setting.vue')
   },
   {
     path: '/login',

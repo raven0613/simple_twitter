@@ -3,6 +3,11 @@
 }
 
 @media screen and (min-width: 600px) {
+    .setting-page {
+        .side-bar__link--logout {
+            display: none;
+        }
+    }
     .side-bar__panel {
         height: 100%;
         width: 6.5rem;

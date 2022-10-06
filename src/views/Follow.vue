@@ -5,7 +5,7 @@
                 <SideBar />
             </section>
             <main class="main__container">
-                <Header />
+                <UserHeader :content="`Raven`" :counts="25"/>
                 <HomeTabs />
                 <div class="tweets__container">
                     <UserFollowCard />
@@ -29,7 +29,7 @@
 <script>
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
-import Header from '../components/Header.vue'
+import UserHeader from '../components/UserHeader.vue'
 import UserFollowCard from '../components/UserFollowCard.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 // import { Toast } from '../utils/helpers.js'
@@ -39,7 +39,7 @@ export default {
     components: {
         SideBar,
         RecommendUsers,
-        Header,
+        UserHeader,
         UserFollowCard,
         HomeTabs
     },

@@ -6,7 +6,7 @@
             </section>
             <main class="main__container">
                 <UserEditModal v-if="false"/>
-                <Header />
+                <UserHeader :content="`Raven`" :counts="`25`"/>
                 <div class="tweet__input">
                 </div>
                 <HomeTabs />
@@ -34,7 +34,7 @@
 import TweetCard from '../components/TweetCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
-import Header from '../components/Header.vue'
+import UserHeader from '../components/UserHeader.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
 
@@ -43,7 +43,7 @@ export default {
         TweetCard,
         SideBar,
         RecommendUsers,
-        Header,
+        UserHeader,
         HomeTabs,
         UserEditModal
     },

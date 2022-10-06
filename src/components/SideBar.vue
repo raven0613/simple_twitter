@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <router-link to="#" class="side-bar__link">
+        <router-link to="#" class="side-bar__link side-bar__link--logout">
             <img src="../assets/images/sidebar_logout.svg" alt="">
             <span>登出</span>
         </router-link>

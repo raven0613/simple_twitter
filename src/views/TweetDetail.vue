@@ -5,7 +5,7 @@
                 <SideBar />
             </section>
             <main class="main__container">
-                <Header />
+                <MainHeader :content="`推文`" :tweet-id="1"/>
                 <MainTweet />
 
                 <div class="tweet-detail__input">
@@ -32,7 +32,7 @@
 import ReplyCard from '../components/ReplyCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
-import Header from '../components/Header.vue'
+import MainHeader from '../components/MainHeader.vue'
 import MainTweet from '../components/MainTweet.vue'
 
 export default {
@@ -40,7 +40,7 @@ export default {
         ReplyCard,
         SideBar,
         RecommendUsers,
-        Header,
+        MainHeader,
         MainTweet
     },
 }
