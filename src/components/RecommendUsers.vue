@@ -2,6 +2,7 @@
     <div class="recommend__panel">
         <h1>推薦跟隨</h1>
         <div class="recommend__container">
+
             <div class="recommend__user">
                 <div class="recommend__user--avatar">
                     <img src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
@@ -10,9 +11,9 @@
                     <p>Nitendo</p>
                     <span>@Nitendo</span>
                 </div>
-                <div class="recommend__user--button">
-                    <button class="recommend__user--button-followed">正在跟隨</button>
-                </div>
+
+                <button class="prim-button prim-button__followed">正在跟隨</button>
+
             </div>
 
             <div class="recommend__user">
@@ -23,9 +24,9 @@
                     <p>Nitendo</p>
                     <span>@Nitendo</span>
                 </div>
-                <div class="recommend__user--button">
-                    <button class="recommend__user--button-unfollowed">跟隨</button>
-                </div>
+
+                <button class="prim-button prim-button__unfollowed">跟隨</button>
+
             </div>
 
             <div class="recommend__user">
@@ -36,9 +37,9 @@
                     <p>Nitendo</p>
                     <span>@Nitendo</span>
                 </div>
-                <div class="recommend__user--button">
-                    <button class="recommend__user--button-unfollowed">跟隨</button>
-                </div>
+
+                <button class="prim-button prim-button__unfollowed">跟隨</button>
+
             </div>
         </div>
     </div>

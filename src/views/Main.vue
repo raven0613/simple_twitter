@@ -38,39 +38,8 @@ import Header from '../components/Header.vue'
 import UserEditModal from '../components/UserEditModal.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
+import UserFollowCard from '../components/UserFollowCard.vue'
 
-// const dummyTweet = [
-//     {
-//         id: '10',
-//         name: 'raven',
-//         account: 'raven0613',
-//         image: 'https://ipetgroup.com/photo/117457_0_620.jpeg',
-//         content: 'hahaha',
-//         replyCounts: '18',
-//         likeCounts: '11',
-//         createdAt: '111'
-//     },
-//     {
-//         id: '11',
-//         name: 'raven1',
-//         account: 'raven0613',
-//         image: 'https://imgur.dcard.tw/jR9p1ZSh.jpg',
-//         content: 'cute',
-//         replyCounts: '10',
-//         likeCounts: '15',
-//         createdAt: '133'
-//     },
-//     {
-//         id: '12',
-//         name: 'raven2',
-//         account: 'raven0613',
-//         image: 'http://5b0988e595225.cdn.sohucs.com/images/20180608/b0d5e186c3b946cf8a794575e94e8b7a.jpeg',
-//         content: 'beautiful',
-//         replyCounts: '22',
-//         likeCounts: '54',
-//         createdAt: '122'
-//     },
-// ]
 
 export default {
     components: {
@@ -78,7 +47,8 @@ export default {
         SideBar,
         RecommendUsers,
         Header,
-        UserEditModal
+        UserEditModal,
+        UserFollowCard
     },
     data () {
         return {
@@ -89,9 +59,6 @@ export default {
         this.fetchTweets()
     },
     methods: {
-        // fetchTweets () {
-        //     this.tweets = dummyTweet
-        // }
         async fetchTweets () {
             try {
                 const { data } = await tweetsAPI.getTweets()
