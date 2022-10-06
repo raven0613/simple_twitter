@@ -9,7 +9,7 @@
                 <UserHeader :content="`Raven`" :counts="`25`"/>
                 <div class="tweet__input">
                 </div>
-                <HomeTabs />
+                <HomeTabs :user-id="1"/>
                 <div class="tweets__container">
                     <TweetCard 
                     v-for="tweet in tweets" 
