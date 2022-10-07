@@ -35,9 +35,6 @@
     grid-area: right;
 }
 
-.tweet__input {
-    display: none;
-}
 
 .tweets__container {
     width: 100%;
@@ -56,49 +53,7 @@
         display: flex;
         justify-content: flex-end;
     }
-//拉出來做
-    .tweet__input {
-        // border: 1px solid black;
-        padding: 1rem 1.5rem 1rem 1.5rem;
-        margin-bottom: 0.625rem; // 輸入框與推文有間隙
-        display: flex;
-        width: 100%;
-        height: 8.5rem;
-        
-        &--avatar {
-            height: 100%;
-            padding-right: 0.5rem;
-            display: flex;
-            justify-content: flex-end;
 
-            img {
-                object-fit: cover;
-                width: 3.125rem;
-                height: 3.125rem;
-                border-radius: 25px;
-            }
-        }
-
-        &--content {
-            // border: 1px solid black;
-            width: 29.5rem;
-            color: var(--main-second-color);
-            padding: 0.75rem 0.5rem 0 0;
-        }
-
-        &--button {
-            background-color: var(--main-color);
-            border-radius: 50px;
-            width: 4rem;
-            height: 2.5rem;
-            color: var(--white);
-
-            &__container {
-                display: flex;
-                align-items: flex-end;
-            }
-        }
-    }
 
     .footer__controller {
         display: none;
@@ -115,11 +70,7 @@
     .container {
         grid-template-columns: 6.75rem 30rem 18rem;
     }
-//拉出來做
-    .tweet__input {
-        display: block;
-        width: 100%;
-    }
+
 
     .right__container {
         width: 100%;
