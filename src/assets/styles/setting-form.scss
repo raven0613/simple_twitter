@@ -2,14 +2,14 @@
   margin-top: 1rem;
 
   .form {
-    &_container{
+    &__container{
       width: 87.2%;
     }
-    &_button {
+    &__button {
       width: 5.5rem;
       height: 2.875rem;
 
-      &_container {
+      &__container {
         text-align: right;
       }
     }
@@ -19,7 +19,7 @@
 @media screen and (min-width: 992px) {
   .setting-form {
     .form {
-      &_container {
+      &__container {
         width: 92.8%;
       }
     }

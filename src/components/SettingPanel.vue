@@ -1,9 +1,9 @@
 <template>
   <div class="setting-form">
     <!-- 輸入表格 -->
-    <form  class="form form_container">
-      <div class="form_input">
-        <div class="form_input_container">
+    <form  class="form form__container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="account">帳號</label>
           <input
             id="account"
@@ -17,8 +17,8 @@
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="name">名稱</label>
           <input
             id="name"
@@ -32,8 +32,8 @@
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="email">Email</label>
           <input
             id="email"
@@ -47,8 +47,8 @@
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="password">密碼</label>
           <input
             id="password"
@@ -62,8 +62,8 @@
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="passwordCheck">密碼確認</label>
           <input
             id="passwordCheck"
@@ -78,10 +78,10 @@
       </div>
 
       <!-- button們 -->
-      <div class="form_button_container">
-        <button class="form_button" type="submit">儲存</button>
-        <div class="form_links">
-          <router-link to="" class="form_links--link">登出</router-link>
+      <div class="form__button__container">
+        <button class="form__button" type="submit">儲存</button>
+        <div class="form__links">
+          <router-link to="" class="form__links--link">登出</router-link>
         </div>
       </div>
     </form>

@@ -1,20 +1,20 @@
 <template>
   <div class="sign-form">
     <!-- 標題 -->
-    <div class="entrance entrance_container">
-      <div class="entrance_icon">
+    <div class="entrance entrance__container">
+      <div class="entrance__icon">
         <img src="../assets/images/entrance_brand.svg" alt="" />
       </div>
-      <div class="entrance_title">
+      <div class="entrance__title">
         <h4>登入 Alphitter</h4>
       </div>
     </div>
 
     <!-- 輸入表格 -->
 
-    <form @submit.prevent.stop="handleSubmit" class="form form_container">
-      <div class="form_input">
-        <div class="form_input_container">
+    <form @submit.prevent.stop="handleSubmit" class="form form__container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="account">帳號</label>
           <input
             id="account"
@@ -29,8 +29,8 @@
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="password">密碼</label>
           <input
             id="password"
@@ -46,12 +46,12 @@
       </div>
 
       <!-- button們 -->
-      <div class="form_button_container">
-        <button class="form_button" type="submit">登入</button>
-        <div class="form_links form_links_login">
-          <router-link to="" class="form_links--link">註冊</router-link>
+      <div class="form__button__container">
+        <button class="form__button" type="submit">登入</button>
+        <div class="form__links form__links__login">
+          <router-link to="/register" class="form__links--link">註冊</router-link>
           <span>．</span>
-          <router-link to="" class="form_links--link">後台登入</router-link>
+          <router-link to="/admin/login" class="form__links--link">後台登入</router-link>
         </div>
       </div>
     </form>
@@ -60,6 +60,7 @@
 
 <script>
 import usersAPI from './../apis/users'
+import { Toast } from './../utils/helpers'
 
 export default {
   name: "Register",
@@ -86,9 +87,18 @@ export default {
 
         localStorage.setItem("token", data.token);
 
-        this.$router.push("/main");
+        Toast.fire({
+          icon: 'success',
+          title: 'please wait'
+        })
+
+        this.$router.push("/");
       } catch(error){
         console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '帳號或密碼錯誤，請稍後再試'
+        })
       }
       
     },
