@@ -2,7 +2,7 @@
     <div class="twitter__project">
         <div class="admin-container">
             <section class="left__container">
-                <SideBarAdmin />
+                <SideBarAdmin :current-page="`tweets`"/>
             </section>
             <main class="main__container">
                 <MainHeader :content="`推文清單`"/>

@@ -12,33 +12,33 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'root',
+    redirect: '/main'
+  },
+  {
+    path: '/main',
     name: 'main-page',
     component: Main
   },
   {
-    path: '/1',
+    path: '/tweets/:id',
     name: 'tweet-detail',
     component: () => import('../views/TweetDetail.vue')
   },
   {
-    path: '/f',
+    path: '/users/:id/follower',
     name: 'user-follow',
     component: () => import('../views/Follow.vue')
   },
   {
-    path: '/u',
+    path: '/users/:id/following',
+    name: 'user-follow',
+    component: () => import('../views/Follow.vue')
+  },
+  {
+    path: '/users',
     name: 'user-detail',
     component: () => import('../views/UserDetail.vue')
-  },
-  {
-    path: '/adt',
-    name: 'admin-tweet',
-    component: AdminTweets
-  },
-  {
-    path: '/adu',
-    name: 'admin-user',
-    component: () => import('../views/AdminUsers.vue')
   },
   {
     path: '/register',
@@ -61,9 +61,19 @@ const routes = [
     component: () => import('../views/AdminLogin.vue')
   },
   {
-    path: '/test',
-    name: 'test',
-    component: () => import('../views/Test.vue')
+    path: '/admin/tweets',
+    name: 'admin-tweet',
+    component: AdminTweets
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-user',
+    component: () => import('../views/AdminUsers.vue')
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    redirect: '/admin/tweets'
   },
   {
     path: '*',

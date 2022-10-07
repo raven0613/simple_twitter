@@ -2,11 +2,10 @@
     <div class="twitter__project">
         <div class="admin-container">
             <section class="left__container">
-                <SideBarAdmin />
+                <SideBarAdmin :current-page="`users`"/>
             </section>
             <main class="main__container">
                 <MainHeader :content="`使用者列表`"/>
-                <HomeTabs />
                 <div class="admin-user__container">
                     <AdminUsers />
                     <AdminUsers />
