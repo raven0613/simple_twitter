@@ -1,0 +1,58 @@
+.user-info {
+  &__container {
+    // border: 1px solid blue;
+    border-radius: 0;
+  }
+
+  &__data__container {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--white);
+    position: absolute;
+    top: 7.75rem;
+  }
+
+  // 按鈕們
+  &__controller {
+    text-align: right;
+  }
+
+  // 個人資訊
+  &__panel {
+    font-size: 0.875rem;
+
+    &--name {
+      font-size: 1.125rem;
+      color: var(--main-text-color);
+    }
+
+    &--account {
+      color: var(--main-second-color);
+    }
+
+    &--description {
+      color: var(--main-text-color);
+      margin: 0.75rem 0 0.5rem 0;
+    }
+
+    &--follow span {
+      &:nth-child(1) {
+        color: var(--main-text-color);
+      }
+
+      &:nth-child(2) {
+        color: var(--main-second-color);
+        margin-right: 1.25rem;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .user-info {
+    &__data__container {
+    padding: 1rem;
+      top: 12.5rem;
+    }
+  }
+}

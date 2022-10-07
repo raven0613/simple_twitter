@@ -18,12 +18,12 @@
             <div class="tweet__bottom">
                 <router-link to="/123" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_reply.svg" alt="">
-                    <span>{{tweet.repliesCount}}</span>
+                    <span class="montserrat-font">{{tweet.repliesCount}}</span>
                 </router-link>
                 
                 <router-link to="/456" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_like.svg" alt="">
-                    <span>{{tweet.likedCount}}</span>
+                    <span class="montserrat-font">{{tweet.likedCount}}</span>
                 </router-link>
                 
             </div>

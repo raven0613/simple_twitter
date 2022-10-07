@@ -11,56 +11,58 @@
         <img
           src="../assets/images/cancel-orange.svg"
           alt=""
-          class="modal_input--cancel"
+          class="modal__input--cancel"
         />
-        <p class="modal_input--title">編輯個人資料</p>
-        <button class="modal_input--save">儲存</button>
+        <p class="modal__input--title">編輯個人資料</p>
+        <button class="modal__input--save">儲存</button>
       </div>
 
       <!-- 背景圖片跟個人照 -->
-      <div class="user-info_image_container">
-        <div class="user-info_background_container">
+      <div class="user-info__image__container">
+        <div class="user-info__background__container">
           <img
             src="../assets/images/user-bg.svg"
             alt=""
-            class="user-info_background--photo"
+            class="user-info__background--photo"
           />
-          <span class="user-info_background--mask"></span>
-          <div class="user-info_background_icons_container">
+          <span class="user-info__background--mask"></span>
+          <div class="user-info__background__icons__container">
             <img
               src="../assets/images/add-photo.svg"
               alt=""
-              class="user-info_background_icon"
+              class="user-info__background__icon"
             />
             <img
               src="../assets/images/cancel-white.svg"
               alt=""
-              class="user-info_background_icon"
+              class="user-info__background__icon"
+
             />
           </div>
         </div>
 
-        <div class="user-info_avatar_container">
+
+        <div class="user-info__avatar__container">
           <img
             src="../assets/images/avatar.svg"
             alt=""
-            class="user-info_avatar--photo"
+            class="user-info__avatar--photo"
           />
-          <span class="user-info_avatar--mask"></span>
-          <div class="user-info_avatar_icons_container">
+          <span class="user-info__avatar--mask"></span>
+          <div class="user-info__avatar__icons__container">
             <img
               src="../assets/images/add-photo.svg"
               alt=""
-              class="user-info_avatar_icon"
+              class="user-info__avatar__icon"
             />
           </div>
         </div>
       </div>
 
       <!-- 表格 -->
-      <form class="form form_container">
-        <div class="form_input">
-          <div class="form_input_container">
+      <form class="form form__container">
+        <div class="form__input">
+          <div class="form__input__container">
             <label for="name">名稱</label>
             <input
               id="name"
@@ -72,10 +74,10 @@
               autofocus
             />
           </div>
-          <span class="form_text-length">8/50</span>
+          <span class="form__text-length montserrat-font">8/50</span>
         </div>
-        <div class="form_input" id="introduction_input">
-          <div class="form_input_container">
+        <div class="form__input" id="introduction__input">
+          <div class="form__input__container">
             <label for="introduction">自我介紹</label>
             <input
               id="introduction"
@@ -87,7 +89,7 @@
               autofocus
             />
           </div>
-          <span class="form_text-length">0/160</span>
+          <span class="form__text-length montserrat-font">0/160</span>
         </div>
       </form>
     </div>

@@ -1,26 +1,20 @@
-// <div class="form_button_container">
-//         <button class="form_button" type="submit">註冊</button>
-//         <div class="form_links">
-//           <button class="form_links--link">取消</button>
-//         </div>
-//       </div>
-
 .form {
-  &_container {
+  &__container {
     margin: 0 auto;
   }
 
-  &_input {
+  &__input {
     height: 3.375rem;
     width: 100%;
     background-color: var(--text-area-color);
     margin-bottom: 2rem;
     border-bottom: 2px solid var(--tab-text-color);
     border-radius: 2px;
-    &:hover{
+    // 當使用者滑過或focus格子時變藍底
+    &:hover, &:focus-within{
       border-bottom: 2px solid var(--tab-hover-focus);
     }
-    &_container {
+    &__container {
       height: 100%;
       // border: 1px solid #000;
       display: flex;
@@ -44,12 +38,16 @@
 
   }
 
-  &_button_container {
+.container-focus{
+  border-bottom: 2px solid var(--tab-hover-focus);
+}
+
+  &__button__container {
     margin-top: 0.5rem;
     width: 100%;
   }
 
-  &_button {
+  &__button {
     background-color: var(--main-color);
     width: 100%;
     height: 2.875rem;
@@ -59,8 +57,8 @@
     font-size: 1.25rem;
   }
 
-  &_links {
-    &_login{
+  &__links {
+    &__login{
       display: flex;
       justify-content: flex-end;
       span{
@@ -75,10 +73,14 @@
   }
 }
 
+// 表格錯誤提示： 輸入框底線為紅色
+.formError{
+  border-bottom: 2px solid var(--tab-error);
+}
 
 @media screen and (min-width: 992px) {
   .form {
-    &_container {
+    &__container {
       width: 22.25rem;
       margin: 0 auto;
     }

@@ -1,20 +1,20 @@
 <template>
   <div class="sign-form">
     <!-- 標題 -->
-    <div class="entrance entrance_container">
-      <div class="entrance_icon">
+    <div class="entrance entrance__container">
+      <div class="entrance__icon">
         <img src="../assets/images/entrance_brand.svg" alt="" />
       </div>
-      <div class="entrance_title">
+      <div class="entrance__title">
         <h4>建立你的帳號</h4>
       </div>
     </div>
 
     <!-- 輸入表格 -->
 
-    <form @submit.prevent.stop="handleSubmit" class="form form_container">
-      <div class="form_input">
-        <div class="form_input_container">
+    <form @submit.prevent.stop="handleSubmit" class="form form__container">
+      <div class="form__input" :class="formError">
+        <div class="form__input__container">
           <label for="account">帳號</label>
           <input
             id="account"
@@ -22,15 +22,15 @@
             type="account"
             placeholder="請輸入帳號"
             autocomplete="username"
-            required
             autofocus
+            required
             v-model="account"
           />
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="name">名稱</label>
           <input
             id="name"
@@ -38,15 +38,15 @@
             type="name"
             placeholder="請輸入使用者名稱"
             autocomplete="name"
-            required
             autofocus
+            required
             v-model="name"
           />
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="email">Email</label>
           <input
             id="email"
@@ -54,31 +54,30 @@
             type="email"
             placeholder="請輸入Email"
             autocomplete="email"
-            required
             autofocus
+            required
             v-model="email"
           />
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="password">密碼</label>
           <input
             id="password"
             name="password"
             type="password"
             placeholder="請輸入密碼"
-            autocomplete="current-password"
-            required
             autofocus
+            required
             v-model="password"
           />
         </div>
       </div>
 
-      <div class="form_input">
-        <div class="form_input_container">
+      <div class="form__input">
+        <div class="form__input__container">
           <label for="passwordCheck">密碼確認</label>
           <input
             id="passwordCheck"
@@ -86,18 +85,18 @@
             type="password"
             placeholder="請再次輸入密碼"
             autocomplete="current-password"
-            required
             autofocus
+            required
             v-model="checkPassword"
           />
         </div>
       </div>
 
       <!-- button們 -->
-      <div class="form_button_container">
-        <button class="form_button" type="submit">註冊</button>
-        <div class="form_links">
-          <router-link to="" class="form_links--link">取消</router-link>
+      <div class="form__button__container">
+        <button class="form__button" type="submit">註冊</button>
+        <div class="form__links">
+          <router-link to="/login" class="form__links--link">取消</router-link>
         </div>
       </div>
     </form>
@@ -105,7 +104,8 @@
 </template>
 
 <script>
-import usersAPI from './../apis/users'
+import { Toast } from "../utils/helpers";
+import usersAPI from "./../apis/users";
 // const dummyData = {
 //   name: "root",
 //   email: "root@example.com",
@@ -123,21 +123,99 @@ export default {
       account: "",
       password: "",
       checkPassword: "",
+      formError: false
     };
+  },
+  watch: {
+    name(newValue) {
+      // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
+      if (newValue.length > 50) {
+        Toast.fire({
+          icon: "error",
+          title: "字數超過上限！",
+        });
+        this.name = this.name.slice(0, 50); // name會停留在50字內
+        return;
+      }
+    },
   },
   methods: {
     async handleSubmit() {
+      this.formError = false
       try {
-        const {data} = await usersAPI.register({
-          name: this.name, 
-          email:this.email,
+        // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」
+        //TODO:(待優化)
+        if (!this.account) {
+          Toast.fire({
+            icon: "error",
+            title: "帳號欄位為必填"
+          });
+          this.formError = true
+          return;
+        }
+        if (!this.name) {
+          Toast.fire({
+            icon: "error",
+            title: "名稱欄位為必填"
+          });
+          this.formError = true
+          return;
+        }
+        if (!this.email) {
+          Toast.fire({
+            icon: "error",
+            title: "Email欄位為必填"
+          });
+          this.formError = true
+          return;
+        }
+        if (!this.password) {
+          Toast.fire({
+            icon: "error",
+            title: "密碼欄位為必填"
+          });
+          this.formError = true
+          return;
+        }
+        if (!this.checkPassword) {
+          Toast.fire({
+            icon: "error",
+            title: "密碼確認欄位為必填"
+          });
+          this.formError = true
+          return;
+        }
+
+        // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」
+        if (this.password !== this.checkPassword) {
+          Toast.fire({
+            icon: "error",
+            title: "密碼與確認密碼不符",
+          });
+          return;
+        }
+        const { data } = await usersAPI.register({
+          name: this.name,
+          email: this.email,
           account: this.account,
-          password: this.email, 
-          checkPassword: this.checkPassword
-        })
-        console.log(data)
-      } catch(error){
-        console.log(error)
+          password: this.password,
+          checkPassword: this.checkPassword,
+        });
+        console.log(data);
+
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+
+        // 使用者成功建立帳號會自動跳轉 login 頁面，並出現成功提示「建立帳號成功！」
+        Toast.fire({
+          icon: "success",
+          title: "建立帳號成功！",
+        });
+
+        this.$router.push("/login");
+      } catch (error) {
+        console.log(error);
       }
     },
   },

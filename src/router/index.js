@@ -8,6 +8,7 @@ import AdminTweets from '../views/AdminTweets'
 
 Vue.use(VueRouter)
 
+
 const routes = [
   {
     path: '/',
@@ -55,6 +56,16 @@ const routes = [
     component: Login
   },
   {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: () => import('../views/AdminLogin.vue')
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('../views/Test.vue')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound
@@ -64,5 +75,11 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(to,from)
+  next()
+})
+
 
 export default router
