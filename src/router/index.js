@@ -61,11 +61,6 @@ const routes = [
     component: () => import('../views/AdminLogin.vue')
   },
   {
-    path: '/test',
-    name: 'test',
-    component: () => import('../views/Test.vue')
-  },
-  {
     path: '*',
     name: 'not-found',
     component: NotFound
