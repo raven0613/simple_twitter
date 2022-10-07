@@ -5,10 +5,12 @@
                 <SideBar :current-page="`user`"/>
             </section>
             <main class="main__container">
-                <UserEditModal v-if="false"/>
+                <UserEditModal v-if="true"/>
                 <UserHeader :content="`Raven`" :counts="25"/>
-                <div class="tweet__input">
-                </div>
+                <UserPanel />
+                <!-- <div class="tweet__input">
+                    <UserPanel />
+                </div> -->
                 <HomeTabs :user-id="`1`"/>
                 <div class="tweets__container">
                     <TweetCard 
@@ -21,7 +23,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask" v-if="true">
             </div>
         </div>
         <Footer :current-page="`user`"/>
@@ -36,6 +38,7 @@ import UserHeader from '../components/UserHeader.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
 import Footer from '../components/Footer.vue'
+import UserPanel from '../components/UserPanel.vue'
 import usersAPI from '../apis/users.js'
 import { Toast } from '../utils/helpers.js'
 
@@ -47,7 +50,8 @@ export default {
         UserHeader,
         HomeTabs,
         UserEditModal,
-        Footer
+        Footer,
+        UserPanel
     },
     data () {
         return {

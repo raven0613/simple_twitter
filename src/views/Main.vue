@@ -6,7 +6,9 @@
             </section>
             <main class="main__container">
                 <UserEditModal v-if="false"/>
+                <MainTweetModal v-if="true"/>
                 <MainHeader :content="`首頁`" :user-id="`1`"/>
+                
                 <MainTweetInput />
                 <div class="tweets__container">
                     <TweetCard 
@@ -19,13 +21,11 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask" v-if="true">
             </div>
         </div>
         <Footer :current-page="`main`"/>
     </div>
-    <footer class="footer__controller"></footer>
-  </div>
 </template>
 
 <script>
@@ -34,10 +34,11 @@ import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import MainHeader from '../components/MainHeader.vue'
 import UserEditModal from '../components/UserEditModal.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
 import Footer from '../components/Footer.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
-import MainTweetInput from "../components/MainTweetInput.vue";
+import MainTweetInput from "../components/MainTweetInput.vue"
 
 export default {
     components: {
@@ -46,6 +47,7 @@ export default {
         RecommendUsers,
         MainHeader,
         UserEditModal,
+        MainTweetModal,
         Footer,
         MainTweetInput
     },

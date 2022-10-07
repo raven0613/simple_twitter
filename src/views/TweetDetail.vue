@@ -5,6 +5,7 @@
                 <SideBar />
             </section>
             <main class="main__container">
+                <MainReplyModal v-if="true"/>
                 <MainHeader :content="`推文`" :tweet-id="1"/>
                 <MainTweet />
 
@@ -21,6 +22,8 @@
             <section class="right__container">
                 <RecommendUsers />
             </section>
+            <div class="modal__mask" v-if="true">
+            </div>
         </div>
         <Footer />
     </div>
@@ -33,6 +36,7 @@ import RecommendUsers from '../components/RecommendUsers.vue'
 import MainHeader from '../components/MainHeader.vue'
 import MainTweet from '../components/MainTweet.vue'
 import Footer from '../components/Footer.vue'
+import MainReplyModal from '../components/MainReplyModal.vue'
 
 export default {
     components: {
@@ -41,7 +45,8 @@ export default {
         RecommendUsers,
         MainHeader,
         MainTweet,
-        Footer
+        Footer,
+        MainReplyModal
     },
 }
 </script>

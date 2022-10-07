@@ -7,10 +7,10 @@
             <main class="main__container">
                 <MainHeader :content="`使用者列表`"/>
                 <HomeTabs />
-                <div class="tweets__container">
-                    <UserFollowCard />
-                    <UserFollowCard />
-                    <UserFollowCard />
+                <div class="admin-user__container">
+                    <AdminUsers />
+                    <AdminUsers />
+                    <AdminUsers />
                 </div>
             </main>
 
@@ -26,13 +26,13 @@
 <script>
 import SideBarAdmin from '../components/SideBarAdmin.vue'
 import MainHeader from '../components/MainHeader.vue'
-import UserFollowCard from '../components/UserFollowCard.vue'
+import AdminUsers from '../components/AdminUsers.vue'
 
 export default {
     components: {
         SideBarAdmin,
         MainHeader,
-        UserFollowCard,
+        AdminUsers
     },
 }
 </script>

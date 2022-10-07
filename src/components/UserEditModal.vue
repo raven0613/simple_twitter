@@ -1,12 +1,12 @@
 <template>
   <div class="modal">
-    <div class="modal_container">
+    <div class="modal__container">
       <!-- 最上方的區塊 -->
-      <div class="modal_input_container">
+      <div class="modal__input__container">
         <img
           src="../assets/images/last-step.svg"
           alt=""
-          class="modal_input--last-step"
+          class="modal__input--last-step"
         />
         <img
           src="../assets/images/cancel-orange.svg"
