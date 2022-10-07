@@ -2,14 +2,14 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar />
+                <SideBar :current-page="`user`"/>
             </section>
             <main class="main__container">
                 <UserEditModal v-if="false"/>
-                <UserHeader :content="`Raven`" :counts="`25`"/>
+                <UserHeader :content="`Raven`" :counts="25"/>
                 <div class="tweet__input">
                 </div>
-                <HomeTabs :user-id="1"/>
+                <HomeTabs :user-id="`1`"/>
                 <div class="tweets__container">
                     <TweetCard 
                     v-for="tweet in tweets" 
@@ -36,6 +36,8 @@ import UserHeader from '../components/UserHeader.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
 import Footer from '../components/Footer.vue'
+import usersAPI from '../apis/users.js'
+import { Toast } from '../utils/helpers.js'
 
 export default {
     components: {
@@ -53,9 +55,24 @@ export default {
         }
     },
     created () {
+        this.fetchUserTweets(1)
     },
     methods: {
-
+        async fetchUserTweets (id) {
+            try {
+                const response = await usersAPI.getUserTweets({id})
+                console.log(await usersAPI.getUserTweets({id}))
+                if (response.statusText !== 'OK') throw new Error(response.statusText)
+                this.tweets = response.data
+            }
+            catch (error) {
+                console.log(error)
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        }
     }
 }
 </script>

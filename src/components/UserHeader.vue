@@ -1,6 +1,6 @@
 <template>
     <header class="header user__header">
-        <div class="user__header--icon">
+        <div @click="$router.back()" class="user__header--icon">
             <img src="../assets/images/last-step.svg" alt="">
         </div>
         <div class="user__header--word">

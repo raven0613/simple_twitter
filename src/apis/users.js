@@ -1,6 +1,7 @@
 //  signIn, singnUp頁面都會從這邊抓資料
 import { apiHelper } from './../utils/helpers'
 
+
 export default {
   // 註冊
   register({name, email, account, password, checkPassword}){
@@ -19,5 +20,14 @@ export default {
       account,
       password
     })
+  },
+  //得到某user發的所有推文
+  getUserTweets ({id}) {
+      const getToken = () => {
+          localStorage.getItem('token')
+      }
+      return apiHelper.get(`/users/${id}/tweets`, {
+          headers: { Authorization: `Bearer ${getToken()}` }
+      })
   }
 }

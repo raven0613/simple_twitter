@@ -8,5 +8,5 @@ export default{
         return apiHelper.get('/tweets', {
             headers: { Authorization: `Bearer ${getToken()}` }
         })
-    }
+    },
 }

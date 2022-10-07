@@ -2,7 +2,7 @@
     <div class="twitter__project">
         <div class="container setting-page">
             <section class="left__container">
-                <SideBar />
+                <SideBar :current-page="`setting`"/>
             </section>
             <main class="main__container">
                 <MainHeader :content="`帳戶設定`"/>

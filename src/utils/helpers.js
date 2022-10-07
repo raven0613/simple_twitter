@@ -30,6 +30,7 @@ export const Toast = Swal.mixin({
   toast: true,
   position: 'top-end', // 顯示的位置
   showConfirmButton: false, // 要不要顯示確認按鈕
-  timer: 3000 // 顯示時間
-})
+  timer: 3000, // 顯示時間
 
+
+})

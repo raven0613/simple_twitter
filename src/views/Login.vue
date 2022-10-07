@@ -72,18 +72,23 @@ export default {
   methods: {
     async handleSubmit() {
       try{
-        const { data } = await usersAPI.login({
+        console.log(await usersAPI.login({
+          account: this.account,
+          password: this.password,
+        }))
+
+        const { data, statusText } = await usersAPI.login({
           account: this.account,
           password: this.password,
         });
         // 取得 API 請求後的資料
         console.log(data)
 
-        if (data.status === "error") {
-          throw new Error(data.message);
+        if (statusText !== "OK") {
+          throw new Error(statusText);
         }
 
-        localStorage.setItem("token", data.data.token);
+        localStorage.setItem("token", data.token);
 
         this.$router.push("/");
       } catch(error){

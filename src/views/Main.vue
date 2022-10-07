@@ -2,11 +2,11 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar />
+                <SideBar :current-page="`main`"/>
             </section>
             <main class="main__container">
                 <UserEditModal v-if="false"/>
-                <MainHeader :content="`首頁`" :user-id="1"/>
+                <MainHeader :content="`首頁`" :user-id="`1`"/>
                 <div class="tweet__input">
                     
                 </div>
@@ -58,10 +58,9 @@ export default {
     methods: {
         async fetchTweets () {
             try {
-                const { data } = await tweetsAPI.getTweets()
-                if (data.status !== 'success') throw new Error(data.message)
-                console.log(data)
-                this.tweets = data.data.tweets
+                const response = await tweetsAPI.getTweets()
+                if (response.statusText !== 'OK') throw new Error(response.statusText)
+                this.tweets = response.data
             }
             catch (error) {
                 console.log(error)
