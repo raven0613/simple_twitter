@@ -1,7 +1,13 @@
 @import './basic.scss';
 @import './reset.scss';
+@import './button.scss';
+@import './home-tabs.scss';
+@import './footer.scss';
+
 @import './main-page.scss';
+@import './admin-main-page.scss';
 @import './tweet-card.scss';
+@import './admin-tweet-card.scss';
 @import './reply-card.scss';
 @import './side-bar.scss';
 @import './recommend-users.scss';
@@ -15,3 +21,6 @@
 @import './main-modal.scss';
 @import './user-panel.scss';
 @import './admin-card.scss'
+@import './main-tweet.scss';
+@import './user-follow-card.scss';
+

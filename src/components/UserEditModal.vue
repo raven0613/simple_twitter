@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <div class="modal__container">
+  <div class="modal">
+    <div class="modal_container">
       <!-- 最上方的區塊 -->
-      <div class="modal__input__container">
+      <div class="modal_input_container">
         <img
           src="../assets/images/last-step.svg"
           alt=""
-          class="modal__input--last-step"
+          class="modal_input--last-step"
         />
         <img
           src="../assets/images/cancel-orange.svg"
@@ -36,9 +36,11 @@
               src="../assets/images/cancel-white.svg"
               alt=""
               class="user-info__background__icon"
+
             />
           </div>
         </div>
+
 
         <div class="user-info__avatar__container">
           <img
@@ -72,7 +74,7 @@
               autofocus
             />
           </div>
-          <span class="form__text-length">8/50</span>
+          <span class="form__text-length montserrat-font">8/50</span>
         </div>
         <div class="form__input" id="introduction__input">
           <div class="form__input__container">
@@ -87,7 +89,7 @@
               autofocus
             />
           </div>
-          <span class="form__text-length">0/160</span>
+          <span class="form__text-length montserrat-font">0/160</span>
         </div>
       </form>
     </div>

@@ -23,11 +23,11 @@
 .main__container {
     width: 100%;
     height: auto;
-    position: relative;
     overflow-y: scroll;
     grid-area: middle;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
+    padding-bottom: 3.25rem;
 }
 
 .right__container {
@@ -35,13 +35,6 @@
     grid-area: right;
 }
 
-// .main__header {
-//     background-color: crimson;
-//     height: 4.6875rem;
-//     width: 100%;
-// }
-
-// 在手機版只有modal，沒有輸入框框
 .tweet__input {
     display: none;
 }
@@ -51,17 +44,6 @@
     height: auto;
 }
 
-
-
-.footer__controller {
-    background-color: cadetblue;
-    position: fixed;
-    left: 0;
-    right: 0;
-    height: 3.25rem;
-    bottom: 0;
-    z-index: 1;
-}
 
 @media screen and (min-width: 600px) {
     .container {
@@ -74,7 +56,7 @@
         display: flex;
         justify-content: flex-end;
     }
-
+//拉出來做
     .tweet__input {
         // border: 1px solid black;
         padding: 1rem 1.5rem 1rem 1.5rem;
@@ -133,10 +115,11 @@
     .container {
         grid-template-columns: 6.75rem 30rem 18rem;
     }
-
-    // .tweet__input {
-    //     width: 100%;
-    // }
+//拉出來做
+    .tweet__input {
+        display: block;
+        width: 100%;
+    }
 
     .right__container {
         width: 100%;

@@ -1,32 +1,40 @@
 <template>
-    <router-link to="#" class="tweet__container">
+    <div class="tweet-detail">
 
-        <div class="tweet__avatar">
-            <img class="tweet__avatar--photo" src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
+        <div class="tweet-detail__user">
+            <div class="tweet__avatar">
+                <img class="tweet__avatar--photo" src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
+            </div>
+            <div class="tweet-detail__user--name">
+                <p>Apple</p>
+                <p>@apple</p>
+            </div>
         </div>
 
-        <div class="tweet__info">
-            
-            <div class="tweet__top">
-                <span class="tweet__top--prim">Jane Cathy</span>
-                <span class="tweet__top--sec">@apple</span>
-                <span class="tweet__top--sec">．3小時</span>
+        <div class="tweet-detail__content">
+            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt. 
+        </div>
+        
+        <div class="tweet-detail__time">
+            上午 10:05・2021年11月10日
+        </div>
+        <div class="tweet-detail__info">
+            <div class="tweet-detail__info--reply">
+                <span>34</span> 
+                <span> 回覆</span>
             </div>
-            <div class="tweet__info--content">
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. 
-            </div>
-            <div class="tweet__bottom">
-                <router-link to="/123" class="tweet__bottom--icon">
-                    <img src="../assets/images/tweet_reply.svg" alt="">
-                    <span>13</span>
-                </router-link>
-                
-                <router-link to="/456" class="tweet__bottom--icon">
-                    <img src="../assets/images/tweet_like.svg" alt="">
-                    <span>76</span>
-                </router-link>
-                
+            <div class="tweet-detail__info--like">
+                <span>808</span> 
+                <span> 喜歡次數</span>
             </div>
         </div>
-    </router-link>
+        <div class="tweet-detail__icons">
+            <router-link to="#">
+                <img src="../assets/images/tweet_reply.svg" alt="">
+            </router-link>
+            <router-link to="#">
+                <img src="../assets/images/tweet_like.svg" alt="">
+            </router-link>
+        </div>
+    </div>
 </template>
