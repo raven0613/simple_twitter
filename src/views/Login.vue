@@ -96,7 +96,7 @@ export default {
           icon: 'success',
           title: 'please wait'
         })
-        this.$router.push("/");
+        this.$router.push("/main");
       } catch(error){
         console.log(error)
         Toast.fire({

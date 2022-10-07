@@ -1,8 +1,9 @@
 .user-info {
   &__container {
-    border: 1px solid blue;
     border-radius: 0;
-    z-index: 1;
+    z-index: -4;
+    position: relative;
+    top: 0;
   }
 
   &__data__container {
@@ -52,7 +53,7 @@
 @media screen and (min-width: 600px) {
   .user-info {
     &__data__container {
-    padding: 1rem;
+      padding: 1rem;
       top: 12.5rem;
     }
   }
