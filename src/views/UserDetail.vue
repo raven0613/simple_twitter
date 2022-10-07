@@ -5,7 +5,7 @@
                 <SideBar :current-page="`user`"/>
             </section>
             <main class="main__container">
-                <UserEditModal v-if="true"/>
+                <UserEditModal v-if="false"/>
                 <UserHeader :content="`Raven`" :counts="25"/>
                 <UserPanel />
                 <!-- <div class="tweet__input">
@@ -23,7 +23,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="true">
+            <div class="modal__mask" v-if="false">
             </div>
         </div>
         <Footer :current-page="`user`"/>
@@ -59,7 +59,7 @@ export default {
         }
     },
     created () {
-        this.fetchUserTweets(1)
+        this.fetchUserTweets(14)
     },
     methods: {
         async fetchUserTweets (id) {
