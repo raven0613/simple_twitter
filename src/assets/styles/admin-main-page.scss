@@ -4,10 +4,10 @@
     position: relative;
 }
 
-.container {
+.admin-container {
     position: absolute;
     width: 100%;
-    top:0;
+    top: 0;
     bottom: 0;
     margin: auto;
     display: grid;
@@ -19,6 +19,7 @@
     display: none;
     grid-area: left;
 }
+
 .main__container {
     width: 100%;
     height: auto;
@@ -28,51 +29,54 @@
     border-right: 1px solid gray;
     padding-bottom: 3.25rem;
 }
-.right__container {
-    display: none;
-    grid-area: right;
-}
 
+// .main__header {
+//     background-color: crimson;
+//     height: 4.6875rem;
+//     width: 100%;
+// }
 .tweet__input {
     display: none;
 }
+
 .tweets__container {
     width: 100%;
     height: auto;
 }
 
 
+
+.footer__controller {
+    background-color: cadetblue;
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 3.25rem;
+    bottom: 0;
+    z-index: 1;
+}
+
 @media screen and (min-width: 600px) {
-    .container {
-        grid-template-columns: 1fr 30rem 1fr;
-        grid-template-areas: "left middle right";
+    .admin-container {
+        grid-template-columns: 6.75rem 1fr;
+        grid-template-areas: "left middle";
     }
+
     .left__container {
         width: 100%;
         display: flex;
         justify-content: flex-end;
     }
-}
-@media screen and (min-width: 750px) {
-    .container {
-        grid-template-columns: 1fr 35rem 1fr;
+
+    .footer__controller {
+        display: none;
     }
 }
+
 
 @media screen and (min-width: 900px) {
-    .container {
-        grid-template-columns: 6.75rem 30rem 18rem;
-    }
-    .tweet__input {
-        display: block;
-        width: 100%;
-    }
-
-    .right__container {
-        width: 100%;
-        display: block;
-        padding-left: 1.5rem;
-        padding-top: 1rem;
+    .admin-container {
+        grid-template-columns: 6.75rem 1fr;
     }
 
     .side-bar__panel {
@@ -80,15 +84,16 @@
         height: 25rem;
     }
 }
+
 @media screen and (min-width: 992px) {
-    .container {
-        grid-template-columns: 1fr 6.75rem 33.5rem 18.5rem 1fr;
-        grid-template-areas: ". left middle right .";
+    .admin-container {
+        grid-template-columns: 1fr 12.5rem 48rem 1fr;
+        grid-template-areas: ". left middle .";
     }
 }
 
 @media screen and (min-width: 1200px) {
-    .container {
-        grid-template-columns: 1fr 12.5rem 40rem 17.0625rem 1fr;
+    .admin-container {
+        grid-template-columns: 1fr 12.5rem 58.5625rem 1fr;
     }
 }

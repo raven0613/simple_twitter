@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal">
     <div class="modal_container">
       <!-- 最上方的區塊 -->
       <div class="modal_input_container">

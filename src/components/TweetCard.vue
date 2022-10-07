@@ -2,28 +2,28 @@
     <router-link to="#" class="tweet__container">
 
         <div class="tweet__avatar">
-            <img class="tweet__avatar--photo" src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
+            <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
         </div>
 
         <div class="tweet__info">
             
             <div class="tweet__top">
-                <span class="tweet__top--prim">Jane Cathy</span>
-                <span class="tweet__top--sec">@apple</span>
-                <span class="tweet__top--sec">．3小時</span>
+                <span class="tweet__top--prim">{{tweet.User.name}}</span>
+                <span class="tweet__top--sec">@{{tweet.User.account}}</span>
+                <span class="tweet__top--sec">．{{tweet.createdAt}}</span>
             </div>
             <div class="tweet__info--content">
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. 
+                {{tweet.description}}
             </div>
             <div class="tweet__bottom">
                 <router-link to="/123" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_reply.svg" alt="">
-                    <span>13</span>
+                    <span>{{tweet.repliesCount}}</span>
                 </router-link>
                 
                 <router-link to="/456" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_like.svg" alt="">
-                    <span>76</span>
+                    <span>{{tweet.likedCount}}</span>
                 </router-link>
                 
             </div>
@@ -33,12 +33,21 @@
 
 <script>
 export default {
-    data() {
-        
+    props: {
+        initialData: {
+            type: Object,
+            required: true
+        }
     },
-    methods: {
-        onFocusInput () {
-            console.log('YO')
+    data () {
+        return {
+            tweet: this.initialData
+        }
+    },
+    watch: {
+        initialData (newValue, oldValue) {
+            console.log(oldValue)
+            console.log(oldValue)
         }
     }
 }

@@ -1,0 +1,82 @@
+.tweet-detail {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid gray;
+
+    &__user {
+        width: 100%;
+        height: 3.125rem;
+        display: flex;
+        margin-bottom: 0.5rem;
+        &--name {
+            height: 100%;
+            flex: 1;
+            line-height: 1.5625rem;
+            font-size: 1rem;
+            :nth-child(2) {
+                color: gray;
+                font-size: 0.875rem;
+            }
+        }
+    }
+    &__content {
+        font-weight: 1rem;
+    }
+    &__time {
+        color: grey;
+        border-bottom: 1px solid gray;
+        line-height: 1.375rem;
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
+    }
+    &__info {
+        display: flex;
+        height: 3.75rem;
+        padding: 1rem;
+        border-bottom: 1px solid gray;
+        line-height: 1.75rem;
+        font-size: 1.1875rem;
+        &--reply, &--like {
+            margin-right: 1.5rem;
+            :nth-child(2) {
+                color: gray;
+            }
+        }
+    }
+    &__icons {
+        width: 5.5rem;
+        height: 1.875rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+
+}
+
+.tweet-detail__input {
+    width: 100%;
+    height: 5.25rem;
+    background-color: antiquewhite;
+}
+
+@media screen and (min-width: 600px) {
+    .tweet-detail__input {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .tweet-detail {
+        &__info {
+            padding: 1rem 0;
+        }
+        &__icons {
+            width: 11.75rem;
+        }
+    }
+}
