@@ -9,19 +9,19 @@
             <router-link :to="{name: 'admin-tweet'}" class="side-bar__link">
                 <img v-if="currentPage === `tweets`" src="../assets/images/sidebar_home_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_home.svg" alt="">
-                <span :class="{sidebar__active: currentPage === `tweets`}">推文清單</span>
+                <h5 :class="{sidebar__active: currentPage === `tweets`}">推文清單</h5>
             </router-link>
 
             <router-link :to="{name: 'admin-user'}" class="side-bar__link">
                 <img v-if="currentPage === `users`" src="../assets/images/sidebar_user_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_user.svg" alt="">
-                <span :class="{sidebar__active: currentPage === `users`}">使用者列表</span>
+                <h5 :class="{sidebar__active: currentPage === `users`}">使用者列表</h5>
             </router-link>
         </div>
 
         <router-link to="#" class="side-bar__link">
             <img src="../assets/images/sidebar_logout.svg" alt="">
-            <span>登出</span>
+            <h5>登出</h5>
         </router-link>
     </div>
 </template>

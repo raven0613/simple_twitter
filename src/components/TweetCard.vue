@@ -1,5 +1,5 @@
 <template>
-    <router-link to="#" class="tweet__container">
+    <router-link to="/tweets" class="tweet__container">
 
         <div class="tweet__avatar">
             <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">

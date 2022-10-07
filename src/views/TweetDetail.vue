@@ -5,7 +5,7 @@
                 <SideBar />
             </section>
             <main class="main__container">
-                <MainReplyModal v-if="true"/>
+                <MainReplyModal v-if="false"/>
                 <MainHeader :content="`推文`" :tweet-id="1"/>
                 <MainTweet />
 
@@ -22,7 +22,7 @@
             <section class="right__container">
                 <RecommendUsers />
             </section>
-            <div class="modal__mask" v-if="true">
+            <div class="modal__mask" v-if="false">
             </div>
         </div>
         <Footer />

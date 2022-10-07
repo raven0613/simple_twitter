@@ -34,12 +34,13 @@
         height: 3.625rem;
         display: flex;
         align-items: center;
+        margin-bottom: 0.5rem;
         img {
             width: 1.5rem;
             height: 2.5rem;
             margin: auto;
         }
-        span {
+        h5 {
             display: none;
         }
     }
@@ -72,7 +73,7 @@
                 margin: auto;
             }
     
-            span {
+            h5 {
                 display: block;
                 width: 8.625rem;
                 padding-left: 1rem;
@@ -80,7 +81,7 @@
         }
     
         .side-bar__button {
-            background-color: orange;
+            background-color: var(--main-color);
             border-radius: 23px;
     
             img {
@@ -101,7 +102,7 @@
     }
     .side-bar__icon {
         img {
-            margin: 0.75rem auto 1.375rem 0.5rem;
+            margin: 0.75rem auto 0.8125rem 0.5rem;
         }
     }
     .side-bar__link {
@@ -110,23 +111,26 @@
             height: 2.5rem;
             margin: auto;
         }
-        span {
+        h5 {
             display: block;
             width: 8.625rem;
             padding-left: 1rem;
         }
         .sidebar__active {
-            color: orangered;
+            color: var(--main-color);
         }
     }
     .side-bar__button {
-        background-color: orange;
+        background-color: var(--main-color);
         border-radius: 23px;
         img {
             display: none;
         }
-        span {
+        h5 {
+            color: var(--white);
             display: block;
+            font-weight: var(--regular-weight);
+            font-size: 1.25rem;
         }
     }
 }

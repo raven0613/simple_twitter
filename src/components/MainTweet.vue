@@ -12,7 +12,7 @@
         </div>
 
         <div class="tweet-detail__content">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt. 
+            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt.
         </div>
         
         <div class="tweet-detail__time">
@@ -20,11 +20,11 @@
         </div>
         <div class="tweet-detail__info">
             <div class="tweet-detail__info--reply">
-                <span>34</span> 
+                <span class="montserrat-font">34</span> 
                 <span> 回覆</span>
             </div>
             <div class="tweet-detail__info--like">
-                <span>808</span> 
+                <span class="montserrat-font">808</span> 
                 <span> 喜歡次數</span>
             </div>
         </div>
