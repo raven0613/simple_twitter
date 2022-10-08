@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{ name: 'tweet-detail', params: { id: 1 } }" class="tweet__container">
+    <router-link :to="{ name: 'tweet-detail', params: { id: tweet.id } }" class="tweet__container">
 
         <div class="tweet__avatar">
             <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}}" class="tweet__avatar--photo" >
