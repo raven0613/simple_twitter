@@ -5,7 +5,6 @@
 @media screen and (min-width: 600px) {
 
   .tweet__input {
-    border: 1px solid black;
     padding: 1rem 1.5rem 1rem 1.5rem;
     margin-bottom: 0.625rem; // 輸入框與推文有間隙
     display: flex;
@@ -45,13 +44,5 @@
         align-items: flex-end;
       }
     }
-  }
-}
-
-@media screen and (min-width: 900px) {
-
-  .tweet__input {
-    display: block;
-    width: 100%;
   }
 }

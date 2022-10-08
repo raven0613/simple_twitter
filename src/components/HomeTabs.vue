@@ -1,6 +1,6 @@
 <template>
     <div class="home__tabs">
-        <section v-if="userId">
+        <section class="home__tabs--panel__container" v-if="userId">
             <div class="home__tab home__tab--active home__tab--user">推文</div>
             <div class="home__tab home__tab--user">回覆</div>
             <div class="home__tab home__tab--user">喜歡的內容</div>
