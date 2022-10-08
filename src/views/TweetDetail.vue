@@ -7,15 +7,15 @@
             <main class="main__container">
                 <MainReplyModal v-if="false"/>
                 <MainHeader :content="`推文`" :tweet-id="1"/>
-                <MainTweet />
+                <MainTweet :initial-data="tweet"/>
 
                 <div class="tweet-detail__input">
                 </div>
                 <div class="tweets__container">
-                    <ReplyCard />
-                    <ReplyCard />
-                    <ReplyCard />
-                    <ReplyCard />
+                    <ReplyCard 
+                    v-for="reply in replies" 
+                    :key="reply.id"
+                    :reply="reply"/>
                 </div>
             </main>
 
@@ -37,6 +37,8 @@ import MainHeader from '../components/MainHeader.vue'
 import MainTweet from '../components/MainTweet.vue'
 import Footer from '../components/Footer.vue'
 import MainReplyModal from '../components/MainReplyModal.vue'
+import tweetsAPI from '../apis/tweets.js'
+import { Toast } from '../utils/helpers.js'
 
 export default {
     components: {
@@ -48,5 +50,45 @@ export default {
         Footer,
         MainReplyModal
     },
+    data () {
+        return {
+            tweet: {},
+            replies: []
+        }
+    },
+    created () {
+        const { id: tweetId } = this.$route.params
+        this.fetchTweet(tweetId)
+        this.fetchReplies(tweetId)
+    },
+    methods: {
+        async fetchTweet (id) {
+            try {
+                const response = await tweetsAPI.getTweet({id})
+                this.tweet = response.data
+            }
+            catch (error) {
+                console.log(error)
+                return Toast.fire({
+                    icon: 'error',
+                    title: '目前無法取得推文，請稍後再試'
+                })
+            }
+        },
+        async fetchReplies (id) {
+            try {
+                const response = await tweetsAPI.getReplies({id})
+                console.log(response)
+                this.replies = response.data
+            }
+            catch (error) {
+                console.log(error)
+                return Toast.fire({
+                    icon: 'error',
+                    title: '目前無法取得回覆，請稍後再試'
+                })
+            }
+        }
+    }
 }
 </script>

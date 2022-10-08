@@ -1,6 +1,7 @@
 import { apiHelper } from "../utils/helpers";
 
 
+
 export default {
   // 登入
   login({ account, password }) {
@@ -10,4 +11,21 @@ export default {
       password
     })
   },
+
+const getToken = () => {
+    localStorage.getItem('token')
+}
+
+export default{
+    getAdminTweets () {
+        return apiHelper.get('/admin/tweets', {
+            headers: { Authorization: `Bearer ${getToken()}` }
+        })
+    },
+    deleteAdminTweets ({id}) {
+        return apiHelper.delete(`/admin/tweets/${id}`, {
+            headers: { Authorization: `Bearer ${getToken()}` }
+        })
+    },
+
 }
