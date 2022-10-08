@@ -3,28 +3,28 @@
 
         <div class="tweet-detail__user">
             <div class="tweet__avatar">
-                <img class="tweet__avatar--photo" src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
+                <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
             </div>
             <div class="tweet-detail__user--name">
-                <p>Apple</p>
-                <p>@apple</p>
+                <p>{{tweet.User.name}}</p>
+                <p>@{{tweet.User.account}}</p>
             </div>
         </div>
 
         <div class="tweet-detail__content">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt.
+            {{tweet.description}}
         </div>
         
         <div class="tweet-detail__time">
-            上午 10:05・2021年11月10日
+            {{tweet.createdAt}}
         </div>
         <div class="tweet-detail__info">
             <div class="tweet-detail__info--reply">
-                <span class="montserrat-font">34</span> 
+                <span class="montserrat-font">{{tweet.likedCount}}</span> 
                 <span> 回覆</span>
             </div>
             <div class="tweet-detail__info--like">
-                <span class="montserrat-font">808</span> 
+                <span class="montserrat-font">{{tweet.repliesCount}}</span> 
                 <span> 喜歡次數</span>
             </div>
         </div>
@@ -38,3 +38,26 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    props: {
+        initialData: {
+            type: Object,
+            required: true
+        }
+    },
+    data() {
+        return {
+            tweet: this.initialData
+        }
+    },
+    watch: {
+        initialData (newValue) {
+            this.tweet = {
+                ...newValue
+            }
+        }
+    }
+}
+</script>

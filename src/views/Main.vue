@@ -6,14 +6,14 @@
             </section>
             <main class="main__container">
                 <MainTweetModal v-if="false"/>
-                <MainHeader :content="`首頁`" :user-id="`1`"/>
+                <MainHeader :content="`首頁`" :user-id="1"/>
                 
                 <MainTweetInput />
                 <div class="tweets__container">
                     <TweetCard 
                     v-for="tweet in tweets" 
                     :key="tweet.id"
-                    :initial-data="tweet"/>
+                    :initial-tweet="tweet"/>
                 </div>
             </main>
             <section class="right__container">

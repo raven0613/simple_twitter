@@ -1,15 +1,18 @@
 <template>
-    <router-link to="/tweets" class="tweet__container">
+    <router-link :to="{ name: 'tweet-detail', params: { id: tweet.id } }" class="tweet__container">
 
         <div class="tweet__avatar">
-            <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
+            <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}}" class="tweet__avatar--photo" >
+                <img :src="tweet.User.profilePhoto" alt="">
+            </router-link>
+
         </div>
 
         <div class="tweet__info">
             
             <div class="tweet__top">
-                <span class="tweet__top--prim">{{tweet.User.name}}</span>
-                <span class="tweet__top--sec">@{{tweet.User.account}}</span>
+                <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}}" class="tweet__top--prim">{{tweet.User.name}}</router-link>
+                <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}}" class="tweet__top--sec">@{{tweet.User.account}}</router-link>
                 <span class="tweet__top--sec">．{{tweet.createdAt}}</span>
             </div>
             <div class="tweet__info--content">
@@ -34,20 +37,31 @@
 <script>
 export default {
     props: {
-        initialData: {
+        user: {
+            type: Object,
+        },
+        initialTweet: {
             type: Object,
             required: true
-        }
+        },
     },
     data () {
         return {
-            tweet: this.initialData
+            tweet: this.initialTweet
         }
     },
     watch: {
-        initialData (newValue, oldValue) {
-            console.log(oldValue)
-            console.log(oldValue)
+        initialTweet (newValue) {
+            this.tweet = {
+                ...this.tweet,
+                ...newValue
+            }
+        },
+        user (newValue) {
+            this.user = {
+                ...this.user,
+                ...newValue
+            }
         }
     }
 }

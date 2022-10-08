@@ -1,25 +1,59 @@
 <template>
-    <router-link to="#" class="admin-tweet__container tweet__container">
+    <router-link :to="{ name: 'tweet-detail', params: {id: tweet.id}}" class="admin-tweet__container tweet__container">
 
         <div class="tweet__avatar">
-            <img class="tweet__avatar--photo" src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
+            <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
         </div>
 
         <div class="tweet__info">
             <form action="" class="tweet__top">
                 <div class="tweet__top--info">
-                    <span class="tweet__top--prim">Ziz</span>
-                    <span class="tweet__top--sec">@Ziz0601</span>
-                    <span class="tweet__top--sec">．3 小時</span>
+                    <span class="tweet__top--prim">{{tweet.User.name}}</span>
+                    <span class="tweet__top--sec">@{{ tweet.User.account }}</span>
+                    <span class="tweet__top--sec">．{{ tweet.createdAt }}</span>
                 </div>
-                <button class="tweet__delete">
+                <button @click.stop.prevent="adminDeleteTweet(tweet.id)" type="button" class="tweet__delete">
                     <img src="../assets/images/cancel-gray.svg" alt="">
                 </button>
-
             </form>
             <div class="tweet__info--content">
-                Most people infected with the virus will experience mild to moderate respiratory illness and recover without requiring special treatment. However, some will become seriously ill and require medical attention. Older people and those with underlying medical conditions like cardiovascular disease, diabetes, chronic respiratory disease, or cancer are more likely to develop serious illness. Anyone can get sick with COVID-19 and become seriously ill or die at any age. 
+                {{ tweet.description }}
             </div>
         </div>
     </router-link>
 </template>
+
+<script>
+import { Toast } from '../utils/helpers'
+import adminAPI from '../apis/admin.js'
+
+export default {
+    props: {
+        initialTweet: {
+            type: Object,
+        }
+    },
+    data() {
+        return {
+            tweet: this.initialTweet
+        }
+    },
+    methods: {
+        async adminDeleteTweet (id) {
+            try {
+                const response = await adminAPI.deleteAdminTweets({id})
+                console.log(response)
+                if(response.data.status === 'error') throw new Error(response.data.message)
+                this.$emit("after-delete-tweet", id)
+            }
+            catch (error) {
+                console.log(error.response.data.message)
+                return Toast.fire({
+                    icon: 'error',
+                    title: '目前無法刪除推文，請稍後再試'
+                })
+            }
+        }
+    }
+}
+</script>

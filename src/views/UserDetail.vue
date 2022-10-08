@@ -8,15 +8,15 @@
                 <UserEditModal v-if="false"/>
                 <UserHeader :content="`Raven`" :counts="25"/>
                 <UserPanel />
-                <!-- <div class="tweet__input">
-                    <UserPanel />
-                </div> -->
                 <HomeTabs :user-id="`1`"/>
                 <div class="tweets__container">
+                    <p v-if="!tweets.length">目前還沒有推文</p>
                     <TweetCard 
+                    v-else
                     v-for="tweet in tweets" 
                     :key="tweet.id"
-                    :initial-data="tweet"/>
+                    :initial-data="tweet"
+                    :user="user"/>
                 </div>
             </main>
             <section class="right__container">
@@ -55,18 +55,45 @@ export default {
     },
     data () {
         return {
-            tweets: ['','','',''],
+            user: {
+                account: '',
+                coverPhoto: '',
+                email: '',
+                introduction: '',
+                name: '',
+                profilePhoto: '',
+            },
+            tweets: [],
         }
     },
     created () {
-        this.fetchUserTweets(14)
+        const { id: userId } = this.$route.params
+        this.fetchUser(userId)
+        this.fetchUserTweets(userId)
     },
     methods: {
+        async fetchUser (id) {
+            try {
+                const response = await usersAPI.getUser({id})
+                const {
+                    account, coverPhoto, email, introduction, name, profilePhoto
+                } = response.data
+                this.user = {
+                    ...this.user,
+                    account, coverPhoto, email, introduction, name, profilePhoto
+                }
+            }
+            catch (error) {
+                console.log(error)
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
         async fetchUserTweets (id) {
             try {
                 const response = await usersAPI.getUserTweets({id})
-                console.log(await usersAPI.getUserTweets({id}))
-                if (response.statusText !== 'OK') throw new Error(response.statusText)
                 this.tweets = response.data
             }
             catch (error) {
@@ -76,7 +103,7 @@ export default {
                     title: `無法取得推文,請稍後再試`,
                 })
             }
-        }
+        },
     }
 }
 </script>

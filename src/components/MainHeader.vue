@@ -23,10 +23,10 @@ export default {
             type: String,
         },
         tweetId: {
-            type: String
+            type: Number
         },
         userId: {
-            type: String
+            type: Number
         }
     },
 }
