@@ -14,8 +14,18 @@
                 <span class="tweet__target--prim">@apple</span>
             </div>
             <div class="tweet__info--content">
-                Nulla Lorem mollit cupidatat irure. Laborum magna 
+                {{reply.comment}}
             </div>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    props: {
+        reply: {
+            type: Object
+        }
+    },
+}
+</script>

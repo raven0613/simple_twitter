@@ -36,12 +36,12 @@ const routes = [
     component: () => import('../views/Follow.vue')
   },
   {
-    path: '/users',
+    path: '/users/:id',
     name: 'user-detail',
     component: () => import('../views/UserDetail.vue')
   },
   {
-    path: '/tweets',
+    path: '/tweets/:id',
     name: 'tweet-detail',
     component: () => import('../views/TweetDetail.vue')
   },

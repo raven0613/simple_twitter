@@ -21,6 +21,15 @@ export default {
       password
     })
   },
+  //得到某user的資料
+  getUser ({id}) {
+      const getToken = () => {
+          localStorage.getItem('token')
+      }
+      return apiHelper.get(`/users/${id}`, {
+          headers: { Authorization: `Bearer ${getToken()}` }
+      })
+  },
   //得到某user發的所有推文
   getUserTweets ({id}) {
       const getToken = () => {
