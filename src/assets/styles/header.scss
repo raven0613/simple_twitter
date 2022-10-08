@@ -2,7 +2,7 @@
     height: 4.6875rem;
     width: 100%;
     display: grid;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .main__header {
@@ -30,7 +30,7 @@
     &--word {
         grid-area: word;
         line-height: 4.6875rem;
-        font-size: 1.5rem;
+        color: var(--title-main-color);
     }
 }
 
@@ -57,8 +57,9 @@
         grid-area: word;
         height: 2.625rem;
         :nth-child(2) {
-            font-size: 13px;
-            color: gray;
+            color: var(--title-second-color);
+            font-size: 0.8125rem;
+            font-weight: var(--medium-weight);
         }
     }
 }

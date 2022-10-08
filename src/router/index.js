@@ -26,7 +26,7 @@ const routes = [
     component: () => import('../views/TweetDetail.vue')
   },
   {
-    path: '/users/:id/follower',
+    path: '/users/follower',
     name: 'user-follow',
     component: () => import('../views/Follow.vue')
   },
@@ -39,6 +39,11 @@ const routes = [
     path: '/users',
     name: 'user-detail',
     component: () => import('../views/UserDetail.vue')
+  },
+  {
+    path: '/tweets',
+    name: 'tweet-detail',
+    component: () => import('../views/TweetDetail.vue')
   },
   {
     path: '/register',

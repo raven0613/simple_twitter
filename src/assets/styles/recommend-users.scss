@@ -3,17 +3,18 @@
 }
 @media screen and (min-width: 900px) {
     .recommend__panel {
-        // h1 {
-        //     height: 4.625rem;
-        //     line-height: 4.625rem;
-        //     padding-left: 1.5rem;
-        //     border-bottom: 1px solid black;
-        // }
+        h4 {
+            height: 4.625rem;
+            line-height: 4.625rem;
+            padding-left: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
         display: block;
         width: 100%;
-        height: 35rem;
-        background-color: rgb(222, 222, 222);
+        height: auto;
+        background-color: var(--top-user-background-color);
         border-radius: 16px;
+
     }
 
     .recommend__user {
@@ -32,12 +33,10 @@
         }
         &--info {
             flex: 1;
-            p {
-                font-weight: 700;
-            }
+            font-weight: var(--medium-weight);
             span {
-                color: gray;
-                font-size: 0.75rem;
+                color: var(--main-second-color);
+                font-size: var(--small-size);
             }
         }
     }

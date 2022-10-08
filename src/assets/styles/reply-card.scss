@@ -1,8 +1,7 @@
 .reply__container {
     display: flex;
     width: 100%;
-    max-height: 12.5rem;
-    border-bottom: solid 1px gray;
+    border-bottom: solid 1px var(--border-color);
     padding: 1rem 1.5rem;
 }
 
@@ -10,10 +9,14 @@
     margin-bottom: 0.5rem;
     &--prim {
         padding-left: 0.5rem;
-        color: orange;
+        color: var(--main-color);
+        font-size: var(--second-size);
+        font-weight: var(--regular-weight);
     }
     
     &--sec {
-        color: gray;
+        color: var(--main-second-color);
+        font-size: var(--second-size);
+        font-weight: var(--regular-weight);
     }
 }

@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
     height: auto;
-    border-bottom: solid 1px gray;
+    border-bottom: solid 1px var(--border-color);
     padding: 1rem 1.5rem;
 
     &__info {
@@ -11,6 +11,10 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 0.5rem;
+        font-weight: var(--medium-weight);
+    }
+    &__description {
+        font-weight: var(--regular-weight);
     }
 }
 

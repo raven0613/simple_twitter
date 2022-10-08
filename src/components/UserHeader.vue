@@ -4,7 +4,7 @@
             <img src="../assets/images/last-step.svg" alt="">
         </div>
         <div class="user__header--word">
-            <p>{{content}}</p>
+            <h5>{{content}}</h5>
             <p>{{counts}} 推文</p>
         </div>
     </header>

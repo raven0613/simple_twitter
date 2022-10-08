@@ -10,7 +10,7 @@
         </div>
 
         <div class="main__header--word">
-            <p>{{content}}</p>
+            <h4>{{content}}</h4>
         </div>
 
     </header>

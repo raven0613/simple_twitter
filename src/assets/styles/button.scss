@@ -3,15 +3,15 @@
     border-radius: 16px;
 
     &__followed {
-        color: white;
+        color: var(--white);
         width: 5rem;
-        background-color: orangered;
+        background-color: var(--main-color);
     }
     &__unfollowed {
-        color: orangered;
+        color: var(--main-color);
         width: 3rem;
-        border: 1px solid orangered;
-        background-color: white;
+        border: 1px solid var(--main-color);
+        background-color: var(--white);
     }
 }
 

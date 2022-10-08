@@ -1,5 +1,5 @@
 .home__tabs {
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid var(--border-color);
     width: 100%;
     height: 3.25rem;
     
@@ -15,13 +15,13 @@
 }
 .home__tab {
     height: 100%;
-    color: gray;
+    color: var(--tab-text-color);
     line-height: 3.25rem;
     text-align: center;
 
     &--active {
-        color: orangered;
-        border-bottom: solid 2px orangered;
+        color: var(--main-color);
+        border-bottom: solid 2px var(--main-color);
     }
     &--follow {
         width: 8.125rem;

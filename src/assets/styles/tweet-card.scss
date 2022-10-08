@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
     height: auto;
-    border-bottom: solid 1px gray;
+    border-bottom: solid 1px var(--border-color);
     padding: 1rem 1.5rem;
 }
 
@@ -38,11 +38,13 @@
     display: flex;
 
     &--prim {
-        font-weight: 700;
+        font-weight: var(--medium-weight);
         padding-right: 0.8rem;
     }
     &--sec {
-        color: gray;
+        color: var(--main-second-color);
+        font-size: var(--second-size);
+        font-weight: var(--regular-weight);
     }
 }
 
