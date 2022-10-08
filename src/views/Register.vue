@@ -10,9 +10,13 @@
       </div>
     </div>
 
-    <!-- 輸入表格 -->
+    <!-- 輸入表格，按鈕或是enter鍵都可以送出表單 -->
 
-    <form @submit.prevent.stop="handleSubmit" class="form form__container">
+    <form 
+      @submit.prevent.stop="handleSubmit" 
+      @keyup.enter.prevent.stop="handleSubmit"
+      class="form form__container"
+    >
       <div :class="['form__input',{formError: formErrorAccount}]">
         <div class="form__input__container">
           <label for="account">帳號</label>
@@ -101,13 +105,6 @@
 <script>
 import { Toast } from "../utils/helpers";
 import usersAPI from "./../apis/users";
-// const dummyData = {
-//   name: "root",
-//   email: "root@example.com",
-//   account: "root",
-//   password: "12345678",
-//   checkPassword: "12345678",
-// };
 
 export default {
   name: "Register",
@@ -129,8 +126,10 @@ export default {
     name(newValue) {
       if(newValue.length > 0){
         this.formErrorName = false
-      }else if (newValue.length > 50) {
-        // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
+      }
+
+      // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
+      if (newValue.length > 50) {
         Toast.fire({
           icon: "error",
           title: "字數超過上限！",
@@ -214,16 +213,16 @@ export default {
           return;
         }
 
-        // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
-        if (this.password !== this.checkPassword) {
-          this.formErrorPassword = true
-          this.formErrorCheckPassword = true
-          Toast.fire({
-            icon: "error",
-            title: "密碼與確認密碼不符",
-          });
-          return;
-        }
+        // // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
+        // if (this.password !== this.checkPassword) {
+        //   this.formErrorPassword = true
+        //   this.formErrorCheckPassword = true
+        //   Toast.fire({
+        //     icon: "error",
+        //     title: "密碼與確認密碼不符",
+        //   });
+        //   return;
+        // }
 
         // 串接API
         const { data } = await usersAPI.register({
@@ -234,10 +233,10 @@ export default {
           checkPassword: this.checkPassword,
         });
         console.log(data);
-
         if (data.status === "error") {
-          throw new Error(data.message);
+          console.log(data.message)
         }
+
 
         // 成功取得資料，所有底線為黑/藍線
         this.formErrorName = false
@@ -255,7 +254,19 @@ export default {
         this.$router.push("/login");
         
       } catch (error) {
-        console.log(error);
+        // 想要拿到data.message，要知道是包在error.response裡
+        const message = error.response.data.message.toLowerCase()
+
+        if(message.includes('account')){
+          this.formErrorAccount = true
+        }else if(message.includes('email')){
+          this.formErrorEmail = true
+        }
+        
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     },
   },

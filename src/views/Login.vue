@@ -12,8 +12,12 @@
 
     <!-- 輸入表格 -->
 
-    <form @submit.prevent.stop="handleSubmit" class="form form__container">
-      <div class="form__input">
+    <form 
+      @submit.prevent.stop="handleSubmit" 
+      @keyup.enter.prevent.stop="handleSubmit"
+      class="form form__container"
+    >
+      <div :class="['form__input',{formError: formErrorAccount}]">
         <div class="form__input__container">
           <label for="account">帳號</label>
           <input
@@ -22,14 +26,13 @@
             type="account"
             placeholder="請輸入帳號"
             autocomplete="username"
-            required
             autofocus
             v-model="account"
           />
         </div>
       </div>
 
-      <div class="form__input">
+      <div :class="['form__input',{formError: formErrorPassword}]">
         <div class="form__input__container">
           <label for="password">密碼</label>
           <input
@@ -38,7 +41,6 @@
             type="password"
             placeholder="請輸入密碼"
             autocomplete="current-password"
-            required
             autofocus
             v-model="password"
           />
@@ -67,26 +69,65 @@ export default {
   data() {
     return {
       account: "",
-      password: ""
+      password: "",
+      formErrorAccount: false,
+      formErrorPassword: false,
     };
+  },
+  watch: {
+    account(newValue){
+      if(newValue.length > 0){
+        this.formErrorAccount = false
+      }
+    },
+    password(newValue){
+      if(newValue.length > 0){
+        this.formErrorPassword = false
+      }
+    },
   },
   methods: {
     async handleSubmit() {
       try{
-        console.log(await usersAPI.login({
-          account: this.account,
-          password: this.password,
-        }))
+        // 當按下按鈕後，所有底線為黑/藍線
+        this.formErrorAccount = false
+        this.formErrorPassword = false
 
-        const { data, statusText } = await usersAPI.login({
+        // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
+        //TODO:(待優化)
+        if (!this.account) {
+          this.formErrorAccount = true
+          Toast.fire({
+            icon: "error",
+            title: "帳號欄位為必填"
+          });
+          return;
+        }
+
+        if (!this.password) {
+          this.formErrorPassword = true
+          Toast.fire({
+            icon: "error",
+            title: "密碼欄位為必填"
+          });
+          return;
+        }
+
+        const { data } = await usersAPI.login({
           account: this.account,
           password: this.password,
         });
-        // 取得 API 請求後的資料
-        console.log(data)
+        const { userData } = data
 
-        if (statusText !== "OK") {
-          throw new Error(statusText);
+        // 取得 API 請求後的資料
+        console.log('data:',data , userData.role);
+
+         // 成功取得資料，所有底線為黑/藍線
+        this.formErrorAccount = false
+        this.formErrorPassword = false
+
+        if (data.status === "error") {
+          throw new Error(data.message);
         }
 
         localStorage.setItem("token", data.token);
@@ -96,12 +137,14 @@ export default {
           icon: 'success',
           title: 'please wait'
         })
+
+        // 成功登入後會跳轉至 Twitter 首頁，並查看所有推文
         this.$router.push("/main");
       } catch(error){
-        console.log(error)
+        console.log(error.response.data.message)
         Toast.fire({
           icon: 'error',
-          title: '帳號或密碼錯誤，請稍後再試'
+          title: error.response.data.message
         })
       }
       

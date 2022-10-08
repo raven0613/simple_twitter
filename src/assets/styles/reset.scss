@@ -105,3 +105,8 @@ input:invalid {
 input:focus {
     border: none;
 }
+
+// chrome居然有input預設樣式，使用bg-color無效，所以用陰影的方式(1000px超大！)把它遮起來
+input:-internal-autofill-selected {
+    box-shadow: inset 0 0 0 1000px var(--text-area-color) !important; // 用陰影的方式改變背景色
+}
