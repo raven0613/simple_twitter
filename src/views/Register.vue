@@ -213,16 +213,16 @@ export default {
           return;
         }
 
-        // // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
-        // if (this.password !== this.checkPassword) {
-        //   this.formErrorPassword = true
-        //   this.formErrorCheckPassword = true
-        //   Toast.fire({
-        //     icon: "error",
-        //     title: "密碼與確認密碼不符",
-        //   });
-        //   return;
-        // }
+        // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
+        if (this.password !== this.checkPassword) {
+          this.formErrorPassword = true
+          this.formErrorCheckPassword = true
+          Toast.fire({
+            icon: "error",
+            title: "密碼與確認密碼不符",
+          });
+          return;
+        }
 
         // 串接API
         const { data } = await usersAPI.register({

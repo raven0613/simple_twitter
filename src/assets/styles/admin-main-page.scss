@@ -51,6 +51,13 @@
     z-index: 1;
 }
 
+// AdminUser
+.admin-user {
+    &__container {
+        grid-template-columns: repeat(auto-fit, 1fr);
+    }
+}
+
 @media screen and (min-width: 600px) {
     .admin-container {
         grid-template-columns: 6.75rem 1fr;
@@ -69,6 +76,23 @@
 
     .tweet__input {
         display: block;
+    }
+
+    // AdminUser
+    .admin-user {
+        .main__container {
+            width: 100%;
+        }
+
+        &__container {
+            // border: 1px solid black;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(15.5625rem, 1fr));
+            grid-gap: 1rem;
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
     }
 }
 
@@ -89,10 +113,20 @@
         grid-template-columns: 1fr 12.5rem 48rem 1fr;
         grid-template-areas: ". left middle .";
     }
+
+    // AdminUser
+    .admin-user {
+        grid-template-areas: ". left middle middle";
+    }
 }
 
 @media screen and (min-width: 1200px) {
     .admin-container {
         grid-template-columns: 1fr 12.5rem 58.5625rem 1fr;
+    }
+
+    // AdminUser
+    .admin-user {
+        grid-template-areas: ". left middle middle";
     }
 }

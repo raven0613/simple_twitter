@@ -1,6 +1,5 @@
 <template>
-  <router-link
-    :to="{ name: 'tweet-detail', params: { id: tweet.id } }"
+  <div
     class="admin-tweet__container tweet__container"
   >
     <div class="tweet__avatar">
@@ -30,7 +29,7 @@
         {{ tweet.description | showDescription(50) }}
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
@@ -72,10 +71,13 @@ export default {
           confirmButtonText: "確認",
           timer: undefined
         });
+        console.log(result)
 
+        // TODO:新增取消按鈕
         if (result.value) {
+          console.log('hi')
           this.$emit("after-delete-tweet", id);
-        }
+        }   
 
       } catch (error) {
         console.log(error.response);

@@ -16,8 +16,7 @@
                 </div>
             </main>
 
-            <div class="modal__mask" v-if="false">
-            </div>
+            
         </div>
         <footer class="footer__controller">
             
