@@ -15,7 +15,7 @@
                     v-else
                     v-for="tweet in tweets" 
                     :key="tweet.id"
-                    :initial-data="tweet"
+                    :initial-tweet="tweet"
                     :user="user"/>
                 </div>
             </main>
@@ -41,6 +41,7 @@ import Footer from '../components/Footer.vue'
 import UserPanel from '../components/UserPanel.vue'
 import usersAPI from '../apis/users.js'
 import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 export default {
     components: {
@@ -71,10 +72,19 @@ export default {
         this.fetchUser(userId)
         this.fetchUserTweets(userId)
     },
+    beforeRouteUpdate(to, from, next){
+        const {id: userId} = to.params
+        this.fetchUser(userId)
+        this.fetchUserTweets(userId)
+        next()
+    },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated'])
+    },
     methods: {
-        async fetchUser (id) {
+        async fetchUser (userId) {
             try {
-                const response = await usersAPI.getUser({id})
+                const response = await usersAPI.getUser({userId})
                 const {
                     account, coverPhoto, email, introduction, name, profilePhoto
                 } = response.data
@@ -91,10 +101,10 @@ export default {
                 })
             }
         },
-        async fetchUserTweets (id) {
+        async fetchUserTweets (userId) {
             try {
-                const response = await usersAPI.getUserTweets({id})
-                this.tweets = response.data
+                const response = await usersAPI.getUserTweets({userId})
+                this.tweets = [...response.data]
             }
             catch (error) {
                 console.log(error)

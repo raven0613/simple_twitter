@@ -2,7 +2,7 @@
 .modal {
   &__mask {
     position: absolute;
-    background-color: black;
+    background-color: var(--background-gray);
     opacity: 0.6;
     top: 0;
     bottom: 0;
