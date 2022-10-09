@@ -22,20 +22,20 @@ export default {
     })
   },
   //得到某user的資料
-  getUser ({id}) {
+  getUser ({userId}) {
       const getToken = () => {
           localStorage.getItem('token')
       }
-      return apiHelper.get(`/users/${id}`, {
+      return apiHelper.get(`/users/${userId}`, {
           headers: { Authorization: `Bearer ${getToken()}` }
       })
   },
   //得到某user發的所有推文
-  getUserTweets ({id}) {
+  getUserTweets ({userId}) {
       const getToken = () => {
           localStorage.getItem('token')
       }
-      return apiHelper.get(`/users/${id}/tweets`, {
+      return apiHelper.get(`/users/${userId}/tweets`, {
           headers: { Authorization: `Bearer ${getToken()}` }
       })
   }

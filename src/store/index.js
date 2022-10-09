@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentUser: {
-      id: -1,
+      id: 0,
       account: '',
       name: '',
       email: '',
@@ -28,15 +28,21 @@ export default new Vuex.Store({
         ...currentUser
       }
       state.isAuthenticated = true
+    },
+    revokeAuthentication(state){
+      state.currentUser = {}
+      state.isAuthenticated = false
+      localStorage.removeItem('token')
     }
   },
   actions: {
-    async fetchCurrentUser ({commit}) {
+    async fetchCurrentUser ({commit, state}) {
       try {
-        const response = await usersAPI.getUser()
-        console.log(response)
+        const userId = state.currentUser.id
+        const { data } = await usersAPI.getUser({userId})
+        const { FollowerCount, FollowingsCount, account, coverPhoto, id, introduction, name, profilePhoto, role } = data
         commit('setCurrentUser', {
-          ...response.data
+          FollowerCount, FollowingsCount, account, coverPhoto, id, introduction, name, profilePhoto, role
         })
       }
       catch (error) {

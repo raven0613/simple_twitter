@@ -42,7 +42,6 @@ export default {
         },
         initialTweet: {
             type: Object,
-            required: true
         },
     },
     data () {

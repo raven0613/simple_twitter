@@ -5,7 +5,7 @@ import Register from '../views/Register'
 import Login from '../views/Login'
 import Main from '../views/Main'
 import AdminTweets from '../views/AdminTweets'
-import store from '../store'
+// import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -93,7 +93,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  store.dispatch('fetchCurrentUser')
+  // store.dispatch('fetchCurrentUser')
   next()
 })
 
