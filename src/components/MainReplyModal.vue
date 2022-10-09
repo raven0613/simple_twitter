@@ -54,3 +54,47 @@
     </div>
   </div>
 </template>
+
+<script>
+import { Toast } from '../utils/helpers'
+import tweetsAPI from '../apis/tweets.js'
+
+export default {
+  data() {
+    return {
+      tweetContent: '',
+    }
+  },
+  watch: {
+    tweetContent(newValue){
+      if (newValue.length >= 140) {
+        this.tweetContent = this.tweetContent.slice(0, 140)
+      }
+    }
+  },
+  computed: {
+    tweetLength() {
+      return this.tweetContent.length
+    }
+  },
+  methods: {
+    async handleSubmit () {
+      try {
+        const response = await tweetsAPI.addReply({
+          description: this.tweetContent
+        })
+        if(response.status !== 200) throw new Error(response.data.message)
+        this.$emit('after-submit-close', false)
+        this.$emit('after-submit', response.data)
+      }
+      catch (error) {
+        console.log(error.message)
+        return Toast.fire({
+          icon: 'error',
+          title: '無法回覆貼文，請稍後再試'
+        })
+      }
+    }
+  }
+}
+</script>

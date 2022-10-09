@@ -22,8 +22,15 @@ export default{
     addTweet ({description}) {
         return apiHelper.post('/tweets', {
             description
-        } , {
+        } , null, {
             headers: { Authorization: `Bearer ${getToken()}` }
         })
-    }
+    },
+    addReply ({tweet_id, comment}) {
+        return apiHelper.post(`/tweets/${tweet_id}/replies`, {
+            comment
+        } , null, {
+            headers: { Authorization: `Bearer ${getToken()}` }
+        })
+    },
 }

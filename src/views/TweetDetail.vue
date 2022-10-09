@@ -5,9 +5,13 @@
                 <SideBar />
             </section>
             <main class="main__container">
-                <MainReplyModal v-if="false"/>
+                <MainReplyModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+
                 <MainHeader :content="`推文`" :tweet-id="1"/>
-                <MainTweet :initial-data="tweet"/>
+                <MainTweet :initial-data="tweet"
+                @after-toggle-modal="handleToggleModal"/>
 
                 <div class="tweet-detail__input">
                 </div>
@@ -23,7 +27,9 @@
             <section class="right__container">
                 <RecommendUsers />
             </section>
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask" 
+            @click.stop.prevent="handleCloseModal"
+            v-if="isModalToggled">
             </div>
         </div>
         <Footer />
@@ -54,7 +60,8 @@ export default {
     data () {
         return {
             tweet: {},
-            replies: []
+            replies: [],
+            isModalToggled: false,
         }
     },
     created () {
@@ -95,6 +102,17 @@ export default {
                     title: '目前無法取得回覆，請稍後再試'
                 })
             }
+        },
+        handleToggleModal(isModalToggled){
+            this.isModalToggled = isModalToggled
+        },
+        handleCloseModal(){
+            this.isModalToggled = false
+        },
+        handleAddTweet(tweet){
+            this.tweets = [
+                tweet, ...this.tweets
+            ]
         }
     }
 }

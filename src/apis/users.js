@@ -22,11 +22,20 @@ export default {
     })
   },
   //得到某user的資料
-  getUser ({userId}) {
+  geUser ({userId}) {
       const getToken = () => {
           localStorage.getItem('token')
       }
       return apiHelper.get(`/users/${userId}`, {
+          headers: { Authorization: `Bearer ${getToken()}` }
+      })
+  },
+  //得到當前登入user的資料
+  getCurrentUser () {
+      const getToken = () => {
+          localStorage.getItem('token')
+      }
+      return apiHelper.get('/users', {
           headers: { Authorization: `Bearer ${getToken()}` }
       })
   },
