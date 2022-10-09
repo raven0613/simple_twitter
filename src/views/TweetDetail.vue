@@ -15,7 +15,8 @@
                     <ReplyCard 
                     v-for="reply in replies" 
                     :key="reply.id"
-                    :reply="reply"/>
+                    :reply="reply"
+                    :tweet-owner="tweet.User.account"/>
                 </div>
             </main>
 
@@ -61,11 +62,18 @@ export default {
         this.fetchTweet(tweetId)
         this.fetchReplies(tweetId)
     },
+    beforeRouteUpdate(to, from, next){
+        const {id} = to.params
+        this.fetchTweet(id)
+        this.fetchReplies(id)
+        next()
+    },
     methods: {
         async fetchTweet (id) {
             try {
                 const response = await tweetsAPI.getTweet({id})
                 this.tweet = response.data
+                console.log(response.data)
             }
             catch (error) {
                 console.log(error)
@@ -78,7 +86,6 @@ export default {
         async fetchReplies (id) {
             try {
                 const response = await tweetsAPI.getReplies({id})
-                console.log(response)
                 this.replies = response.data
             }
             catch (error) {

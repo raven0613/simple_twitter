@@ -26,17 +26,16 @@ export default {
       const getToken = () => {
           localStorage.getItem('token')
       }
-      console.log(userId)
       return apiHelper.get(`/users/${userId}`, {
           headers: { Authorization: `Bearer ${getToken()}` }
       })
   },
   //得到某user發的所有推文
-  getUserTweets ({id}) {
+  getUserTweets ({userId}) {
       const getToken = () => {
           localStorage.getItem('token')
       }
-      return apiHelper.get(`/users/${id}/tweets`, {
+      return apiHelper.get(`/users/${userId}/tweets`, {
           headers: { Authorization: `Bearer ${getToken()}` }
       })
   }

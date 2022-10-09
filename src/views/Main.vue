@@ -2,13 +2,17 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar :current-page="`main`"/>
+                <SideBar :current-page="`main`" :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
-                <MainTweetModal v-if="false"/>
+                <MainTweetModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
                 <MainHeader :content="`首頁`" :user-id="1"/>
                 
-                <MainTweetInput />
+                <MainTweetInput :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
                 <div class="tweets__container">
                     <TweetCard 
                     v-for="tweet in tweets" 
@@ -20,7 +24,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled">
             </div>
         </div>
         <Footer :current-page="`main`"/>
@@ -51,10 +55,16 @@ export default {
     data () {
         return {
             tweets: [],
+            isModalToggled: false,
         }
     },
     created () {
         this.fetchTweets()
+    },
+    watch: {
+        tweets() {
+            this.fetchTweets()
+        }
     },
     methods: {
         async fetchTweets () {
@@ -70,6 +80,17 @@ export default {
                     title: '無法取得推文,請稍後再試'
                 })
             }
+        },
+        handleToggleModal(isModalToggled){
+            this.isModalToggled = isModalToggled
+        },
+        handleCloseModal(){
+            this.isModalToggled = false
+        },
+        handleAddTweet(tweet){
+            this.tweets = [
+                tweet, ...this.tweets
+            ]
         }
     }
 }

@@ -19,4 +19,11 @@ export default{
             headers: { Authorization: `Bearer ${getToken()}` }
         })
     },
+    addTweet ({description}) {
+        return apiHelper.post('/tweets', {
+            description
+        } , {
+            headers: { Authorization: `Bearer ${getToken()}` }
+        })
+    }
 }

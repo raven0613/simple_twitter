@@ -48,28 +48,52 @@ export default {
                 })
             }
         },
-        addFollowship (userId) {
-            this.users = this.users.map(user => {
-                if(user.id === userId) {
-                    return {
-                        ...user,
-                        'isFollowed' : true
+        async addFollowship (userId) {
+            try{
+                const { data } = await followshipsAPI.addFollowship()
+                console.log(data)
+                this.users = this.users.map(user => {
+                    if(user.id === userId) {
+                        return {
+                            ...user,
+                            'isFollowed' : true
+                        }
                     }
-                }
-                return user
-            })
+                    return user
+                })
+            }
+            catch(error) {
+                console.log(error.message)
+                return Toast.fire({
+                    icon: 'error',
+                    title: '目前無法追蹤該使用者，請稍後再試'
+                })
+            }
+
         },
-        deleteFollowship (userId) {
-            this.users = this.users.map(user => {
-                if(user.id === userId) {
-                    return {
-                        ...user,
-                        'isFollowed' : false
+        async deleteFollowship (userId) {
+            try{
+                const { data } = await followshipsAPI.deleteFollowship(userId)
+                console.log(data)
+
+                this.users = this.users.map(user => {
+                    if(user.id === userId) {
+                        return {
+                            ...user,
+                            'isFollowed' : false
+                        }
                     }
-                }
-                return user
-            })
-        }
+                    return user
+                })
+            }
+            catch(error) {
+                console.log(error.message)
+                return Toast.fire({
+                    icon: 'error',
+                    title: '目前無法取消追蹤該使用者，請稍後再試'
+                })
+            }
+        },
     }
 }
 </script>

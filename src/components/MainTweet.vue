@@ -3,11 +3,11 @@
 
         <div class="tweet-detail__user">
             <div class="tweet__avatar">
-                <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
+                <img class="tweet__avatar--photo" :src="13" alt="">
             </div>
             <div class="tweet-detail__user--name">
-                <p>{{tweet.User.name}}</p>
-                <p>@{{tweet.User.account}}</p>
+                <p>123</p>
+                <p>@{{tweet.User.account | handleEmpty}}</p>
             </div>
         </div>
 
@@ -47,16 +47,26 @@ export default {
             required: true
         }
     },
+    filters: {
+        handleEmpty(value){
+            console.log(value)
+            if (!value.length) {
+                return '-'
+            }
+        }
+    },
     data() {
         return {
             tweet: this.initialData
         }
     },
     watch: {
-        initialData (newValue) {
-            this.tweet = {
-                ...newValue
-            }
+        initialData: {
+            handler (newValue) {
+                this.tweet = {
+                    ...newValue
+                }
+            },
         }
     }
 }
