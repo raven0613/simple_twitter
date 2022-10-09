@@ -13,6 +13,11 @@ export default {
       password
     })
   },
+  getAdminUsers() {
+    return apiHelper.get('/admin/users', {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
   getAdminTweets() {
     return apiHelper.get('/admin/tweets', {
       headers: { Authorization: `Bearer ${getToken()}` }
