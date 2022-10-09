@@ -63,7 +63,6 @@ export default {
             }
         },
         afterDeleteTweet (id) {
-            console.log(id)
             this.tweets = this.tweets.filter((tweet) => (tweet.id !== id))
         }
     }

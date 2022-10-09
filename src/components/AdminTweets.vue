@@ -39,6 +39,7 @@ export default {
         }
     },
     methods: {
+        //優化：跳出提醒視窗
         async adminDeleteTweet (id) {
             try {
                 const response = await adminAPI.deleteAdminTweets({id})
