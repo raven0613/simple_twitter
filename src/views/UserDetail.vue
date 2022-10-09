@@ -41,6 +41,7 @@ import Footer from '../components/Footer.vue'
 import UserPanel from '../components/UserPanel.vue'
 import usersAPI from '../apis/users.js'
 import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 export default {
     components: {
@@ -70,6 +71,9 @@ export default {
         const { id: userId } = this.$route.params
         this.fetchUser(userId)
         this.fetchUserTweets(userId)
+    },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated'])
     },
     methods: {
         async fetchUser (id) {

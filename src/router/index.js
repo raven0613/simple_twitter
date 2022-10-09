@@ -5,6 +5,7 @@ import Register from '../views/Register'
 import Login from '../views/Login'
 import Main from '../views/Main'
 import AdminTweets from '../views/AdminTweets'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,11 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router
