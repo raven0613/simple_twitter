@@ -25,7 +25,7 @@ export default {
   updateSetting({userId, formData}) {
     console.log(userId)
     return apiHelper.put(`/users/${userId}/setting`, formData)
-  }
+  },
   getUser ({userId}) {
       return apiHelper.get(`/users/${userId}`)
   },
