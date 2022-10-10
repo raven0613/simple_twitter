@@ -124,11 +124,16 @@ export default {
     },
 
   },
+  data() {
+    return {
+      isEditModalToggled :this.iniIsModalToggled
+    }
+  },
   methods: {
     toggleModal() {
       console.log("123");
-      this.isModalToggled = true;
-      this.$emit("after-toggle-modal", this.isModalToggled);
+      this.isEditModalToggled = true;
+      this.$emit("after-toggle-modal", this.isEditModalToggled);
     },
   },
 };
