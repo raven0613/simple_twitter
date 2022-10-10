@@ -53,7 +53,7 @@
         <div class="form__links form__links__login">
           <router-link to="/register" class="form__links--link">註冊</router-link>
           <span>．</span>
-          <router-link to="/admin/login" class="form__links--link">後台登入</router-link>
+          <router-link :to="{name:'admin-login'}" class="form__links--link">後台登入</router-link>
         </div>
       </div>
     </form>

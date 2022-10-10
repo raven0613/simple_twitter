@@ -8,10 +8,12 @@
             </section>
             <main class="main__container">
 
-                <UserEditModal v-if="isModalToggled"
+                <UserEditModal v-if="isEditModalToggled"
                 :initialUser="user"
                 @after-submit-close="handleCloseModal"
+                
                 />
+                
 
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
@@ -25,7 +27,7 @@
                 <UserHeader :content="`Raven`" :counts="tweets.length"/>
                 <UserPanel  :ini-is-modal-toggled="isModalToggled"
                 :user="user"
-                @after-toggle-modal="handleToggleModal"/>
+                @after-toggle-modal="handleToggleEditModal"/>
 
                 <HomeTabs 
                 :user-id="currentUser.id"
@@ -56,7 +58,7 @@
 
             <div class="modal__mask"             
             @click.stop.prevent="handleCloseModal"
-            v-if="isModalToggled || isReplyModalToggled">
+            v-if="isModalToggled || isReplyModalToggled || isEditModalToggled">
 
             </div>
         </div>
@@ -111,7 +113,8 @@ export default {
             isTweetLoading: true,
             currentTab: 'tweet',
             isModalToggled: false,
-            isReplyModalToggled: false
+            isReplyModalToggled: false,
+            isEditModalToggled: false
         }
     },
     created () {
@@ -229,6 +232,7 @@ export default {
         handleCloseModal(){
             this.isModalToggled = false
             this.isReplyModalToggled = false
+            this.isEditModalToggled = false
         },
         handleAddTweet(tweet){
             this.tweets = [
@@ -238,6 +242,9 @@ export default {
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
+        },
+        handleToggleEditModal(isEditModalToggled){
+            this.isEditModalToggled = isEditModalToggled
         },
     }
 }
