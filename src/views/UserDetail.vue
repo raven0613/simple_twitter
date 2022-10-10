@@ -2,9 +2,19 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar :current-page="`user`"/>
+                <SideBar :current-page="`user`"
+                :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+                <MainReplyModal v-if="isReplyModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+
+                <MainTweetModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+
                 <UserEditModal v-if="false"/>
                 <UserHeader :content="`Raven`" :counts="tweets.length"/>
                 <UserPanel />
@@ -14,7 +24,8 @@
                 <div v-if="!isLoading" class="tweets__container">
                     <p v-if="!tweets.length">目前還沒有推文</p>
                     <TweetCard 
-                   
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
                     v-for="tweet in tweets" 
                     :key="tweet.id"
                     :initial-tweet="tweet"
@@ -33,7 +44,9 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask"             
+            @click.stop.prevent="handleCloseModal"
+            v-if="isModalToggled || isReplyModalToggled">
             </div>
         </div>
         <Footer :current-page="`user`"/>
@@ -48,6 +61,8 @@ import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
+import MainReplyModal from '../components/MainReplyModal.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
 import Footer from '../components/Footer.vue'
 import UserPanel from '../components/UserPanel.vue'
 import usersAPI from '../apis/users.js'
@@ -64,7 +79,9 @@ export default {
         HomeTabs,
         UserEditModal,
         Footer,
-        UserPanel
+        UserPanel,
+        MainReplyModal,
+        MainTweetModal
     },
     data () {
         return {
@@ -81,7 +98,9 @@ export default {
             likes: [],
             isUserLoading: true,
             isTweetLoading: true,
-            currentTab: 'tweet'
+            currentTab: 'tweet',
+            isModalToggled: false,
+            isReplyModalToggled: false
         }
     },
     created () {
@@ -193,7 +212,22 @@ export default {
                 })
             }
         },
-        //要負責抓API
+        handleToggleModal(isModalToggled){
+            this.isModalToggled = isModalToggled
+        },
+        handleCloseModal(){
+            this.isModalToggled = false
+            this.isReplyModalToggled = false
+        },
+        handleAddTweet(tweet){
+            this.tweets = [
+                tweet, ...this.tweets
+            ]
+            this.fetchTweets()
+        },
+        handleToggleReplyModal(isReplyModalToggled){
+            this.isReplyModalToggled = isReplyModalToggled
+        },
     }
 }
 </script>

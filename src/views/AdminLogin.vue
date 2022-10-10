@@ -132,7 +132,8 @@ export default {
         }
 
         localStorage.setItem("token", data.token);
-
+        console.log('set token')
+        
         Toast.fire({
           icon: "success",
           title: "please wait",

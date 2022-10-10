@@ -19,10 +19,10 @@
                 {{tweet.description}}
             </div>
             <div class="tweet__bottom">
-                <router-link to="/123" class="tweet__bottom--icon">
+                <div @click.stop.prevent="toggleModal" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_reply.svg" alt="">
                     <span class="montserrat-font">{{tweet.repliesCount}}</span>
-                </router-link>
+                </div>
                 
                 <div @click.stop.prevent="addLike(tweet.id)" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_like.svg" alt="">
@@ -50,10 +50,14 @@ export default {
         initialTweet: {
             type: Object,
         },
+        iniIsModalToggled: {
+            type: Boolean,
+        }
     },
     data () {
         return {
             tweet: this.initialTweet,
+            isModalToggled: this.iniIsModalToggled,
         }
     },
     watch: {
@@ -72,6 +76,12 @@ export default {
         },
     },
     methods: {
+        toggleModal () {
+            this.isModalToggled = true
+            this.$emit("after-toggle-modal", this.isModalToggled)
+            //把點到的推文id傳回Main
+            this.$emit("after-clicked-reply", this.tweet)
+        },
         async addLike(tweet_id){
             try {
                 const response = await tweetsAPI.addLike({tweet_id})
