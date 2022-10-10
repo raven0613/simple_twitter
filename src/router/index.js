@@ -12,10 +12,10 @@ Vue.use(VueRouter)
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
   if (currentUser && !currentUser.role !== 'admin') {
+    console.log('not admin!')
     next('/not-found')
     return
   }
-
   next()
 }
 
@@ -115,7 +115,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   //依據登入狀態決定轉址
-  const pathsWithoutAuthentication = ['register', 'login']
+  const pathsWithoutAuthentication = ['register', 'login', 'admin-login']
 
   if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
     next('/login')

@@ -4,6 +4,7 @@
       <!-- 最上方的區塊 -->
       <div class="modal__input__container">
         <img
+          @click.stop.prevent="handleCancelClicked"
           src="../assets/images/cancel-orange.svg"
           alt=""
           class="modal__input--cancel"
@@ -27,11 +28,20 @@
           ></textarea>
           <!-- 用input不能自動換行，所以要用textarea -->
         </div>
+
         <div class="tweet__input--button__container">
           <div v-show="tweetLength >= 140" class="tweet__input--warning">字數不可超過<span class="montserrat-font">140</span>字</div>
+
           <div v-show="tweetLength <= 0" class="tweet__input--warning">內容不可空白</div>
-          <button @click.stop.prevent="handleSubmit" type="submit" class="tweet__input--button">推文</button>
+          <button
+            v-if="tweetLength <= 0"
+            class="tweet__input--button tweet__input--button-dis">推文</button>
+          <button
+          @click.stop.prevent="handleSubmit"
+          v-else type="submit" 
+          class="tweet__input--button">推文</button>
         </div>
+
       </form>
     </div>
   </div>
@@ -80,6 +90,9 @@ export default {
           title: '無法新增推文，請稍後再試'
         })
       }
+    },
+    handleCancelClicked () {
+      this.$emit('after-submit-close')
     }
   }
 }

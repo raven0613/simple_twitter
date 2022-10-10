@@ -8,7 +8,8 @@
             <main class="main__container">
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                @after-submit="handleAddTweet"
+                :initial-tweet="tweet"/>
 
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
@@ -118,14 +119,15 @@ export default {
             this.isModalToggled = false
             this.isReplyModalToggled = false
         },
-        handleAddTweet(tweet){
-            this.tweets = [
-                tweet, ...this.tweets
-            ]
-            this.$route.push('/main')
+        handleAddTweet(){
+            this.$router.push({name: 'main-page'})
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
+        },
+        handleAddReply(reply){
+            this.replies = this.replies.push(reply)
+            this.fetchReplies(this.tweet.id)
         },
     }
 }

@@ -15,8 +15,8 @@ export default{
             description
         })
     },
-    addReply ({tweet_id, comment}) {
-        return apiHelper.post(`/tweets/${tweet_id}/replies`, {
+    addReply ({id, comment}) {
+        return apiHelper.post(`/tweets/${id}/replies`, {
             comment
         })
     },

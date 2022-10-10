@@ -6,6 +6,11 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+                <MainReplyModal v-if="isReplyModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"
+                :initial-tweet="clickedTweet"/>
+
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
@@ -16,6 +21,9 @@
                 @after-toggle-modal="handleToggleModal"/>
                 <div class="tweets__container">
                     <TweetCard 
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
                     v-for="tweet in tweets" 
                     :key="tweet.id"
                     :initial-tweet="tweet"/>
@@ -25,7 +33,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled">
+            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled || isReplyModalToggled">
             </div>
         </div>
         <Footer :current-page="`main`"/>
@@ -38,6 +46,7 @@ import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import MainHeader from '../components/MainHeader.vue'
 import MainTweetModal from '../components/MainTweetModal.vue'
+import MainReplyModal from '../components/MainReplyModal.vue'
 import Footer from '../components/Footer.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
@@ -51,12 +60,15 @@ export default {
         MainHeader,
         MainTweetModal,
         Footer,
-        MainTweetInput
+        MainTweetInput,
+        MainReplyModal
     },
     data () {
         return {
             tweets: [],
             isModalToggled: false,
+            isReplyModalToggled: false,
+            clickedTweet: {}
         }
     },
     created () {
@@ -82,6 +94,7 @@ export default {
         },
         handleCloseModal(){
             this.isModalToggled = false
+            this.isReplyModalToggled = false
         },
         handleAddTweet(tweet){
             this.tweets = [
@@ -89,7 +102,12 @@ export default {
             ]
             this.fetchTweets()
         },
-
+        handleToggleReplyModal(isReplyModalToggled){
+            this.isReplyModalToggled = isReplyModalToggled
+        },
+        handlePassTweetData(tweet){
+            this.clickedTweet = tweet
+        },
     }
 }
 </script>
