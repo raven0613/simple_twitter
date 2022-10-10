@@ -48,12 +48,16 @@ export default {
                 })
             }
         },
-        async addFollowship (userId) {
+        async addFollowship (id) {
             try{
-                const { data } = await followshipsAPI.addFollowship()
-                console.log(data)
+                const response = await followshipsAPI.addFollowship({id})
+                console.log(response)
+
+                if (response.status !==  200) {
+                    throw new Error(response.data.message)
+                }
                 this.users = this.users.map(user => {
-                    if(user.id === userId) {
+                    if(user.id === id) {
                         return {
                             ...user,
                             'isFollowed' : true
@@ -61,23 +65,25 @@ export default {
                     }
                     return user
                 })
+                this.$emit('after-like-user', this.users)
             }
             catch(error) {
-                console.log(error.message)
+                const message = error.response.data.message
+                console.log(message)
                 return Toast.fire({
                     icon: 'error',
-                    title: '目前無法追蹤該使用者，請稍後再試'
+                    title: message
                 })
             }
 
         },
-        async deleteFollowship (userId) {
+        async deleteFollowship (followingId) {
             try{
-                const { data } = await followshipsAPI.deleteFollowship(userId)
+                const { data } = await followshipsAPI.deleteFollowship({followingId})
                 console.log(data)
 
                 this.users = this.users.map(user => {
-                    if(user.id === userId) {
+                    if(user.id === followingId) {
                         return {
                             ...user,
                             'isFollowed' : false
@@ -87,10 +93,11 @@ export default {
                 })
             }
             catch(error) {
-                console.log(error.message)
+                const message = error.response.data.message
+                console.log(message)
                 return Toast.fire({
                     icon: 'error',
-                    title: '目前無法取消追蹤該使用者，請稍後再試'
+                    title: message
                 })
             }
         },

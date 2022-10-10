@@ -6,16 +6,26 @@
             </section>
             <main class="main__container">
                 <UserEditModal v-if="false"/>
-                <UserHeader :content="`Raven`" :counts="25"/>
+                <UserHeader :content="`Raven`" :counts="tweets.length"/>
                 <UserPanel />
-                <HomeTabs :user-id="`1`"/>
-                <div class="tweets__container">
+                <HomeTabs 
+                :user-id="currentUser.id"
+                :current-tab="currentTab"/>
+                <div v-if="!isLoading" class="tweets__container">
                     <p v-if="!tweets.length">目前還沒有推文</p>
                     <TweetCard 
-                    v-else
+                   
                     v-for="tweet in tweets" 
                     :key="tweet.id"
                     :initial-tweet="tweet"
+                    :user="user"/>
+
+                    <p v-if="!replies.length">目前還沒有回覆</p>
+                    <ReplyCard 
+                    v-else
+                    v-for="reply in replies" 
+                    :key="reply.id"
+                    :reply="reply"
                     :user="user"/>
                 </div>
             </main>
@@ -32,6 +42,7 @@
 
 <script>
 import TweetCard from '../components/TweetCard.vue'
+import ReplyCard from '../components/ReplyCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
@@ -46,6 +57,7 @@ import { mapState } from 'vuex'
 export default {
     components: {
         TweetCard,
+        ReplyCard,
         SideBar,
         RecommendUsers,
         UserHeader,
@@ -65,26 +77,59 @@ export default {
                 profilePhoto: '',
             },
             tweets: [],
+            replies: [],
+            likes: [],
+            isUserLoading: true,
+            isTweetLoading: true,
+            currentTab: 'tweet'
         }
     },
     created () {
         const { id: userId } = this.$route.params
         this.fetchUser(userId)
-        this.fetchUserTweets(userId)
+        const { tab } = this.$route.query
+        if (tab === 'tweet') {
+            this.fetchUserTweets(userId)
+        }
+        else if (tab === 'reply') {
+            this.fetchUserReplies(userId)
+        }
+        else if (tab === 'like') {
+            this.fetchUserLikes(userId)
+        }
+        this.currentTab = tab
     },
     beforeRouteUpdate(to, from, next){
         const {id: userId} = to.params
         this.fetchUser(userId)
-        this.fetchUserTweets(userId)
+        
+        const { tab } = to.query
+        if (tab === 'tweet') {
+            this.fetchUserTweets(userId)
+        }
+        else if (tab === 'reply') {
+            this.fetchUserReplies(userId)
+        }
+        else if (tab === 'like') {
+            this.fetchUserLikes(userId)
+        }
+        this.currentTab = tab
         next()
     },
     computed: {
-        ...mapState(['currentUser', 'isAuthenticated'])
+        ...mapState(['currentUser', 'isAuthenticated']),
+        isLoading () {
+            if (!this.isUserLoading && !this.isTweetLoading) {
+                return false
+            }
+            return true
+        }
     },
     methods: {
         async fetchUser (userId) {
             try {
                 const response = await usersAPI.getUser({userId})
+                console.log(response.data)
                 const {
                     account, coverPhoto, email, introduction, name, profilePhoto
                 } = response.data
@@ -92,9 +137,11 @@ export default {
                     ...this.user,
                     account, coverPhoto, email, introduction, name, profilePhoto
                 }
+                this.isUserLoading = false
             }
             catch (error) {
                 console.log(error)
+                this.isUserLoading = false
                 Toast.fire({
                     icon: 'error',
                     title: `無法取得推文,請稍後再試`,
@@ -105,15 +152,48 @@ export default {
             try {
                 const response = await usersAPI.getUserTweets({userId})
                 this.tweets = [...response.data]
+                this.isTweetLoading = false
             }
             catch (error) {
                 console.log(error)
+                this.isTweetLoading = false
                 Toast.fire({
                     icon: 'error',
                     title: `無法取得推文,請稍後再試`,
                 })
             }
         },
+        async fetchUserReplies (userId) {
+            try {
+                const response = await usersAPI.getUserReplies({userId})
+                this.replies = [...response.data]
+                this.isTweetLoading = false
+            }
+            catch (error) {
+                console.log(error)
+                this.isTweetLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
+        async fetchUserLikes (userId) {
+            try {
+                const response = await usersAPI.getUserLikes({userId})
+                this.likes = [...response.data]
+                this.isTweetLoading = false
+            }
+            catch (error) {
+                console.log(error)
+                this.isTweetLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
+        //要負責抓API
     }
 }
 </script>

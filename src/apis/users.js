@@ -23,20 +23,26 @@ export default {
   },
   //得到某user的資料
   getUser ({userId}) {
-      const getToken = () => {
-          localStorage.getItem('token')
-      }
-      return apiHelper.get(`/users/${userId}`, {
-          headers: { Authorization: `Bearer ${getToken()}` }
-      })
+      return apiHelper.get(`/users/${userId}`)
+  },
+  //得到當前登入user的資料
+  getCurrentUser () {
+      return apiHelper.get('/users')
   },
   //得到某user發的所有推文
   getUserTweets ({userId}) {
-      const getToken = () => {
-          localStorage.getItem('token')
-      }
-      return apiHelper.get(`/users/${userId}/tweets`, {
-          headers: { Authorization: `Bearer ${getToken()}` }
-      })
-  }
+      return apiHelper.get(`/users/${userId}/tweets`)
+  },
+  getUserReplies ({userId}) {
+      return apiHelper.get(`/users/${userId}/replied_tweets`)
+  },
+  getUserLikes ({userId}) {
+      return apiHelper.get(`/users/${userId}/likes`)
+  },
+  getUserFollowrs ({userId}) {
+      return apiHelper.get(`/users/${userId}/followers`)
+  },
+  getUserFollowings ({userId}) {
+      return apiHelper.get(`/users/${userId}/followings`)
+  },
 }

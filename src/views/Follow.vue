@@ -8,9 +8,8 @@
                 <UserHeader :content="`Raven`" :counts="25"/>
                 <HomeTabs />
                 <div class="tweets__container">
-                    <UserFollowCard />
-                    <UserFollowCard />
-                    <UserFollowCard />
+                    <p v-if="!followers.length">目前還沒有追隨者喔</p>
+                    <UserFollowCard v-for="user in followers" :key="user.id" />
                 </div>
             </main>
             <section class="right__container">
@@ -31,7 +30,9 @@ import UserHeader from '../components/UserHeader.vue'
 import UserFollowCard from '../components/UserFollowCard.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import Footer from '../components/Footer.vue'
-// import { Toast } from '../utils/helpers.js'
+import usersAPI from '../apis/users.js'
+import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 
 export default {
@@ -45,14 +46,31 @@ export default {
     },
     data () {
         return {
-
+            followers: []
         }
     },
     created () {
-
+        const { id } = this.$route.params
+        this.fetchFollower(id)
+    },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated']),
     },
     methods: {
-
+        async fetchFollower (userId) {
+            try {
+                const { data } = await usersAPI.getUserFollowrs({userId})
+                console.log(data)
+                this.followers = [...data]
+            }
+            catch (error) {
+                console.log(error.message)
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得追隨者清單,請稍後再試`,
+                })
+            }
+        }
     }
 }
 </script>

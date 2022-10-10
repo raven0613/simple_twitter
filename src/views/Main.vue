@@ -9,6 +9,7 @@
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
+                
                 <MainHeader :content="`首頁`" :user-id="1"/>
                 
                 <MainTweetInput :ini-is-modal-toggled="isModalToggled"
@@ -61,11 +62,6 @@ export default {
     created () {
         this.fetchTweets()
     },
-    watch: {
-        tweets() {
-            this.fetchTweets()
-        }
-    },
     methods: {
         async fetchTweets () {
             try {
@@ -91,7 +87,8 @@ export default {
             this.tweets = [
                 tweet, ...this.tweets
             ]
-        }
+            this.fetchTweets()
+        },
     }
 }
 </script>
