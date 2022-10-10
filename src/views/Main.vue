@@ -89,6 +89,7 @@ export default {
             ]
             this.fetchTweets()
         },
+
     }
 }
 </script>

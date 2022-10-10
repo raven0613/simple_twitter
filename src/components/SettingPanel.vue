@@ -16,7 +16,7 @@
             placeholder="請輸入帳號"
             autocomplete="username"
             autofocus
-            v-model="initialUserData.account"
+            v-model="userData.account"
           />
         </div>
       </div>
@@ -31,7 +31,7 @@
             placeholder="請輸入使用者名稱"
             autocomplete="name"
             autofocus
-            v-model="initialUserData.name"
+            v-model="userData.name"
           />
         </div>
       </div>
@@ -46,7 +46,7 @@
             placeholder="請輸入Email"
             autocomplete="email"
             autofocus
-            v-model="initialUserData.email"
+            v-model="userData.email"
           />
         </div>
       </div>
@@ -61,7 +61,7 @@
             placeholder="請輸入密碼"
             autocomplete="current-password"
             autofocus
-            v-model="initialUserData.password"
+            v-model="userData.password"
           />
         </div>
       </div>
@@ -76,7 +76,7 @@
             placeholder="請再次輸入密碼"
             autocomplete="current-password"
             autofocus
-            v-model="initialUserData.checkPassword"
+            v-model="userData.checkPassword"
           />
         </div>
       </div>
@@ -84,9 +84,6 @@
       <!-- button們 -->
       <div class="form__button__container">
         <button class="form__button" type="submit">儲存</button>
-        <div class="form__links">
-          <router-link to="" class="form__links--link">登出</router-link>
-        </div>
       </div>
     </form>
   </div>
@@ -94,26 +91,28 @@
 
 <script>
 import { Toast } from "../utils/helpers";
-import usersAPI from "../apis/users";
 
 export default {
   name: "SettingPanel",
+  props: {
+    initialUserData: {
+      type: Object,
+      default: () => ({
+        name: "",
+        email: "",
+        account: "",
+      }),
+    },
+  },
   data() {
     return {
-      initialUserData:{
+      userData: {
         name: "",
         email: "",
         account: "",
         password: "",
         checkPassword: "",
       },
-      // userData:{
-      //   name: "",
-      //   email: "",
-      //   account: "",
-      //   password: "",
-      //   checkPassword: "",
-      // },
       formErrorName: false,
       formErrorEmail: false,
       formErrorAccount: false,
@@ -122,38 +121,22 @@ export default {
     };
   },
   created() {
-    this.fetchCurrentUser(24)
+    console.log(this.initialUserData);
+    this.userData = {
+      ...this.userData,
+      ...this.initialUserData,
+    };
+    console.log(this.userData);
   },
-  // watch:{
-  //   initialUserData:{
-  //     handler: function () {
-        
-  //     },
-  //     // 控制更深層的部份
-  //     deep: true
-  //   }
-  // },
-  methods: {
-    async fetchCurrentUser(userId) {
-      try {
-        const {data} = await usersAPI.getUser({ userId });
-        const { name, email, account, password, checkPassword } = data
-        this.initialUserData = {
-          ...this.initialUserData,
-          name,
-          email, 
-          account,
-          password, 
-          checkPassword
-        }
-
-      } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title: "無法取得使用者資料,請稍後再試",
-        });
-      }
+  watch: {
+    initialUserData(newValue) {
+      this.userData = {
+        ...this.userData,
+        ...newValue,
+      };
     },
+  },
+  methods: {
     async handleSubmit() {
       try {
         // 當按下按鈕後，所有底線為黑/藍線
@@ -165,7 +148,7 @@ export default {
 
         // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
         //TODO:(待優化)
-        if (!this.account) {
+        if (!this.userData.account) {
           this.formErrorAccount = true;
           Toast.fire({
             icon: "error",
@@ -173,7 +156,7 @@ export default {
           });
           return;
         }
-        if (!this.name) {
+        if (!this.userData.name) {
           this.formErrorName = true;
           Toast.fire({
             icon: "error",
@@ -181,7 +164,7 @@ export default {
           });
           return;
         }
-        if (!this.email) {
+        if (!this.userData.email) {
           this.formErrorEmail = true;
           Toast.fire({
             icon: "error",
@@ -189,7 +172,7 @@ export default {
           });
           return;
         }
-        if (!this.password) {
+        if (!this.userData.password) {
           this.formErrorPassword = true;
           Toast.fire({
             icon: "error",
@@ -197,7 +180,7 @@ export default {
           });
           return;
         }
-        if (!this.checkPassword) {
+        if (!this.userData.checkPassword) {
           this.formErrorCheckPassword = true;
           Toast.fire({
             icon: "error",
@@ -207,7 +190,7 @@ export default {
         }
 
         // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
-        if (this.password !== this.checkPassword) {
+        if (this.userData.password !== this.userData.checkPassword) {
           this.formErrorPassword = true;
           this.formErrorCheckPassword = true;
           Toast.fire({
@@ -216,7 +199,19 @@ export default {
           });
           return;
         }
+
         
+        // 把表單資料打包給後端
+        const formData = {
+          account: this.userData.account,
+          name: this.userData.name,
+          email: this.userData.email,
+          password: this.userData.password,
+          checkPassword: this.userData.checkPassword
+        };
+        console.log(formData)
+
+        this.$emit("after-submit", formData);
 
         // 成功取得資料，所有底線為黑/藍線
         this.formErrorName = false;
@@ -225,8 +220,8 @@ export default {
         this.formErrorPassword = false;
         this.formErrorCheckPassword = false;
 
-        // TODO:把1改成currentUser的id
-        this.$router.push("/users/1");
+        this.userData.password = "";
+        this.userData.checkPassword = "";
       } catch (error) {
         // 想要拿到data.message，要知道是包在error.response裡
         const message = error.response.data.message.toLowerCase();

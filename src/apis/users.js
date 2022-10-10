@@ -4,24 +4,28 @@ import { apiHelper } from './../utils/helpers'
 
 export default {
   // 註冊
-  register({name, email, account, password, checkPassword}){
+  register({ name, email, account, password, checkPassword }) {
     return apiHelper.post('/users', {
-      name, 
-      email, 
+      name,
+      email,
       account,
-      password, 
+      password,
       checkPassword
     })
   },
   // 登入
-  login({account, password}) {
+  login({ account, password }) {
     // post, get取決於你要怎麼向後端抓資料，return為Promise，但由該頁面去做.then的動作
     return apiHelper.post('/users/signin', {
       account,
       password
     })
   },
-  //得到某user的資料
+  // 更新設定資料
+  updateSetting({userId, formData}) {
+    console.log(userId)
+    return apiHelper.put(`/users/${userId}/setting`, formData)
+  }
   getUser ({userId}) {
       return apiHelper.get(`/users/${userId}`)
   },
