@@ -13,7 +13,7 @@
             <div class="tweet__top">
                 <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}}" class="tweet__top--prim">{{tweet.User.name}}</router-link>
                 <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}}" class="tweet__top--sec">@{{tweet.User.account}}</router-link>
-                <span class="tweet__top--sec">．{{tweet.createdAt}}</span>
+                <span class="tweet__top--sec">．{{tweet.createdAt | fromNow}}</span>
             </div>
             <div class="tweet__info--content">
                 {{tweet.description}}
@@ -24,12 +24,12 @@
                     <span class="montserrat-font">{{tweet.repliesCount}}</span>
                 </div>
                 
-                <div @click.stop.prevent="addLike(tweet.id)" class="tweet__bottom--icon">
+                <div v-if="!tweet.isLiked" @click.stop.prevent="addLike(tweet.id)" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_like.svg" alt="">
                     <span class="montserrat-font">{{tweet.likedCount}}</span>
                 </div>
-                <div v-if="false" @click.stop.prevent="deleteLike(tweet.id)" class="tweet__bottom--icon">
-                    <img src="../assets/images/tweet_reply.svg" alt="">
+                <div v-else @click.stop.prevent="deleteLike(tweet.id)" class="tweet__bottom--icon">
+                    <img src="../assets/images/tweet_liked.svg" alt="">
                     <span class="montserrat-font">{{tweet.likedCount}}</span>
                 </div>
                 
@@ -41,6 +41,11 @@
 <script>
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
+import {
+  showDescriptionFilter,
+  fromNowFilter,
+  emptyImageFilter,
+} from "../utils/mixins";
 
 export default {
     props: {
@@ -54,6 +59,7 @@ export default {
             type: Boolean,
         }
     },
+    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
     data () {
         return {
             tweet: this.initialTweet,
@@ -86,6 +92,11 @@ export default {
             try {
                 const response = await tweetsAPI.addLike({tweet_id})
                 console.log(response)
+                this.tweet = {
+                    ...this.tweet,
+                    isLiked: true,
+                    likedCount: this.tweet.likedCount + 1
+                }
             }
             catch (error) {
                 console.log(error.message)
@@ -99,6 +110,11 @@ export default {
             try {
                 const response = await tweetsAPI.deleteLike({tweet_id})
                 console.log(response)
+                this.tweet = {
+                    ...this.tweet,
+                    isLiked: false,
+                    likedCount: this.tweet.likedCount - 1
+                }
             }
             catch (error) {
                 console.log(error.message)

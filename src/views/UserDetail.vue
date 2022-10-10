@@ -31,13 +31,13 @@
                     :initial-tweet="tweet"
                     :user="user"/>
 
-                    <p v-if="!replies.length">目前還沒有回覆</p>
+                    <!-- <p v-if="!replies.length">目前還沒有回覆</p>
                     <ReplyCard 
                     v-else
                     v-for="reply in replies" 
                     :key="reply.id"
                     :reply="reply"
-                    :user="user"/>
+                    :user="user"/> -->
                 </div>
             </main>
             <section class="right__container">
@@ -55,7 +55,7 @@
 
 <script>
 import TweetCard from '../components/TweetCard.vue'
-import ReplyCard from '../components/ReplyCard.vue'
+// import ReplyCard from '../components/ReplyCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
@@ -72,7 +72,7 @@ import { mapState } from 'vuex'
 export default {
     components: {
         TweetCard,
-        ReplyCard,
+        // ReplyCard,
         SideBar,
         RecommendUsers,
         UserHeader,
