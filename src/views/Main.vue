@@ -61,11 +61,6 @@ export default {
     created () {
         this.fetchTweets()
     },
-    watch: {
-        tweets() {
-            this.fetchTweets()
-        }
-    },
     methods: {
         async fetchTweets () {
             try {
@@ -91,6 +86,7 @@ export default {
             this.tweets = [
                 tweet, ...this.tweets
             ]
+            this.fetchTweets()
         }
     }
 }
