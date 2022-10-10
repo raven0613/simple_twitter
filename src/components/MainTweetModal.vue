@@ -11,7 +11,7 @@
         />
       </div>
       <!-- 輸入框是個表格 -->
-      <form @submit.stop.prevent="" class="tweet__input">
+      <form @submit.stop.prevent="handleSubmit" class="tweet__input">
         <div class="tweet__input--info__container">
           <div class="tweet__input--avatar">
             <img src="../assets/images/avatar.svg" alt="" />
@@ -33,6 +33,7 @@
           <div v-show="tweetLength >= 140" class="tweet__input--warning">字數不可超過<span class="montserrat-font">140</span>字</div>
 
           <div v-show="tweetLength <= 0" class="tweet__input--warning">內容不可空白</div>
+
           <button
             v-if="tweetLength <= 0"
             class="tweet__input--button tweet__input--button-dis">推文</button>
@@ -40,6 +41,7 @@
           @click.stop.prevent="handleSubmit"
           v-else type="submit" 
           class="tweet__input--button">推文</button>
+
         </div>
 
       </form>

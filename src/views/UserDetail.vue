@@ -7,6 +7,12 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+
+                <UserEditModal v-if="isModalToggled"
+                :initialUser="user"
+                @after-submit-close="handleCloseModal"
+                />
+
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
@@ -15,9 +21,12 @@
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
 
-                <UserEditModal v-if="false"/>
+
                 <UserHeader :content="`Raven`" :counts="tweets.length"/>
-                <UserPanel />
+                <UserPanel  :ini-is-modal-toggled="isModalToggled"
+                :user="user"
+                @after-toggle-modal="handleToggleModal"/>
+
                 <HomeTabs 
                 :user-id="currentUser.id"
                 :current-tab="currentTab"/>
@@ -44,9 +53,11 @@
                 <RecommendUsers />
             </section>
 
+
             <div class="modal__mask"             
             @click.stop.prevent="handleCloseModal"
             v-if="isModalToggled || isReplyModalToggled">
+
             </div>
         </div>
         <Footer :current-page="`user`"/>

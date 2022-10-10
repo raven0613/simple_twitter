@@ -21,7 +21,7 @@
       <div class="user-info__image__container">
         <div class="user-info__background__container">
           <img
-            src="../assets/images/user-bg.svg"
+            :src="user.coverPhoto"
             alt=""
             class="user-info__background--photo"
           />
@@ -36,15 +36,13 @@
               src="../assets/images/cancel-white.svg"
               alt=""
               class="user-info__background__icon"
-
             />
           </div>
         </div>
 
-
         <div class="user-info__avatar__container">
           <img
-            src="../assets/images/avatar.svg"
+            :src="user.profilePhoto"
             alt=""
             class="user-info__avatar--photo"
           />
@@ -72,6 +70,7 @@
               autocomplete="name"
               required
               autofocus
+              v-model="user.name"
             />
           </div>
           <span class="form__text-length montserrat-font">8/50</span>
@@ -83,10 +82,11 @@
               id="introduction"
               name="name"
               type="name"
-              placeholder="John Doe"
+              placeholder="談談你自己吧..."
               autocomplete="name"
               required
               autofocus
+              v-model="user.introduction"
             />
           </div>
           <span class="form__text-length montserrat-font">0/160</span>
@@ -95,3 +95,28 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "UserEditModal",
+  props: {
+    initialUser: {
+      type: Object,
+      default: () => ({
+        account: "",
+        coverPhoto: "",
+        email: "",
+        introduction: "",
+        name: "",
+        profilePhoto: "",
+      }),
+    },
+  },
+  data(){
+    return{
+      user:this.initialUser
+      
+    }
+  }
+};
+</script>

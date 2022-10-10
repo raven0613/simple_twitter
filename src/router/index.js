@@ -11,8 +11,8 @@ Vue.use(VueRouter)
 
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
-  if (currentUser && !currentUser.role !== 'admin') {
-    console.log('not admin!')
+
+  if (currentUser && currentUser.role !== 'admin') {
     next('/not-found')
     return
   }
@@ -106,13 +106,13 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const tokenInLocalStorage = localStorage.getItem('token')
-  const tokenInStore = store.state.token
+  // const tokenInLocalStorage = localStorage.getItem('token')
+  // const tokenInStore = store.state.token
   let isAuthenticated = store.state.isAuthenticated
 
-  if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore){
-    isAuthenticated = await store.dispatch('fetchCurrentUser')
-  }
+  // if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore){
+  //   isAuthenticated = await store.dispatch('fetchCurrentUser')
+  // }
 
   //依據登入狀態決定轉址
   const pathsWithoutAuthentication = ['register', 'login', 'admin-login']
