@@ -122,6 +122,7 @@ export default {
         profilePhoto: "",
       }),
     },
+
   },
   methods: {
     toggleModal() {

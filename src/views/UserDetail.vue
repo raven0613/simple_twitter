@@ -111,7 +111,7 @@ export default {
             isTweetLoading: true,
             currentTab: 'tweet',
             isModalToggled: false,
-            isReplyModalToggled: false
+            isReplyModalToggled: false,
         }
     },
     created () {
