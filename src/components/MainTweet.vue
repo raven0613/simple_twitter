@@ -1,13 +1,13 @@
 <template>
     <div class="tweet-detail">
 
-        <div class="tweet-detail__user">
+        <div v-if="!isLoading" class="tweet-detail__user">
             <div class="tweet__avatar">
-                <img class="tweet__avatar--photo" :src="13" alt="">
+                <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
             </div>
             <div class="tweet-detail__user--name">
-                <p>123</p>
-                <p>@{{tweet.User.account | handleEmpty}}</p>
+                <p>{{tweet.User.name}}</p>
+                <p>@{{tweet.User.account}}</p>
             </div>
         </div>
 
@@ -29,27 +29,32 @@
             </div>
         </div>
         <div class="tweet-detail__icons">
-            <router-link to="#">
+            <div @click.stop.prevent="toggleModal">
                 <img src="../assets/images/tweet_reply.svg" alt="">
-            </router-link>
-            <router-link to="#">
+            </div>
+            <div @click.stop.prevent="addLike(tweet.id)">
                 <img src="../assets/images/tweet_like.svg" alt="">
-            </router-link>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import tweetsAPI from '../apis/tweets.js'
+import { Toast } from '../utils/helpers.js'
+
 export default {
     props: {
         initialData: {
             type: Object,
             required: true
+        },
+        iniIsModalToggled: {
+            type: Boolean,
         }
     },
     filters: {
         handleEmpty(value){
-            console.log(value)
             if (!value.length) {
                 return '-'
             }
@@ -57,16 +62,52 @@ export default {
     },
     data() {
         return {
-            tweet: this.initialData
+            tweet: this.initialData,
+            isModalToggled: this.iniIsModalToggled,
+            isLoading: true
         }
     },
     watch: {
         initialData: {
-            handler (newValue) {
+            handler: function (newValue) {
                 this.tweet = {
                     ...newValue
                 }
+                this.isLoading = false
             },
+            deep: true
+        }
+    },
+    methods: {
+        toggleModal () {
+            this.isModalToggled = true
+            this.$emit("after-toggle-modal", this.isModalToggled)
+        },
+        async addLike(tweet_id){
+            try {
+                const response = await tweetsAPI.addLike({tweet_id})
+                console.log(response)
+            }
+            catch (error) {
+                console.log(error.message)
+                Toast.fire({
+                    icon: 'error',
+                    title: `目前無法操作,請稍後再試`,
+                })
+            }
+        },
+        async deleteLike(tweet_id){
+            try {
+                const response = await tweetsAPI.deleteLike({tweet_id})
+                console.log(response)
+            }
+            catch (error) {
+                console.log(error.message)
+                Toast.fire({
+                    icon: 'error',
+                    title: `目前無法操作,請稍後再試`,
+                })
+            }
         }
     }
 }

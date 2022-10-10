@@ -12,7 +12,7 @@
                 <h5 :class="{sidebar__active: currentPage === `main`}">首頁</h5>
             </router-link>
             
-            <router-link :to="{name: 'user-detail', params: {id: currentUser.id}}" class="side-bar__link">
+            <router-link :to="{name: 'user-detail', params: {id: currentUser.id}, query: { 'tab': 'tweet'}}" class="side-bar__link">
                 <img v-if="currentPage === `user`" src="../assets/images/sidebar_user_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_user.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `user`}">個人資料</h5>
@@ -68,4 +68,3 @@ export default {
     }
 }
 </script>
-

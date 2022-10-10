@@ -49,14 +49,18 @@
           <div class="user-info__panel--account">@heyjohn</div>
           <div class="user-info__panel--description">捰四遺咯錢端宮城獅</div>
           <div class="user-info__panel--follow__container">
-            <span class="user-info__panel--follow">
+            <router-link 
+            :to="{name: 'user-following', params: { id: 4 }}" 
+            class="user-info__panel--follow">
               <span>34個</span>
               <span>跟隨中</span>
-            </span>
-            <span class="user-info__panel--follow">
+            </router-link>
+            <router-link
+            :to="{name: 'user-follower', params: { id: 4 }}" 
+            class="user-info__panel--follow">
               <span>56位</span>
               <span>跟隨者</span>
-            </span>
+            </router-link>
           </div>
 
         </div>

@@ -1,13 +1,26 @@
 <template>
     <div class="home__tabs">
         <section class="home__tabs--panel__container" v-if="userId">
-            <div class="home__tab home__tab--active home__tab--user">推文</div>
-            <div class="home__tab home__tab--user">回覆</div>
-            <div class="home__tab home__tab--user">喜歡的內容</div>
+            <router-link 
+            :to="{name: 'user-detail', query: { tab: 'tweet' }}" 
+            class="home__tab home__tab--user"
+            :class="{active: currentTab === 'tweet'}">推文</router-link>
+
+            <router-link 
+            :to="{name: 'user-detail', query: { tab: 'reply' }}" 
+            class="home__tab home__tab--user"
+            :class="{active: currentTab === 'reply'}">回覆</router-link>
+
+            <router-link 
+            :to="{name: 'user-detail', query: { tab: 'like' }}" 
+            class="home__tab home__tab--user"
+            :class="{active: currentTab === 'like'}">喜歡的內容</router-link>
         </section>
+
         <section v-else>
-            <div class="home__tab home__tab--active home__tab--follow">追隨者</div>
-            <div class="home__tab home__tab--follow">正在追隨</div>
+            <router-link :to="{name: 'user-follower'}" class="home__tab home__tab--follow">追隨者</router-link>
+
+            <router-link :to="{name: 'user-following'}" class="home__tab home__tab--follow">正在追隨</router-link>
         </section>
 
     </div>
@@ -17,13 +30,26 @@
 export default {
     props: {
         userId: {
+            type: Number
+        },
+        currentTab: {
             type: String
         }
     },
+    created () {
+        //失敗的話試試看寫在父層
+        // const { tab } = this.$route.query
+        // this.currentTab = tab
+    },
     data() {
         return {
-            
+            // currentTab: 'tweet',
         }
     },
+    methods: {
+        // handleClickTab () {
+            
+        // }
+    }
 }
 </script>

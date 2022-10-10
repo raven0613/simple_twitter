@@ -12,14 +12,9 @@ export default new Vuex.Store({
       name: '',
       email: '',
       role: '',
-      profilePhoto: '',
-      coverPhoto:'',
-      introduction: '',
-      createdAt: '',
     },
-    isAuthenticated: false
-  },
-  getters: {
+    isAuthenticated: false,
+    token: ''
   },
   mutations: {
     setCurrentUser (state, currentUser) {
@@ -28,25 +23,31 @@ export default new Vuex.Store({
         ...currentUser
       }
       state.isAuthenticated = true
+      state.token = localStorage.getItem('token')
     },
     revokeAuthentication(state){
       state.currentUser = {}
       state.isAuthenticated = false
-      localStorage.removeItem('token')  
+      localStorage.removeItem('token')
+      state.token = ''
+
     }
   },
   actions: {
-    async fetchCurrentUser ({commit, state}) {
+    async fetchCurrentUser ({commit}) {
       try {
-        const userId = state.currentUser.id
-        const { data } = await usersAPI.getUser({userId})
-        const { FollowerCount, FollowingsCount, account, coverPhoto, id, introduction, name, profilePhoto, role } = data
+        const { data } = await usersAPI.getCurrentUser()
+        console.log(data)
+        const { account, email, id, name, role } = data
         commit('setCurrentUser', {
-          FollowerCount, FollowingsCount, account, coverPhoto, id, introduction, name, profilePhoto, role
+          account, email, id, name, role
         })
+        return true
       }
       catch (error) {
         console.log(error.message)
+        commit('revokeAuthentication')
+        return false
       }
     }
   },

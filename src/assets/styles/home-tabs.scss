@@ -12,6 +12,10 @@
     &--panel__container{
         margin-top: 12.125rem;
     }
+    .active {
+        color: var(--main-color);
+        border-bottom: solid 2px var(--main-color);
+    }
 }
 .home__tab {
     height: 100%;
@@ -19,10 +23,6 @@
     line-height: 3.25rem;
     text-align: center;
 
-    &--active {
-        color: var(--main-color);
-        border-bottom: solid 2px var(--main-color);
-    }
     &--follow {
         width: 8.125rem;
     }

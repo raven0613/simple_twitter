@@ -9,10 +9,8 @@ export default{
             headers: { Authorization: `Bearer ${getToken()}` }
         })
     },
-    addFollowship () {
-        return apiHelper.post('/followships', null, {
-            headers: { Authorization: `Bearer ${getToken()}` }
-        })
+    addFollowship ({id}) {
+        return apiHelper.post('/followships', {id})
     },
     deleteFollowship ({followingId}) {
         return apiHelper.delete(`/followships/${followingId}`, {
