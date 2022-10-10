@@ -28,7 +28,7 @@
                     <img src="../assets/images/tweet_like.svg" alt="">
                     <span class="montserrat-font">{{tweet.likedCount}}</span>
                 </div>
-                <div @click.stop.prevent="deleteLike(tweet.id)" class="tweet__bottom--icon">
+                <div v-if="false" @click.stop.prevent="deleteLike(tweet.id)" class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_reply.svg" alt="">
                     <span class="montserrat-font">{{tweet.likedCount}}</span>
                 </div>

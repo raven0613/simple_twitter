@@ -2,16 +2,21 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar />
+                <SideBar :current-page="`main`" :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
-                <MainReplyModal v-if="isModalToggled"
+                <MainReplyModal v-if="isReplyModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+
+                <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
 
                 <MainHeader :content="`推文`" :tweet-id="1"/>
                 <MainTweet :initial-data="tweet"
-                @after-toggle-modal="handleToggleModal"/>
+                @after-toggle-modal="handleToggleReplyModal"/>
 
                 <div class="tweet-detail__input">
                 </div>
@@ -29,7 +34,7 @@
             </section>
             <div class="modal__mask" 
             @click.stop.prevent="handleCloseModal"
-            v-if="isModalToggled">
+            v-if="isModalToggled || isReplyModalToggled">
             </div>
         </div>
         <Footer />
@@ -44,6 +49,7 @@ import MainHeader from '../components/MainHeader.vue'
 import MainTweet from '../components/MainTweet.vue'
 import Footer from '../components/Footer.vue'
 import MainReplyModal from '../components/MainReplyModal.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
 
@@ -55,13 +61,15 @@ export default {
         MainHeader,
         MainTweet,
         Footer,
-        MainReplyModal
+        MainReplyModal,
+        MainTweetModal
     },
     data () {
         return {
             tweet: {},
             replies: [],
             isModalToggled: false,
+            isReplyModalToggled: false
         }
     },
     created () {
@@ -108,12 +116,17 @@ export default {
         },
         handleCloseModal(){
             this.isModalToggled = false
+            this.isReplyModalToggled = false
         },
         handleAddTweet(tweet){
             this.tweets = [
                 tweet, ...this.tweets
             ]
-        }
+            this.$route.push('/main')
+        },
+        handleToggleReplyModal(isReplyModalToggled){
+            this.isReplyModalToggled = isReplyModalToggled
+        },
     }
 }
 </script>
