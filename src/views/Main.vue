@@ -88,7 +88,7 @@ export default {
                 tweet, ...this.tweets
             ]
             this.fetchTweets()
-        }
+        },
     }
 }
 </script>
