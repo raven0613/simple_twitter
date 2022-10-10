@@ -2,13 +2,26 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar :current-page="`user`"/>
+                <SideBar :current-page="`user`"
+                :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+
                 <UserEditModal v-if="isModalToggled"
                 :initialUser="user"
                 @after-submit-close="handleCloseModal"
                 />
+
+                <MainReplyModal v-if="isReplyModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+
+                <MainTweetModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+
+
                 <UserHeader :content="`Raven`" :counts="tweets.length"/>
                 <UserPanel  :ini-is-modal-toggled="isModalToggled"
                 :user="user"
@@ -20,26 +33,31 @@
                 <div v-if="!isLoading" class="tweets__container">
                     <p v-if="!tweets.length">目前還沒有推文</p>
                     <TweetCard 
-                   
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
                     v-for="tweet in tweets" 
                     :key="tweet.id"
                     :initial-tweet="tweet"
                     :user="user"/>
 
-                    <p v-if="!replies.length">目前還沒有回覆</p>
+                    <!-- <p v-if="!replies.length">目前還沒有回覆</p>
                     <ReplyCard 
                     v-else
                     v-for="reply in replies" 
                     :key="reply.id"
                     :reply="reply"
-                    :user="user"/>
+                    :user="user"/> -->
                 </div>
             </main>
             <section class="right__container">
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled">
+
+            <div class="modal__mask"             
+            @click.stop.prevent="handleCloseModal"
+            v-if="isModalToggled || isReplyModalToggled">
+
             </div>
         </div>
         <Footer :current-page="`user`"/>
@@ -48,12 +66,14 @@
 
 <script>
 import TweetCard from '../components/TweetCard.vue'
-import ReplyCard from '../components/ReplyCard.vue'
+// import ReplyCard from '../components/ReplyCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import UserEditModal from '../components/UserEditModal.vue'
+import MainReplyModal from '../components/MainReplyModal.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
 import Footer from '../components/Footer.vue'
 import UserPanel from '../components/UserPanel.vue'
 import usersAPI from '../apis/users.js'
@@ -63,14 +83,16 @@ import { mapState } from 'vuex'
 export default {
     components: {
         TweetCard,
-        ReplyCard,
+        // ReplyCard,
         SideBar,
         RecommendUsers,
         UserHeader,
         HomeTabs,
         UserEditModal,
         Footer,
-        UserPanel
+        UserPanel,
+        MainReplyModal,
+        MainTweetModal
     },
     data () {
         return {
@@ -89,6 +111,7 @@ export default {
             isTweetLoading: true,
             currentTab: 'tweet',
             isModalToggled: false,
+            isReplyModalToggled: false
         }
     },
     created () {
@@ -205,8 +228,17 @@ export default {
         },
         handleCloseModal(){
             this.isModalToggled = false
+            this.isReplyModalToggled = false
         },
-        //要負責抓API
+        handleAddTweet(tweet){
+            this.tweets = [
+                tweet, ...this.tweets
+            ]
+            this.fetchTweets()
+        },
+        handleToggleReplyModal(isReplyModalToggled){
+            this.isReplyModalToggled = isReplyModalToggled
+        },
     }
 }
 </script>

@@ -11,11 +11,11 @@ Vue.use(VueRouter)
 
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
+
   if (currentUser && currentUser.role !== 'admin') {
     next('/not-found')
     return
   }
-
   next()
 }
 

@@ -44,6 +44,9 @@ g.tweet__input {
         display: flex;
         align-items: flex-end;
       }
+      &-dis {
+        background-color: var(--text-placeholder-color);
+      }
     }
   }
 }

@@ -132,7 +132,6 @@ export default {
         }
 
         localStorage.setItem("token", data.token);
-        console.log(data.token)
 
         this.$store.commit('setCurrentUser', userData)
 

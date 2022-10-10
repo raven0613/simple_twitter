@@ -3,7 +3,7 @@
     <div class="modal__container tweet-modal__container reply-modal__container">
       <!-- 最上方的區塊 -->
       <div class="modal__input__container">
-        <img src="../assets/images/cancel-orange.svg" alt="" class="modal__input--cancel" />
+        <img @click.stop.prevent="handleCancelClicked" src="../assets/images/cancel-orange.svg" alt="" class="modal__input--cancel" />
       </div>
 
       <!-- 推文 -->
@@ -11,7 +11,7 @@
         <!-- 圖片 -->
         <div class="tweet__input--avatar__container">
           <div class="tweet__input--avatar">
-            <img src="../assets/images/avatar.svg" alt="" />
+            <img :src="initialTweet.User.profilePhoto" alt="" />
           </div>
           <span class="tweet__input--dash"></span>
         </div>
@@ -19,13 +19,12 @@
         <!-- 內容 -->
         <div class="tweet__info">
           <div class="tweet__top">
-            <span class="tweet__top--prim">Jane Cathy</span>
-            <span class="tweet__top--sec">@apple</span>
-            <span class="tweet__top--sec">．<span class="montserrat-font">3</span>小時</span>
+            <span class="tweet__top--prim">{{initialTweet.User.name}}</span>
+            <span class="tweet__top--sec">@{{initialTweet.User.account}}</span>
+            <span class="tweet__top--sec">．{{initialTweet.createdAt | fromNow}}</span>
           </div>
           <div class="tweet__info--content">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation
-            incididunt aliquip deserunt reprehenderit elit laborum.
+            {{initialTweet.description}}
           </div>
           <div class="tweet__target">
             <span class="tweet__target--sec">回覆給</span>
@@ -35,20 +34,31 @@
       </div>
 
 
-
       <!-- 回覆推文 -->
       <form class="tweet__input">
         <div class="tweet__input--info__container">
           <div class="tweet__input--avatar">
             <img src="../assets/images/avatar.svg" alt="" />
           </div>
-          <textarea wrap="hard" class="tweet__input--content" name="description" type="text" placeholder="推你的回覆"
+          <textarea
+            v-model="tweetContent"
+            wrap="hard" 
+            class="tweet__input--content" name="description" 
+            type="text" placeholder="推你的回覆"
             autocomplete="off" autofocus></textarea>
           <!-- 用input不能自動換行，所以要用textarea -->
         </div>
         <div class="tweet__input--button__container">
-          <div class="tweet__input--warning">內容不可空白</div>
-          <button type="submit" class="tweet__input--button">回覆</button>
+          <div v-show="tweetLength >= 140" class="tweet__input--warning">字數不可超過<span class="montserrat-font">140</span>字</div>
+
+          <div v-show="tweetLength <= 0" class="tweet__input--warning">內容不可空白</div>
+          <button
+            v-if="tweetLength <= 0"
+            class="tweet__input--button tweet__input--button-dis">回覆</button>
+          <button
+          @click.stop.prevent="handleSubmit(initialTweet.id)"
+          v-else type="submit" 
+          class="tweet__input--button">回覆</button>
         </div>
       </form>
     </div>
@@ -58,8 +68,20 @@
 <script>
 import { Toast } from '../utils/helpers'
 import tweetsAPI from '../apis/tweets.js'
+import {
+  showDescriptionFilter,
+  fromNowFilter,
+  emptyImageFilter,
+} from "../utils/mixins";
 
 export default {
+  props: {
+    initialTweet: {
+      type: Object,
+      required: true
+    }
+  },
+  mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
   data() {
     return {
       tweetContent: '',
@@ -78,14 +100,22 @@ export default {
     }
   },
   methods: {
-    async handleSubmit () {
+    async handleSubmit (id) {
       try {
         const response = await tweetsAPI.addReply({
-          description: this.tweetContent
+          id,
+          comment: this.tweetContent
         })
         if(response.status !== 200) throw new Error(response.data.message)
         this.$emit('after-submit-close', false)
         this.$emit('after-submit', response.data)
+        //回覆完回到詳細頁面
+        this.$router.push({name: 'tweet-detail', params: {id}})
+        
+        return Toast.fire({
+          icon: 'success',
+          title: '回覆成功！'
+        })
       }
       catch (error) {
         console.log(error.message)
@@ -94,6 +124,9 @@ export default {
           title: '無法回覆貼文，請稍後再試'
         })
       }
+    },
+    handleCancelClicked () {
+      this.$emit('after-submit-close')
     }
   }
 }
