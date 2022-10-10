@@ -206,6 +206,7 @@
     &__background{
       &__container{
         height: 12.5rem;
+        background-color: var(--white);
       }
     }
 
@@ -216,6 +217,7 @@
         left: 1rem;
         bottom: -4.375rem;
         border: 0.25rem solid var(--white);
+        background-color: var(--white);
       }
     }
   }

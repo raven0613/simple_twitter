@@ -5,9 +5,15 @@
                 <SideBar :current-page="`user`"/>
             </section>
             <main class="main__container">
-                <UserEditModal v-if="false"/>
+                <UserEditModal v-if="isModalToggled"
+                :initialUser="user"
+                @after-submit-close="handleCloseModal"
+                />
                 <UserHeader :content="`Raven`" :counts="tweets.length"/>
-                <UserPanel />
+                <UserPanel  :ini-is-modal-toggled="isModalToggled"
+                :user="user"
+                @after-toggle-modal="handleToggleModal"/>
+
                 <HomeTabs 
                 :user-id="currentUser.id"
                 :current-tab="currentTab"/>
@@ -33,7 +39,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled">
             </div>
         </div>
         <Footer :current-page="`user`"/>
@@ -81,7 +87,8 @@ export default {
             likes: [],
             isUserLoading: true,
             isTweetLoading: true,
-            currentTab: 'tweet'
+            currentTab: 'tweet',
+            isModalToggled: false,
         }
     },
     created () {
@@ -192,6 +199,12 @@ export default {
                     title: `無法取得推文,請稍後再試`,
                 })
             }
+        },
+        handleToggleModal(isModalToggled){
+            this.isModalToggled = isModalToggled
+        },
+        handleCloseModal(){
+            this.isModalToggled = false
         },
         //要負責抓API
     }

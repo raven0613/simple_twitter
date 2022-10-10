@@ -48,6 +48,8 @@ export default {
             try {
                 const { data } = await adminAPI.getAdminUsers()
                 this.users = [...data]
+                // 排除管理者，只顯示使用者
+                this.users = this.users.filter(user => user.role === 'user')
             }
             catch (error) {
                 console.log(error)

@@ -30,6 +30,7 @@ import MainHeader from '../components/MainHeader.vue'
 import AdminTweets from '../components/AdminTweets.vue'
 import adminAPI from '../apis/admin.js'
 import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 
 
@@ -46,6 +47,9 @@ export default {
     },
     created () {
         this.fetchAdminTweets()
+    },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated']),
     },
     methods: {
         async fetchAdminTweets () {

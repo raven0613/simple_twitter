@@ -13,7 +13,7 @@
     <!-- 資訊 -->
     <div class="user-card__info">
       <div class="user-card__info--name">{{user.name}}</div>
-      <div class="user-card__info--account">{{user.account}}</div>
+      <div class="user-card__info--account">@{{user.account}}</div>
       <div class="user-card__info--icons">
         <div class="user-card__info--icon">
           <img src="../assets/images/admin-tweet.svg" alt="">
@@ -52,7 +52,7 @@ export default {
     return {
       user: this.initialUser,
     };
-  },
+  }
   // mixins: [emptyImageFilter],
 };
 </script>
