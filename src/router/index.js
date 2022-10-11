@@ -34,7 +34,7 @@ const routes = [
   {
     path: '/tweets/:id',
     name: 'tweet-detail',
-    component: () => import('../views/TweetDetail.vue')
+    component: () => import('../views/TweetDetail.vue'),
   },
   {
     path: '/users/:id/follower',
@@ -106,13 +106,13 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  // const tokenInLocalStorage = localStorage.getItem('token')
-  // const tokenInStore = store.state.token
+  const tokenInLocalStorage = localStorage.getItem('token')
+  const tokenInStore = store.state.token
   let isAuthenticated = store.state.isAuthenticated
 
-  // if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore){
-  //   isAuthenticated = await store.dispatch('fetchCurrentUser')
-  // }
+  if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore){
+    isAuthenticated = await store.dispatch('fetchCurrentUser')
+  }
 
   //依據登入狀態決定轉址
   const pathsWithoutAuthentication = ['register', 'login', 'admin-login']

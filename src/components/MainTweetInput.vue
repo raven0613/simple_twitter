@@ -27,7 +27,6 @@ export default {
     },
     methods: {
         toggleModal () {
-            console.log('123')
             this.isModalToggled = true
             this.$emit("after-toggle-modal", this.isModalToggled)
         }

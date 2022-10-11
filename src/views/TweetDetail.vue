@@ -35,7 +35,8 @@
             </section>
             <div class="modal__mask" 
             @click.stop.prevent="handleCloseModal"
-            v-if="isModalToggled || isReplyModalToggled">
+            v-if="isModalToggled || isReplyModalToggled"
+            @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
         <Footer />
