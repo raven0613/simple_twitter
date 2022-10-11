@@ -78,7 +78,7 @@ export default {
                 }
                 this.isLoading = false
             },
-            deep: true
+            immediate: true
         }
     },
     methods: {

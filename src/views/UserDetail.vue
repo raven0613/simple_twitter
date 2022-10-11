@@ -15,7 +15,7 @@
                 
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"
+                @after-submit="handleAddReply"
                 :initial-tweet="clickedTweet"/>
 
                 <MainTweetModal v-if="isModalToggled"
@@ -282,6 +282,10 @@ export default {
         },
         handlePassTweetData(tweet){
             this.clickedTweet = tweet
+        },
+        handleAddReply(reply){
+            this.replies = this.replies.push(reply)
+            this.fetchReplies(this.tweet.id)
         },
     }
 }
