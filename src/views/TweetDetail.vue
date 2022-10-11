@@ -90,7 +90,6 @@ export default {
             try {
                 const response = await tweetsAPI.getTweet({id})
                 this.tweet = response.data
-                console.log(response.data)
             }
             catch (error) {
                 console.log(error)

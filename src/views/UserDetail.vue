@@ -15,7 +15,8 @@
                 
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                @after-submit="handleAddTweet"
+                :initial-tweet="clickedTweet"/>
 
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
@@ -39,6 +40,7 @@
                     v-else
                     :ini-is-modal-toggled="isModalToggled"
                     @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
                     v-for="tweet in tweets" 
                     :key="tweet.id"
                     :initial-tweet="tweet"
@@ -63,6 +65,7 @@
                     v-else
                     :ini-is-modal-toggled="isModalToggled"
                     @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
                     v-for="like in likes" 
                     :key="like.id"
                     :initial-tweet="like"
@@ -133,7 +136,8 @@ export default {
             currentTab: 'tweet',
             isModalToggled: false,
             isReplyModalToggled: false,
-            isEditModalToggled: false
+            isEditModalToggled: false,
+            clickedTweet: {}
         }
     },
     created () {
@@ -206,6 +210,8 @@ export default {
             try {
                 this.isTweetLoading = true
                 const response = await usersAPI.getUserTweets({userId})
+                console.log(response)
+                //裡面不是 likeCounts
                 this.tweets = [...response.data]
                 this.isTweetLoading = false
             }
@@ -238,6 +244,7 @@ export default {
             try {
                 this.isTweetLoading = true
                 const response = await usersAPI.getUserLikes({userId})
+                console.log(response)
                 // response.data = response.data.map(like => {
                 //     return { ...like.Tweet }
                 // })
@@ -272,6 +279,9 @@ export default {
         },
         handleToggleEditModal(isEditModalToggled){
             this.isEditModalToggled = isEditModalToggled
+        },
+        handlePassTweetData(tweet){
+            this.clickedTweet = tweet
         },
     }
 }
