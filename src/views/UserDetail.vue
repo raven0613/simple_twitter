@@ -9,19 +9,20 @@
         />
       </section>
       <main class="main__container">
+    <!-- 使用者資料編輯視窗 -->
         <UserEditModal
           v-if="isEditModalToggled"
           :initialUser="user"
           @after-submit-close="handleCloseModal"
           @after-submit="handleAfterSubmit"
         />
-
+    <!-- 推文視窗 -->
         <MainTweetModal
           v-if="isModalToggled"
           @after-submit-close="handleCloseModal"
           @after-submit="handleAddTweet"
         />
-
+    <!-- 回覆視窗 -->
         <MainReplyModal
           v-if="isReplyModalToggled"
           @after-submit-close="handleCloseModal"
@@ -42,7 +43,7 @@
         :user-id="currentUser.id"
         />
     <!-- tab=tweet -->
-        <div v-if="!isLoading && currentTab==='tweet'" 
+        <div v-if="!isTweetLoading && currentTab==='tweet'" 
         class="tweets__container">
             <p v-if="!tweets.length">目前還沒有推文</p>
             <TweetCard 
@@ -56,7 +57,7 @@
             />
         </div>
     <!-- tab=reply -->
-        <div v-if="!isLoading && currentTab==='reply'" 
+        <div v-if="!isTweetLoading && currentTab==='reply'" 
         class="tweets__container">
             <p v-if="!replies.length">目前還沒有回覆</p>
             <ReplyCard 
@@ -67,7 +68,7 @@
             :user="user"/>
         </div>
     <!-- tab=like -->
-        <div v-if="!isLoading && currentTab==='like'" 
+        <div v-if="!isTweetLoading && currentTab==='like'" 
         class="tweets__container">
             <p v-if="!likes.length">目前還沒有喜歡的內容</p>
             <TweetCard 
@@ -199,6 +200,7 @@ export default {
         this.isUserLoading = true;
         const response = await usersAPI.getUser({ userId });
         const {
+          id,
           account,
           coverPhoto,
           email,
@@ -211,6 +213,7 @@ export default {
         } = response.data;
         this.user = {
           ...this.user,
+          id,
           account,
           coverPhoto,
           email,
