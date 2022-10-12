@@ -23,8 +23,12 @@ export default {
   },
   // 更新設定資料
   updateSetting({userId, formData}) {
-    console.log(userId)
     return apiHelper.put(`/users/${userId}/setting`, formData)
+  },
+  // 更新個人資料
+  updateProfile({userId, formData}) {
+    console.log(userId, formData)
+    return apiHelper.put(`/users/${userId}`, formData)
   },
   getUser ({userId}) {
       return apiHelper.get(`/users/${userId}`)

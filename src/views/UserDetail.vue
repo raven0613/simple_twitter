@@ -1,37 +1,43 @@
 <template>
-    <div class="twitter__project">
-        <div class="container">
-            <section class="left__container">
-                <SideBar :current-page="`user`"
-                :ini-is-modal-toggled="isModalToggled"
-                @after-toggle-modal="handleToggleModal"/>
-            </section>
-            <main class="main__container">
+  <div class="twitter__project">
+    <div class="container">
+      <section class="left__container">
+        <SideBar
+          :current-page="`user`"
+          :ini-is-modal-toggled="isModalToggled"
+          @after-toggle-modal="handleToggleModal"
+        />
+      </section>
+      <main class="main__container">
+        <UserEditModal
+          v-if="isEditModalToggled"
+          :initialUser="user"
+          @after-submit-close="handleCloseModal"
+          @after-submit="handleAfterSubmit"
+        />
+        
+        <MainTweetModal
+          v-if="isModalToggled"
+          @after-submit-close="handleCloseModal"
+          @after-submit="handleAddTweet"
+        />
+             
+        <MainReplyModal v-if="isReplyModalToggled"
+        @after-submit-close="handleCloseModal"
+        :initial-tweet="clickedTweet"
+        :is-in-detail-page="false"/>
 
-                <UserEditModal v-if="isEditModalToggled"
-                :initialUser="user"
-                @after-submit-close="handleCloseModal"
-                />
-                
-                <MainReplyModal v-if="isReplyModalToggled"
-                @after-submit-close="handleCloseModal"
-                :initial-tweet="clickedTweet"
-                :is-in-detail-page="false"/>
+        <UserHeader :content="user.name" :counts="tweets.length"/>
+        <UserPanel
+          :ini-is-modal-toggled="isModalToggled"
+          :initialUser="user"
+          @after-toggle-modal="handleToggleEditModal"
+        />
 
-                <MainTweetModal v-if="isModalToggled"
-                @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
-
-
-                <UserHeader :content="user.name" :counts="tweets.length"/>
-                <UserPanel  :ini-is-modal-toggled="isModalToggled"
-                :user="user"
-                @after-toggle-modal="handleToggleEditModal"/>
-
-                <HomeTabs 
-                :clicked-tab="currentTab"
-                :user-id="currentUser.id"
-                />
+        <HomeTabs 
+        :clicked-tab="currentTab"
+        :user-id="currentUser.id"
+        />
             <!-- tab=tweet -->
                 <div v-if="!isLoading && currentTab==='tweet'" 
                 class="tweets__container">
@@ -46,6 +52,7 @@
                     :initial-tweet="tweet"
                     :user="user"/>
                 </div>
+                
             <!-- tab=reply -->
                 <div v-if="!isLoading && currentTab==='reply'" 
                 class="tweets__container">
@@ -57,6 +64,7 @@
                     :reply="reply"
                     :user="user"/>
                 </div>
+                
             <!-- tab=like -->
                 <div v-if="!isLoading && currentTab==='like'" 
                 class="tweets__container">
@@ -83,9 +91,21 @@
             v-if="isModalToggled || isReplyModalToggled || isEditModalToggled" @touchmove.prevent @mousewheel.prevent>
 
             </div>
+
         </div>
-        <Footer :current-page="`user`"/>
+      </main>
+      <section class="right__container">
+        <RecommendUsers />
+      </section>
+
+      <div
+        class="modal__mask"
+        @click.stop.prevent="handleCloseModal"
+        v-if="isModalToggled || isReplyModalToggled || isEditModalToggled"
+      ></div>
     </div>
+    <Footer :current-page="`user`" />
+  </div>
 </template>
 
 <script>
@@ -176,15 +196,7 @@ export default {
             this.fetchUserLikes(userId)
         }
         next()
-    },
-    computed: {
-        ...mapState(['currentUser', 'isAuthenticated']),
-        isLoading () {
-            if (!this.isUserLoading && !this.isTweetLoading) {
-                return false
-            }
-            return true
-        }
+
     },
     methods: {
         async fetchUser (userId) {
@@ -263,6 +275,33 @@ export default {
                 })
             }
         },
+        async handleAfterSubmit(formData) {
+          try {
+            console.log("hi", formData);
+            const { data } = await usersAPI.updateProfile({
+              userId: this.currentUser.id,
+              formData,
+            });
+
+            if (data.status === "error") {
+              throw new Error(data.message);
+            }
+
+            // 直接把從UserEditModal傳來的資料更新到畫面，這樣UserPanel就可以立刻watch到資料有改變
+            this.user = formData
+
+            Toast.fire({
+              icon: "success",
+              title: "成功更新使用者資料",
+            });
+          } catch (error) {
+            console.log(error);
+            Toast.fire({
+              icon: "error",
+              title: "無法更新使用者資料，請稍後再試",
+            });
+          }
+        },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
             history.pushState({ name: "new-tweet" }, null, '/tweet/new')
@@ -295,4 +334,5 @@ export default {
         },
     }
 }
+
 </script>

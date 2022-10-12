@@ -132,6 +132,9 @@
       left: 1.5rem;
       bottom: -2.5rem;
       z-index: 999;
+      img{
+        border-radius: 50%;
+      }
     }
 
     &--mask {
@@ -218,6 +221,7 @@
         bottom: -4.375rem;
         border: 0.25rem solid var(--white);
         background-color: var(--white);
+        
       }
     }
   }
