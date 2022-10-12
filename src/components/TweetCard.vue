@@ -49,9 +49,6 @@ import {
 
 export default {
     props: {
-        user: {
-            type: Object,
-        },
         initialTweet: {
             type: Object,
         },
@@ -64,18 +61,13 @@ export default {
         return {
             tweet: this.initialTweet,
             isModalToggled: this.iniIsModalToggled,
+            // user: {}
         }
     },
     watch: {
         initialTweet (newValue) {
             this.tweet = {
                 ...this.tweet,
-                ...newValue
-            }
-        },
-        user (newValue) {
-            this.user = {
-                ...this.user,
                 ...newValue
             }
         },

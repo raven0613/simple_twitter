@@ -32,6 +32,11 @@ const routes = [
     component: Main,
   },
   {
+    path: '/reply/new',
+    name: 'reply-new',
+    redirect: '/main'
+  },
+  {
     path: '/tweets/new',
     name: 'tweet-new',
     component: () => import('../views/Main.vue'),

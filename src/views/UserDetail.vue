@@ -31,6 +31,7 @@
 
         <UserHeader :content="user.name" :counts="tweets.length"/>
         <UserPanel
+          v-if="!isUserLoading"
           :ini-is-modal-toggled="isModalToggled"
           :initialUser="user"
           @after-toggle-modal="handleToggleEditModal"
@@ -52,7 +53,7 @@
             v-for="tweet in tweets" 
             :key="tweet.id"
             :initial-tweet="tweet"
-            :user="user"/>
+            />
         </div>
     <!-- tab=reply -->
         <div v-if="!isLoading && currentTab==='reply'" 
@@ -129,17 +130,7 @@ export default {
   },
   data() {
     return {
-      user: {
-        account: "",
-        coverPhoto: "",
-        email: "",
-        introduction: "",
-        name: "",
-        profilePhoto: "",
-        followerCounts: "",
-        followingCounts: "",
-        isFollowed: "",
-      },
+      user: {},
       tweets: [],
       replies: [],
       likes: [],
@@ -153,11 +144,14 @@ export default {
     };
   },
   created() {
+    this.isTweetLoading = true
+    this.isUserLoading = true
     const { id: userId } = this.$route.params;
     if (userId) {
       this.fetchUser(userId);
     }
     else {
+      //直接貼編輯網址的話上面沒有id
       this.fetchUser(this.currentUser.id);
     }
     this.getUrl()
@@ -175,7 +169,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.isTweetLoading = true
-    this.isReplyLoading = true
+    this.isUserLoading = true
     const { id: userId } = to.params;
     this.fetchUser(userId);
 
@@ -193,7 +187,7 @@ export default {
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
     isLoading () {
-      if (!this.isTweetLoading && !this.isReplyLoading) {
+      if (!this.isTweetLoading && !this.isUserLoading) {
           return false
       }
       return true
