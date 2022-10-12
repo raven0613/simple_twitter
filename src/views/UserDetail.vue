@@ -29,64 +29,62 @@
           :is-in-detail-page="false"
         />
 
-        <UserHeader :content="user.name" :counts="tweets.length" />
-        <UserPanel
-          :ini-is-modal-toggled="isModalToggled"
-          :initialUser="user"
-          @after-toggle-modal="handleToggleEditModal"
-        />
+                <UserHeader :content="user.name" :counts="tweets.length"/>
+                <UserPanel
+                  :ini-is-modal-toggled="isModalToggled"
+                  :initialUser="user"
+                  @after-toggle-modal="handleToggleEditModal"
+                />
 
-        <HomeTabs :clicked-tab="currentTab" :user-id="currentUser.id" />
-        <!-- tab=tweet -->
-        <div
-          v-if="!isLoading && currentTab === 'tweet'"
-          class="tweets__container"
-        >
-          <p v-if="!tweets.length">目前還沒有推文</p>
-          <TweetCard
-            v-else
-            :ini-is-modal-toggled="isModalToggled"
-            @after-toggle-modal="handleToggleReplyModal"
-            @after-clicked-reply="handlePassTweetData"
-            v-for="tweet in tweets"
-            :key="tweet.id"
-            :initial-tweet="tweet"
-            :user="user"
-          />
-        </div>
+                <HomeTabs 
+                :clicked-tab="currentTab"
+                :user-id="currentUser.id"
+                />
+            <!-- tab=tweet -->
+                <div v-if="!isLoading && currentTab==='tweet'" 
+                class="tweets__container">
+                    <p v-if="!tweets.length">目前還沒有推文</p>
+                    <TweetCard 
+                    v-else
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
+                    v-for="tweet in tweets" 
+                    :key="tweet.id"
+                    :initial-tweet="tweet"
+                    :user="user"/>
+                </div>
+            <!-- tab=reply -->
+                <div v-if="!isLoading && currentTab==='reply'" 
+                class="tweets__container">
+                    <p v-if="!replies.length">目前還沒有回覆</p>
+                    <ReplyCard 
+                    v-else
+                    v-for="reply in replies" 
+                    :key="reply.id"
+                    :reply="reply"
+                    :user="user"/>
+                </div>
+            <!-- tab=like -->
+                <div v-if="!isLoading && currentTab==='like'" 
+                class="tweets__container">
+                    <p v-if="!likes.length">目前還沒有喜歡的內容</p>
+                    <TweetCard 
+                    v-else
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
+                    v-for="like in likes" 
+                    :key="like.id"
+                    :initial-tweet="like"
+                    :user="user"/>
+                </div>
+                
+            </main> 
+            <section class="right__container">
+                <RecommendUsers />
+            </section>
 
-        <!-- tab=reply -->
-        <div
-          v-if="!isLoading && currentTab === 'reply'"
-          class="tweets__container"
-        >
-          <p v-if="!replies.length">目前還沒有回覆</p>
-          <ReplyCard
-            v-else
-            v-for="reply in replies"
-            :key="reply.id"
-            :reply="reply"
-            :user="user"
-          />
-        </div>
-
-        <!-- tab=like -->
-        <div
-          v-if="!isLoading && currentTab === 'like'"
-          class="tweets__container"
-        >
-          <p v-if="!likes.length">目前還沒有喜歡的內容</p>
-          <TweetCard
-            v-else
-            :ini-is-modal-toggled="isModalToggled"
-            @after-toggle-modal="handleToggleReplyModal"
-            @after-clicked-reply="handlePassTweetData"
-            v-for="like in likes"
-            :key="like.id"
-            :initial-tweet="like"
-            :user="user"
-          />
-        </div>
       </main>
       <section class="right__container">
         <RecommendUsers />
