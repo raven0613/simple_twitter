@@ -22,7 +22,6 @@
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
 
-
                 <UserHeader :content="user.name" :counts="tweets.length"/>
                 <UserPanel  :ini-is-modal-toggled="isModalToggled"
                 :user="user"
