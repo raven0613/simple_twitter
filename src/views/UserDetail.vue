@@ -15,8 +15,8 @@
                 
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddReply"
-                :initial-tweet="clickedTweet"/>
+                :initial-tweet="clickedTweet"
+                :is-in-detail-page="false"/>
 
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
@@ -127,6 +127,9 @@ export default {
                 introduction: '',
                 name: '',
                 profilePhoto: '',
+                followerCounts: '',
+                followingCounts: '',
+                isFollowed: ''
             },
             tweets: [],
             replies: [],
@@ -189,11 +192,11 @@ export default {
                 this.isUserLoading = true
                 const response = await usersAPI.getUser({userId})
                 const {
-                    account, coverPhoto, email, introduction, name, profilePhoto
+                    account, coverPhoto, email, introduction, name, profilePhoto, followerCounts, followingCounts, isFollowed
                 } = response.data
                 this.user = {
                     ...this.user,
-                    account, coverPhoto, email, introduction, name, profilePhoto
+                    account, coverPhoto, email, introduction, name, profilePhoto, followerCounts, followingCounts, isFollowed
                 }
                 this.isUserLoading = false
             }
@@ -262,11 +265,13 @@ export default {
         },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
+            history.pushState({ name: "new-tweet" }, null, '/tweet/new')
         },
         handleCloseModal(){
             this.isModalToggled = false
             this.isReplyModalToggled = false
             this.isEditModalToggled = false
+            this.$router.back()
         },
         handleAddTweet(tweet){
             this.tweets = [
@@ -276,6 +281,7 @@ export default {
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
+            history.pushState({ name: "new-reply" }, null, '/reply/new')
         },
         handleToggleEditModal(isEditModalToggled){
             this.isEditModalToggled = isEditModalToggled
@@ -284,8 +290,8 @@ export default {
             this.clickedTweet = tweet
         },
         handleAddReply(reply){
+            // this.$router.push({name: 'tweet-detail', params: { id: this.clickedTweet.id }})
             this.replies = this.replies.push(reply)
-            this.fetchReplies(this.tweet.id)
         },
     }
 }

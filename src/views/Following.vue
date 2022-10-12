@@ -2,24 +2,33 @@
     <div class="twitter__project">
         <div class="container">
             <section class="left__container">
-                <SideBar />
+                <SideBar :current-page="`user`" :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
-                <UserHeader :content="`Raven`" :counts="25"/>
+                <MainTweetModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+                
+                <UserHeader :content="currentUser.name" :counts="25"/>
                 <HomeTabs />
-                <div class="tweets__container">
+                <div v-if="!isLoading" class="tweets__container">
                     <p v-if="!followers.length">目前還沒有追隨者喔</p>
-                    <UserFollowCard v-for="user in followers" :key="user.id" />
+                    <UserFollowCard 
+                    v-for="user in followers" 
+                    :key="user.id"
+                    :init-follower="user"/>
                 </div>
             </main>
             <section class="right__container">
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" v-if="false">
+            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled"
+            @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
-        <Footer />
+        <Footer :current-page="`user`"/>
     </div>
 </template>
 
@@ -28,6 +37,7 @@ import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
 import UserHeader from '../components/UserHeader.vue'
 import UserFollowCard from '../components/UserFollowCard.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import Footer from '../components/Footer.vue'
 import usersAPI from '../apis/users.js'
@@ -40,13 +50,16 @@ export default {
         SideBar,
         RecommendUsers,
         UserHeader,
+        MainTweetModal,
         UserFollowCard,
         HomeTabs,
         Footer
     },
     data () {
         return {
-            followers: []
+            followers: [],
+            isModalToggled: false,
+            isLoading: true
         }
     },
     created () {
@@ -59,18 +72,30 @@ export default {
     methods: {
         async fetchFollower (userId) {
             try {
+                this.isLoading = true
                 const { data } = await usersAPI.getUserFollowrs({userId})
                 console.log(data)
                 this.followers = [...data]
+                this.isLoading = false
             }
             catch (error) {
                 console.log(error.message)
+                this.isLoading = false
                 Toast.fire({
                     icon: 'error',
                     title: `無法取得追隨者清單,請稍後再試`,
                 })
             }
-        }
+        },
+        handleToggleModal(isModalToggled){
+            this.isModalToggled = isModalToggled
+        },
+        handleCloseModal(){
+            this.isModalToggled = false
+        },
+        handleAddTweet(){
+            this.$router.push({name: 'main-page'})
+        },
     }
 }
 </script>

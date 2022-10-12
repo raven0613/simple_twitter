@@ -16,7 +16,7 @@
             </div>
             <div class="tweet__target">
                 <span class="tweet__target--sec">回覆</span>
-                <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__target--prim">@待補</router-link>
+                <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__target--prim">@{{reply.Tweet.User.account}}</router-link>
             </div>
             <div class="tweet__info--content">
                 {{reply.comment}}

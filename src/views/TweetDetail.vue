@@ -9,13 +9,14 @@
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddReply"
-                :initial-tweet="tweet"/>
+                :initial-tweet="tweet"
+                :is-in-detail-page="true"/>
 
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
 
-                <MainHeader :content="`推文`" :tweet-id="1"/>
+                <MainHeader :content="`推文`" :tweet-id="tweet.id"/>
 
                 <MainTweet 
                 v-if="!isLoading"
@@ -157,6 +158,7 @@ export default {
                 ...this.tweet,
                 replyCounts: this.tweet.replyCounts + 1
             }
+            //
             this.fetchReplies(this.tweet.id)
         },
     }

@@ -39,12 +39,12 @@ const routes = [
   {
     path: '/users/:id/follower',
     name: 'user-follower',
-    component: () => import('../views/Follow.vue')
+    component: () => import('../views/Follower.vue')
   },
   {
     path: '/users/:id/following',
     name: 'user-following',
-    component: () => import('../views/Follow.vue')
+    component: () => import('../views/Following.vue')
   },
   {
     path: '/users/:id',
@@ -111,6 +111,7 @@ router.beforeEach(async (to, from, next) => {
   let isAuthenticated = store.state.isAuthenticated
 
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore){
+    console.log('我發現你 token 有變喔')
     isAuthenticated = await store.dispatch('fetchCurrentUser')
   }
 

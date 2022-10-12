@@ -2,7 +2,7 @@
 <template>
   <form @click.stop.prevent="toggleModal" class="tweet__input">
     <div class="tweet__input--avatar">
-      <img src="../assets/images/avatar.svg" alt="" />
+      <img v-if="!isLoading" :src="userProfilePhoto" alt="" />
     </div>
     <h5 class="tweet__input--content">有什麼新鮮事？
     </h5>
@@ -16,13 +16,22 @@
 export default {
     props: {
         iniIsModalToggled: {
-            type: Boolean,
-            required: true
+          type: Boolean,
+          required: true
+        },
+        userProfilePhoto: {
+          type: String
         }
+    },
+    watch: {
+      userProfilePhoto () {
+        this.isLoading = false
+      }
     },
     data () {
         return {
-            isModalToggled: this.iniIsModalToggled
+            isModalToggled: this.iniIsModalToggled,
+            isLoading: true,
         }
     },
     methods: {
