@@ -13,6 +13,8 @@
         <UserEditModal
           v-if="isEditModalToggled"
           :initialUser="user"
+          :initialFormErrorEmail="formErrorEmail"
+          :initialFormErrorIntroduction="formErrorIntroduction"
           @after-submit-close="handleCloseModal"
           @after-submit="handleAfterSubmit"
         />
@@ -142,6 +144,8 @@ export default {
       isReplyModalToggled: false,
       isEditModalToggled: false,
       clickedTweet: {},
+      formErrorEmail: false,
+      formErrorIntroduction: false,
     };
   },
   created() {
@@ -305,7 +309,16 @@ export default {
           title: "成功更新使用者資料",
         });
       } catch (error) {
-        console.log(error);
+        const message = error.response.data.message.toLowerCase();
+        console.log(message);
+        if (message.includes("暱稱字數限制需在 1~ 50 字之內")) {
+          this.formErrorAccount = true;
+        } else if (message.includes("自我介紹字數限制需在 1~ 160 字之內")) {
+          this.formErrorEmail = true;
+        }
+
+
+
         Toast.fire({
           icon: "error",
           title: "無法更新使用者資料，請稍後再試",
@@ -330,9 +343,11 @@ export default {
       this.isReplyModalToggled = isReplyModalToggled;
       history.pushState({ name: "new-reply" }, null, "/#/reply/new");
     },
-    handleToggleEditModal(isEditModalToggled) {
+     handleToggleEditModal(isEditModalToggled) {
       this.isEditModalToggled = isEditModalToggled;
+
       history.pushState({ name: "user-edit" }, null, "/#/users/edit");
+
     },
     handlePassTweetData(tweet) {
       this.clickedTweet = tweet;

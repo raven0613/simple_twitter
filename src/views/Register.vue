@@ -212,9 +212,13 @@ export default {
   watch: {
     name(newValue) {
       console.log(newValue.length);
-
+      this.name = newValue.trim()
       // 計算目前輸入的字數
       this.lengthOfName = newValue.length;
+
+      if (newValue.length > 0) {
+        this.formErrorName = false;
+      }
 
       // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
       if (newValue.length >= 50) {
@@ -230,29 +234,36 @@ export default {
       }
     },
     email(newValue) {
+      this.email = newValue.trim()
       if (newValue.length > 0) {
         this.formErrorEmail = false;
         this.formErrorEmailExisted = false;
       }
     },
     account(newValue) {
+      this.account = newValue.trim()
       if (newValue.length > 0) {
         this.formErrorAccount = false;
         this.formErrorAccountExisted = false;
       }
     },
     password(newValue) {
+      this.password = newValue.trim()
       if (newValue.length > 0) {
         this.formErrorPassword = false;
         this.formErrorPasswordUnmatched = false;
       }
     },
     checkPassword(newValue) {
+      this.checkPassword = newValue.trim()
       if (newValue.length > 0) {
         this.formErrorCheckPassword = false;
         this.formErrorPasswordUnmatched = false;
       }
     },
+  },
+  created(){
+    this.lengthOfName = 0
   },
   methods: {
     async handleSubmit() {
@@ -269,26 +280,20 @@ export default {
         this.formErrorNameLimited = false;
 
         // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        //TODO:(待優化)
         if (!this.account) {
           this.formErrorAccount = true;
-          return;
         }
         if (!this.name) {
           this.formErrorName = true;
-          return;
         }
         if (!this.email) {
           this.formErrorEmail = true;
-          return;
         }
         if (!this.password) {
           this.formErrorPassword = true;
-          return;
         }
         if (!this.checkPassword) {
           this.formErrorCheckPassword = true;
-          return;
         }
 
         // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
@@ -317,6 +322,8 @@ export default {
         this.formErrorPassword = false;
         this.formErrorCheckPassword = false;
         this.formErrorPasswordUnmatched = false;
+        this.formErrorAccountExisted = false;
+        this.formErrorNameExisted = false;
         this.formErrorNameLimited = false;
 
         // 使用者成功建立帳號會自動跳轉 login 頁面，並出現成功提示「建立帳號成功！」

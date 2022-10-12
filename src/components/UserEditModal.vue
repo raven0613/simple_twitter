@@ -1,8 +1,6 @@
 <template>
   <div class="modal">
-    <form
-      @submit.prevent.stop="handleSubmit"
-    >
+    <form @submit.prevent.stop="handleSubmit" enctype="multipart/form-data">
       <div class="modal__container">
         <!-- 最上方的區塊 -->
         <div class="modal__input__container">
@@ -90,7 +88,7 @@
 
         <!-- 表格 -->
         <div class="form form__container">
-          <div :class="['form__input', { formError: formErrorName }]">
+          <div :class="['form__input', { formError: formErrorName || formErrorNameLimited }]">
             <div class="form__input__container">
               <label for="name">名稱</label>
               <input
@@ -103,10 +101,32 @@
                 v-model="user.name"
               />
             </div>
-            <span class="form__text-length montserrat-font">8/50</span>
+            <div
+              :class="[
+                'form__input__hint',
+                {
+                  form__input__count:
+                    !formErrorName && !formErrorNameLimited && lengthOfName,
+                },
+              ]"
+            >
+              <span class="form__input__hint-error" v-show="formErrorName"
+                >名稱欄位為必填</span
+              >
+              <span
+                class="form__input__hint-error"
+                v-show="formErrorNameLimited"
+                >字數超過上限！</span
+              >
+              <span
+                class="form__input__hint-length montserrat-font"
+                v-show="lengthOfName"
+                >{{ lengthOfName }}/50</span
+              >
+            </div>
           </div>
           <div
-            :class="['form__input', { formError: formErrorIntroduction }]"
+            :class="['form__input', { formError: formErrorIntroduction || formErrorIntroductionLimited }]"
             id="introduction__input"
           >
             <div class="form__input__container">
@@ -121,7 +141,29 @@
                 v-model="user.introduction"
               />
             </div>
-            <span class="form__text-length montserrat-font">0/160</span>
+            <div
+              :class="[
+                'form__input__hint',
+                {
+                  form__input__count:
+                    !formErrorIntroduction && !formErrorIntroductionLimited && lengthOfIntroduction,
+                },
+              ]"
+            >
+              <span class="form__input__hint-error" v-show="formErrorIntroduction"
+                >自我介紹欄位為必填</span
+              >
+              <span
+                class="form__input__hint-error"
+                v-show="formErrorIntroductionLimited"
+                >字數超過上限！</span
+              >
+              <span
+                class="form__input__hint-length montserrat-font"
+                v-show="lengthOfIntroduction"
+                >{{ lengthOfIntroduction }}/160</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -145,12 +187,24 @@ export default {
         profilePhoto: "",
       }),
     },
+    initialFormErrorAccount: {
+      type: Boolean,
+      default: false,
+    },
+    initialFormErrorEmail: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      user: {...this.initialUser},
+      user: { ...this.initialUser },
       formErrorName: false,
       formErrorIntroduction: false,
+      formErrorNameLimited: false,
+      formErrorIntroductionLimited: false,
+      lengthOfName: "",
+      lengthOfIntroduction: "",
     };
   },
   watch: {
@@ -163,24 +217,37 @@ export default {
     },
     // 監聽user裡的name, introduction數量變化
     user: {
-      handler: function (newValue) {
-        console.log(this.initialUser);
+      handler(newValue) {
+        newValue.name = newValue.name.trim();
+        newValue.introduction = newValue.introduction.trim();
+
+        // 計算目前輸入的字數
+        this.lengthOfName = newValue.name.length;
+        this.lengthOfIntroduction = newValue.introduction.length;
+
         if (newValue.name.length > 0) {
           this.formErrorName = false;
+          this.formErrorNameLimited = false;
         }
 
         // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
-        if (newValue.name.length > 50) {
+        if (newValue.name.length >= 50) {
           Toast.fire({
             icon: "error",
             title: "字數超過上限！",
           });
+          
           this.user.name = this.user.name.slice(0, 50); // name會停留在50字內
+          this.formErrorNameLimited = true;
+          console.log(this.user.name)
           return;
+        } else {
+          this.formErrorNameLimited = false;
         }
 
         if (newValue.introduction.length > 0) {
-          this.formErrorName = false;
+          this.formErrorIntroduction = false;
+          this.formErrorIntroductionLimited = false;
         }
 
         // introduction 字數限制在160字以內，若超過會有錯誤提示「字數超過上限！」
@@ -189,39 +256,48 @@ export default {
             icon: "error",
             title: "字數超過上限！",
           });
-          this.user.introduction = this.introduction.slice(0, 160); // name會停留在50字內
+          this.user.introduction = this.user.introduction.slice(0, 160); // introduction會停留在160字內
+
+          this.formErrorIntroductionLimited = true;
           return;
         }
       },
       deep: true,
     },
+    initialFormErrorAccount(newValue) {
+      this.formErrorAccount = newValue;
+    },
+    initialFormErrorEmail(newValue) {
+      this.formErrorEmail = newValue;
+    },
+  },
+  created(){
+    this.lengthOfName = this.initialUser.name.length
+    this.lengthOfIntroduction = this.initialUser.introduction.length
   },
   methods: {
     handleSubmit() {
       try {
-        console.log('submitted')
         // 當按下按鈕後，所有底線為黑/藍線
         this.formErrorName = false;
         this.formErrorIntroduction = false;
+        this.formErrorNameLimited = false;
+        this.formErrorIntroductionLimited = false;
 
         // 欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        //TODO:(待優化)
+        if (!this.user.introduction && !this.user.name) {
+          this.formErrorName = true;
+          this.formErrorIntroduction= true; 
+          return
+        }
         if (!this.user.name) {
           this.formErrorName = true;
-          Toast.fire({
-            icon: "error",
-            title: "名稱欄位為必填",
-          });
-          return;
+          return
         }
 
         if (!this.user.introduction) {
-          this.formErrorName = true;
-          Toast.fire({
-            icon: "error",
-            title: "名稱欄位為必填",
-          });
-          return;
+          this.formErrorIntroduction= true;
+          return
         }
 
         // 把表單資料打包給後端
@@ -232,17 +308,19 @@ export default {
           coverPhoto: this.user.coverPhoto,
         };
 
-        console.log(formData)
+        console.log(formData);
         this.$emit("after-submit", formData);
 
         // 成功取得資料，所有底線為黑/藍線
         this.formErrorName = false;
         this.formErrorIntroduction = false;
+        this.formErrorNameLimited = false;
+        this.formErrorIntroductionLimited = false;
 
-        this.$emit('after-submit-close')
+        this.$emit("after-submit-close");
       } catch (error) {
         // 想要拿到data.message，要知道是包在error.response裡
-        const message = error.response.data.message.toLowerCase();
+        const message = error.response.data.message
 
         Toast.fire({
           icon: "error",
@@ -250,34 +328,34 @@ export default {
         });
       }
     },
-    handleCoverPhotoChange(e){
-      const {files } = e.target
+    handleCoverPhotoChange(e) {
+      const { files } = e.target;
       if (files.length === 0) {
         // 使用者沒有選擇上傳檔案
-        this.user.coverPhoto = ''
-        return 
+        this.user.coverPhoto = "";
+        return;
       } else {
         // 可以接收files物件，當帶進來 window.URL.createObjectURL() 的時候，會自動產生一個URL(類似存在記憶體暫時的連結blob)
-        const imageURL = window.URL.createObjectURL(files[0]) 
-        this.user.coverPhoto = imageURL
+        const imageURL = window.URL.createObjectURL(files[0]);
+        this.user.coverPhoto = imageURL;
       }
     },
-    handleProfilePhotoChange(e){
-      const {files } = e.target
+    handleProfilePhotoChange(e) {
+      const { files } = e.target;
       if (files.length === 0) {
         // 使用者沒有選擇上傳檔案
-        this.user.profilePhoto = ''
-        return 
+        this.user.profilePhoto = "";
+        return;
       } else {
         // 可以接收files物件，當帶進來 window.URL.createObjectURL() 的時候，會自動產生一個URL(類似存在記憶體暫時的連結blob)
-        const imageURL = window.URL.createObjectURL(files[0]) 
-        this.user.profilePhoto = imageURL
+        const imageURL = window.URL.createObjectURL(files[0]);
+        this.user.profilePhoto = imageURL;
       }
     },
-    handleCancelClicked () {
-      this.user = this.initialUser
-      this.$emit('after-submit-close')
-    }
+    handleCancelClicked() {
+      this.user = this.initialUser;
+      this.$emit("after-submit-close");
+    },
   },
 };
 </script>

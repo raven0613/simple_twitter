@@ -6,7 +6,12 @@
       @keyup.enter.prevent.stop="handleSubmit"
       class="form form__container"
     >
-      <div :class="['form__input', { formError: formErrorAccount }]">
+      <div
+        :class="[
+          'form__input',
+          { formError: formErrorAccount || formErrorAccountExisted },
+        ]"
+      >
         <div class="form__input__container">
           <label for="account">帳號</label>
           <input
@@ -19,9 +24,22 @@
             v-model="userData.account"
           />
         </div>
+        <div class="form__input__hint">
+          <span class="form__input__hint-error" v-show="formErrorAccount"
+            >帳號欄位為必填</span
+          >
+          <span class="form__input__hint-error" v-show="formErrorAccountExisted"
+            >此帳號已重複註冊</span
+          >
+        </div>
       </div>
 
-      <div :class="['form__input', { formError: formErrorName }]">
+      <div
+        :class="[
+          'form__input',
+          { formError: formErrorName || formErrorNameLimited },
+        ]"
+      >
         <div class="form__input__container">
           <label for="name">名稱</label>
           <input
@@ -34,9 +52,35 @@
             v-model="userData.name"
           />
         </div>
+        <div
+          :class="[
+            'form__input__hint',
+            {
+              form__input__count:
+                !formErrorName && !formErrorNameLimited && lengthOfName,
+            },
+          ]"
+        >
+          <span class="form__input__hint-error" v-show="formErrorName"
+            >名稱欄位為必填</span
+          >
+          <span class="form__input__hint-error" v-show="formErrorNameLimited"
+            >字數超過上限！</span
+          >
+          <span
+            class="form__input__hint-length montserrat-font"
+            v-show="lengthOfName"
+            >{{ lengthOfName }}/50</span
+          >
+        </div>
       </div>
 
-      <div :class="['form__input', { formError: formErrorEmail }]">
+      <div
+        :class="[
+          'form__input',
+          { formError: formErrorEmail || formErrorEmailExisted },
+        ]"
+      >
         <div class="form__input__container">
           <label for="email">Email</label>
           <input
@@ -49,9 +93,22 @@
             v-model="userData.email"
           />
         </div>
+        <div class="form__input__hint">
+          <span class="form__input__hint-error" v-show="formErrorEmail"
+            >Email欄位為必填</span
+          >
+          <span class="form__input__hint-error" v-show="formErrorEmailExisted"
+            >此Email已重複註冊</span
+          >
+        </div>
       </div>
 
-      <div :class="['form__input', { formError: formErrorPassword }]">
+      <div
+        :class="[
+          'form__input',
+          { formError: formErrorPassword || formErrorPasswordUnmatched },
+        ]"
+      >
         <div class="form__input__container">
           <label for="password">密碼</label>
           <input
@@ -64,9 +121,24 @@
             v-model="userData.password"
           />
         </div>
+        <div class="form__input__hint">
+          <span class="form__input__hint-error" v-show="formErrorPassword"
+            >密碼欄位為必填</span
+          >
+          <span
+            class="form__input__hint-error"
+            v-show="formErrorPasswordUnmatched"
+            >密碼與確認密碼不符</span
+          >
+        </div>
       </div>
 
-      <div :class="['form__input', { formError: formErrorCheckPassword }]">
+      <div
+        :class="[
+          'form__input',
+          { formError: formErrorCheckPassword || formErrorPasswordUnmatched },
+        ]"
+      >
         <div class="form__input__container">
           <label for="passwordCheck">密碼確認</label>
           <input
@@ -78,6 +150,16 @@
             autofocus
             v-model="userData.checkPassword"
           />
+        </div>
+        <div class="form__input__hint">
+          <span class="form__input__hint-error" v-show="formErrorCheckPassword"
+            >密碼確認欄位為必填</span
+          >
+          <span
+            class="form__input__hint-error"
+            v-show="formErrorPasswordUnmatched"
+            >密碼與確認密碼不符</span
+          >
         </div>
       </div>
 
@@ -103,6 +185,14 @@ export default {
         account: "",
       }),
     },
+    initialFormErrorAccountExisted: {
+      type: Boolean,
+      default: false,
+    },
+    initialFormErrorEmailExisted: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -118,6 +208,11 @@ export default {
       formErrorAccount: false,
       formErrorPassword: false,
       formErrorCheckPassword: false,
+      formErrorPasswordUnmatched: false,
+      formErrorAccountExisted: false,
+      formErrorEmailExisted: false,
+      formErrorNameLimited: false,
+      lengthOfName: "",
     };
   },
   created() {
@@ -129,11 +224,68 @@ export default {
     console.log(this.userData);
   },
   watch: {
+    userData: {
+      handler(newValue) {
+        console.log(newValue.length);
+        newValue.name = newValue.name.trim();
+        newValue.account = newValue.account.trim();
+        newValue.email = newValue.email.trim();
+        newValue.password = newValue.password.trim();
+        newValue.checkPassword = newValue.checkPassword.trim();
+
+        // 計算目前輸入的字數
+        this.lengthOfName = newValue.name.length;
+
+        if (newValue.name.length > 0) {
+          this.formErrorName = false;
+        }
+
+        // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
+        if (newValue.name.length > 50) {
+          Toast.fire({
+            icon: "error",
+            title: "字數超過上限！",
+          });
+          newValue.name = newValue.name.slice(0, 50); // name會停留在50字內
+          this.formErrorNameLimited = true;
+          return;
+        } else {
+          this.formErrorNameLimited = false;
+        }
+
+        if (newValue.email.length > 0) {
+          this.formErrorEmail = false;
+          this.formErrorEmailExisted = false;
+        }
+
+        if (newValue.account.length > 0) {
+          this.formErrorAccount = false;
+          this.formErrorAccountExisted = false;
+        }
+
+        if (newValue.password.length > 0) {
+          this.formErrorPassword = false;
+          this.formErrorPasswordUnmatched = false;
+        }
+
+        if (newValue.checkPassword.length > 0) {
+          this.formErrorCheckPassword = false;
+          this.formErrorPasswordUnmatched = false;
+        }
+      },
+      deep: true,
+    },
     initialUserData(newValue) {
       this.userData = {
         ...this.userData,
         ...newValue,
       };
+    },
+    initialFormErrorAccountExisted(newValue) {
+      this.formErrorAccountExisted = newValue;
+    },
+    initialFormErrorEmailExisted(newValue) {
+      this.formErrorEmailExisted = newValue;
     },
   },
   methods: {
@@ -145,54 +297,32 @@ export default {
         this.formErrorAccount = false;
         this.formErrorPassword = false;
         this.formErrorCheckPassword = false;
+        this.formErrorPasswordUnmatched = false;
+        this.formErrorAccountExisted = false;
+        this.formErrorNameExisted = false;
+        this.formErrorNameLimited = false;
+        this.formErrorPasswordUnmatched = false;
 
         // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        //TODO:(待優化)
         if (!this.userData.account) {
           this.formErrorAccount = true;
-          Toast.fire({
-            icon: "error",
-            title: "帳號欄位為必填",
-          });
-          return;
         }
         if (!this.userData.name) {
           this.formErrorName = true;
-          Toast.fire({
-            icon: "error",
-            title: "名稱欄位為必填",
-          });
-          return;
         }
         if (!this.userData.email) {
           this.formErrorEmail = true;
-          Toast.fire({
-            icon: "error",
-            title: "Email欄位為必填",
-          });
-          return;
         }
         if (!this.userData.password) {
           this.formErrorPassword = true;
-          Toast.fire({
-            icon: "error",
-            title: "密碼欄位為必填",
-          });
-          return;
         }
         if (!this.userData.checkPassword) {
           this.formErrorCheckPassword = true;
-          Toast.fire({
-            icon: "error",
-            title: "密碼確認欄位為必填",
-          });
-          return;
         }
 
         // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
         if (this.userData.password !== this.userData.checkPassword) {
-          this.formErrorPassword = true;
-          this.formErrorCheckPassword = true;
+          this.formErrorPasswordUnmatched = true;
           Toast.fire({
             icon: "error",
             title: "密碼與確認密碼不符",
@@ -200,16 +330,15 @@ export default {
           return;
         }
 
-        
         // 把表單資料打包給後端
         const formData = {
           account: this.userData.account,
           name: this.userData.name,
           email: this.userData.email,
           password: this.userData.password,
-          checkPassword: this.userData.checkPassword
+          checkPassword: this.userData.checkPassword,
         };
-        console.log(formData)
+        console.log(formData);
 
         this.$emit("after-submit", formData);
 
@@ -219,6 +348,10 @@ export default {
         this.formErrorAccount = false;
         this.formErrorPassword = false;
         this.formErrorCheckPassword = false;
+        this.formErrorPasswordUnmatched = false;
+        this.formErrorAccountExisted = false;
+        this.formErrorNameExisted = false;
+        this.formErrorNameLimited = false;
 
         this.userData.password = "";
         this.userData.checkPassword = "";
@@ -227,15 +360,15 @@ export default {
         const message = error.response.data.message.toLowerCase();
 
         if (message.includes("account")) {
-          this.formErrorAccount = true;
+          this.formErrorAccountExisted = true;
         } else if (message.includes("email")) {
-          this.formErrorEmail = true;
+          this.formErrorEmailExisted = true;
         }
 
-        Toast.fire({
-          icon: "error",
-          title: message,
-        });
+        // Toast.fire({
+        //   icon: "error",
+        //   title: message,
+        // });
       }
     },
   },

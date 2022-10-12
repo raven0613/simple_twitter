@@ -143,7 +143,7 @@ export default {
   watch: {
     initialUser: {
       handler: function (newValue) {
-        console.log(newValue)
+        console.log(newValue.coverPhoto, newValue.profilePhoto)
         this.user = {
           ...this.user,
           ...newValue,
