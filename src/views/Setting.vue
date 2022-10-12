@@ -11,6 +11,8 @@
                 <div class="tweets__container">
                   <SettingPanel 
                     :initialUserData="userData"
+                    :initialFormErrorAccountExisted="formErrorAccountExisted"
+                    :initialFormErrorEmailExisted="formErrorEmailExisted"
                     @after-submit="handleAfterSubmit"
                   />
                 </div>
@@ -58,6 +60,8 @@ export default {
         account: ""
       },
       isModalToggled: false,
+      formErrorAccountExisted: false,
+      formErrorEmailExisted: false
     }
   },
   created() {
@@ -109,10 +113,17 @@ export default {
         })
 
       } catch (error) {
-        console.log(error)
+        const message = error.response.data.message.toLowerCase();
+        console.log(message)
+        if (message.includes("此帳號已被使用")) {
+          this.formErrorAccountExisted = true;
+        } else if (message.includes("此email已被使用")) {
+          this.formErrorEmailExisted = true;
+        }
+
         Toast.fire({
           icon: 'error',
-          title: '無法更新使用者資料，請稍後再試'
+          title: message
         })
       }
     },

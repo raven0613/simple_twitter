@@ -28,7 +28,7 @@ export default {
   // 更新個人資料
   updateProfile({userId, formData}) {
     console.log(userId, formData)
-    return apiHelper.put(`/users/${userId}`, formData)
+    return apiHelper.put(`/users/${userId}`, formData,)
   },
   getUser ({userId}) {
       return apiHelper.get(`/users/${userId}`)

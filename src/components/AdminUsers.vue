@@ -17,20 +17,20 @@
       <div class="user-card__info--icons">
         <div class="user-card__info--icon">
           <img src="../assets/images/admin-tweet.svg" alt="">
-          <span><span class="montserrat-font">{{user.tweetsCount}}</span></span>
+          <span><span class="montserrat-font">{{user.tweetCounts}}</span></span>
         </div>
         <div class="user-card__info--icon">
           <img src="../assets/images/admin-like.svg" alt="">
-          <span><span class="montserrat-font">{{user.likesCount}}</span></span>
+          <span><span class="montserrat-font">{{user.likeCounts}}</span></span>
         </div>
       </div>
       <div class="user-card__info--followships">
         <span class="user-card__info--follow">
-          <span><span class="montserrat-font">{{user.followingCount}}</span>個</span>
+          <span><span class="montserrat-font">{{user.followingCounts}}</span>個</span>
           <span>跟隨中</span>
         </span>
         <span class="user-card__info--follow">
-          <span><span class="montserrat-font">{{user.followerCount}}</span>位</span>
+          <span><span class="montserrat-font">{{user.followerCounts}}</span>位</span>
           <span>跟隨者</span>
         </span>
       </div>
