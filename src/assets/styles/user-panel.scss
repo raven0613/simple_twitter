@@ -17,6 +17,9 @@
   // 按鈕們
   &__controller {
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   // 個人資訊

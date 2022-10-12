@@ -118,9 +118,11 @@ export default {
     },
     handleToggleModal(isModalToggled){
         this.isModalToggled = isModalToggled
+        history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
     },
     handleCloseModal(){
         this.isModalToggled = false
+        this.$router.back();
     },
     handleAddTweet(){
         this.$router.push({name: 'main-page'})

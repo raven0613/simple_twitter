@@ -18,9 +18,17 @@
         </section>
 
         <section v-else>
-            <router-link :to="{name: 'user-follower'}" class="home__tab home__tab--follow">追隨者</router-link>
+            <router-link 
+            @click.native.stop.prevent="handleClickTab('follower')"
+            :to="{name: 'user-follower'}" 
+            class="home__tab home__tab--follow"
+            :class="{active: currentTab === 'follower'}">追隨者</router-link>
 
-            <router-link :to="{name: 'user-following'}" class="home__tab home__tab--follow">正在追隨</router-link>
+            <router-link 
+            @click.native.stop.prevent="handleClickTab('following')" 
+            :to="{name: 'user-follower'}" 
+            class="home__tab home__tab--follow"
+            :class="{active: currentTab === 'following'}">正在追隨</router-link>
         </section>
 
     </div>
@@ -41,5 +49,10 @@ export default {
             return this.clickedTab
         }
     },
+    methods: {
+        handleClickTab (clickedTab) {
+            this.$emit('after-click-tab', clickedTab)
+        }
+    }
 }
 </script>

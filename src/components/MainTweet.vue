@@ -3,11 +3,13 @@
 
         <div v-if="!isLoading" class="tweet-detail__user">
             <div class="tweet__avatar">
-                <img class="tweet__avatar--photo" :src="tweet.User.profilePhoto" alt="">
+                <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}, query: {tab: 'tweet'}}" class="tweet__avatar--photo" >
+                    <img :src="tweet.User.profilePhoto" alt="">
+                </router-link>
             </div>
             <div class="tweet-detail__user--name">
-                <p>{{tweet.User.name}}</p>
-                <p>@{{tweet.User.account}}</p>
+                <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}, query: {tab: 'tweet'}}">{{tweet.User.name}}</router-link>
+                <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}, query: {tab: 'tweet'}}">@{{tweet.User.account}}</router-link>
             </div>
         </div>
 
