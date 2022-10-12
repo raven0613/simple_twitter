@@ -92,6 +92,8 @@ export default {
         this.fetchReplies(tweetId)
     },
     beforeRouteUpdate(to, from, next){
+        this.isTweetLoading = true
+        this.isReplyLoading = true
         const {id} = to.params
         this.fetchTweet(id)
         this.fetchReplies(id)
@@ -141,16 +143,19 @@ export default {
         },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
+            history.pushState({ name: "new-tweet" }, null, "/#/tweet/new");
         },
         handleCloseModal(){
             this.isModalToggled = false
             this.isReplyModalToggled = false
+            this.$router.back();
         },
         handleAddTweet(){
             this.$router.push({name: 'main-page'})
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
+            history.pushState({ name: "new-reply" }, null, "/#/reply/new");
         },
         handleAddReply(reply){
             this.replies.push(reply)

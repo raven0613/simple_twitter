@@ -154,7 +154,13 @@ export default {
   },
   created() {
     const { id: userId } = this.$route.params;
-    this.fetchUser(userId);
+    if (userId) {
+      this.fetchUser(userId);
+    }
+    else {
+      this.fetchUser(this.currentUser.id);
+    }
+    this.getUrl()
 
     const { tab } = this.$route.query;
     if (tab === "tweet") {
@@ -168,6 +174,8 @@ export default {
     this.currentTab = tab;
   },
   beforeRouteUpdate(to, from, next) {
+    this.isTweetLoading = true
+    this.isReplyLoading = true
     const { id: userId } = to.params;
     this.fetchUser(userId);
 
@@ -309,7 +317,7 @@ export default {
     },
     handleToggleModal(isModalToggled) {
       this.isModalToggled = isModalToggled;
-      history.pushState({ name: "new-tweet" }, null, "/tweet/new");
+      history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
     },
     handleCloseModal() {
       this.isModalToggled = false;
@@ -323,10 +331,11 @@ export default {
     },
     handleToggleReplyModal(isReplyModalToggled) {
       this.isReplyModalToggled = isReplyModalToggled;
-      history.pushState({ name: "new-reply" }, null, "/reply/new");
+      history.pushState({ name: "new-reply" }, null, "/#/reply/new");
     },
     handleToggleEditModal(isEditModalToggled) {
       this.isEditModalToggled = isEditModalToggled;
+      history.pushState({ name: "user-edit" }, null, "/#/users/edit");
     },
     handlePassTweetData(tweet) {
       this.clickedTweet = tweet;
@@ -335,6 +344,12 @@ export default {
       // this.$router.push({name: 'tweet-detail', params: { id: this.clickedTweet.id }})
       this.replies = this.replies.push(reply);
     },
+    // 別人直接貼網址的狀況
+    getUrl() {
+        if(this.$route.matched[0].name === 'user-edit') {
+            this.isEditModalToggled = true
+        }
+    }
   },
 };
 </script>

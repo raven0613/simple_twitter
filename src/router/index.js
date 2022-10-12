@@ -32,29 +32,34 @@ const routes = [
     component: Main,
   },
   {
+    path: '/tweets/new',
+    name: 'tweet-new',
+    component: () => import('../views/Main.vue'),
+  },
+  {
     path: '/tweets/:id',
     name: 'tweet-detail',
     component: () => import('../views/TweetDetail.vue'),
   },
   {
+    path: '/users/edit',
+    name: 'user-edit',
+    component: () => import('../views/UserDetail.vue')
+  },
+  {
     path: '/users/:id/follower',
     name: 'user-follower',
-    component: () => import('../views/Follower.vue')
+    component: () => import('../views/Follow.vue')
   },
   {
     path: '/users/:id/following',
     name: 'user-following',
-    component: () => import('../views/Following.vue')
+    component: () => import('../views/Follow.vue')
   },
   {
     path: '/users/:id',
     name: 'user-detail',
     component: () => import('../views/UserDetail.vue')
-  },
-  {
-    path: '/tweets/:id',
-    name: 'tweet-detail',
-    component: () => import('../views/TweetDetail.vue')
   },
   {
     path: '/register',

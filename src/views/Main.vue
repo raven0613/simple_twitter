@@ -79,6 +79,7 @@ export default {
         }
     },
     created () {
+        this.getUrl()
         this.fetchTweets()
         this.fetchUser(this.currentUser.id)
     },
@@ -122,10 +123,12 @@ export default {
         },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
+            history.pushState({ name: "new-tweet" }, null, "/#/tweet/new");
         },
         handleCloseModal(){
             this.isModalToggled = false
             this.isReplyModalToggled = false
+            this.$router.back();
         },
         handleAddTweet(tweet){
             this.tweets = [
@@ -135,10 +138,18 @@ export default {
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
+            history.pushState({ name: "new-reply" }, null, "/#/reply/new");
         },
         handlePassTweetData(tweet){
             this.clickedTweet = tweet
         },
+        // 別人直接貼網址的狀況
+        getUrl() {
+            console.log(this.$route.matched[0])
+            if(this.$route.matched[0].name === 'tweet-new') {
+                this.isModalToggled = true
+            }
+        }
     }
 }
 </script>
