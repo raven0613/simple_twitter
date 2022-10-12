@@ -137,7 +137,7 @@ export default {
     },
   },
   methods: {
-    async handleSubmit() {
+    handleSubmit() {
       try {
         // 當按下按鈕後，所有底線為黑/藍線
         this.formErrorName = false;

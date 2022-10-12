@@ -39,6 +39,7 @@ import MainTweetModal from '../components/MainTweetModal.vue'
 import Footer from '../components/Footer.vue'
 import usersAPI from "../apis/users";
 import { Toast } from "../utils/helpers";
+import { mapState } from "vuex";
 
 export default {
   name: "Setting",
@@ -60,8 +61,16 @@ export default {
     }
   },
   created() {
-    // const { id } = this.$route.params
-    this.fetchUser(24)
+    this.fetchUser(this.currentUser.id)
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+    isLoading() {
+      if (!this.isUserLoading && !this.isTweetLoading) {
+        return false;
+      }
+      return true;
+    },
   },
   methods:{
     async fetchUser(userId) {
@@ -86,7 +95,7 @@ export default {
       try {
         console.log('hi', formData)
         const { data } = await usersAPI.updateSetting({
-          userId: 24,
+          userId: this.currentUser.id,
           formData
         })
 

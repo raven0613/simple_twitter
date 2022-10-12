@@ -1,102 +1,136 @@
 <template>
   <div class="modal">
-    <div class="modal__container">
-      <!-- 最上方的區塊 -->
-      <div class="modal__input__container">
-        <img
-          src="../assets/images/last-step.svg"
-          alt=""
-          class="modal__input--last-step"
-        />
-        <img
-          src="../assets/images/cancel-orange.svg"
-          alt=""
-          class="modal__input--cancel"
-        />
-        <p class="modal__input--title">編輯個人資料</p>
-        <button class="modal__input--save">儲存</button>
-      </div>
-
-      <!-- 背景圖片跟個人照 -->
-      <div class="user-info__image__container">
-        <div class="user-info__background__container">
+    <form
+      @submit.prevent.stop="handleSubmit"
+    >
+      <div class="modal__container">
+        <!-- 最上方的區塊 -->
+        <div class="modal__input__container">
           <img
-            :src="user.coverPhoto"
+            src="../assets/images/last-step.svg"
             alt=""
-            class="user-info__background--photo"
+            class="modal__input--last-step"
           />
-          <span class="user-info__background--mask"></span>
-          <div class="user-info__background__icons__container">
+          <img
+            @click.stop.prevent="handleCancelClicked"
+            src="../assets/images/cancel-orange.svg"
+            alt=""
+            class="modal__input--cancel"
+          />
+          <p class="modal__input--title">編輯個人資料</p>
+          <button class="modal__input--save" type="submit">儲存</button>
+        </div>
+
+        <!-- 背景圖片跟個人照 -->
+        <div class="user-info__image__container">
+          <div class="user-info__background__container">
             <img
-              src="../assets/images/add-photo.svg"
+              :src="user.coverPhoto"
               alt=""
-              class="user-info__background__icon"
+              class="user-info__background--photo"
             />
+            <span class="user-info__background--mask"></span>
+            <div class="user-info__background__icons__container">
+              <button>
+                <input
+                  type="file"
+                  ref="coverPhotoInput"
+                  style="display: none"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  class="form-control-file"
+                  @change="handleCoverPhotoChange"
+                />
+                <img
+                  @click.prevent.stop="$refs.coverPhotoInput.click()"
+                  src="../assets/images/add-photo.svg"
+                  alt=""
+                  class="user-info__background__icon"
+                />
+              </button>
+
+              <img
+                src="../assets/images/cancel-white.svg"
+                alt=""
+                class="user-info__background__icon"
+              />
+            </div>
+          </div>
+
+          <div class="user-info__avatar__container">
             <img
-              src="../assets/images/cancel-white.svg"
+              :src="user.profilePhoto"
               alt=""
-              class="user-info__background__icon"
+              class="user-info__avatar--photo"
             />
+            <span class="user-info__avatar--mask"></span>
+            <div class="user-info__avatar__icons__container">
+              <button>
+                <input
+                  type="file"
+                  ref="profilePhotoInput"
+                  style="display: none"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  class="form-control-file"
+                  @change="handleProfilePhotoChange"
+                />
+                <img
+                  @click.prevent.stop="$refs.profilePhotoInput.click()"
+                  src="../assets/images/add-photo.svg"
+                  alt=""
+                  class="user-info__background__icon"
+                />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="user-info__avatar__container">
-          <img
-            :src="user.profilePhoto"
-            alt=""
-            class="user-info__avatar--photo"
-          />
-          <span class="user-info__avatar--mask"></span>
-          <div class="user-info__avatar__icons__container">
-            <img
-              src="../assets/images/add-photo.svg"
-              alt=""
-              class="user-info__avatar__icon"
-            />
+        <!-- 表格 -->
+        <div class="form form__container">
+          <div :class="['form__input', { formError: formErrorName }]">
+            <div class="form__input__container">
+              <label for="name">名稱</label>
+              <input
+                id="name"
+                name="name"
+                type="name"
+                placeholder="John Doe"
+                autocomplete="name"
+                autofocus
+                v-model="user.name"
+              />
+            </div>
+            <span class="form__text-length montserrat-font">8/50</span>
+          </div>
+          <div
+            :class="['form__input', { formError: formErrorIntroduction }]"
+            id="introduction__input"
+          >
+            <div class="form__input__container">
+              <label for="introduction">自我介紹</label>
+              <input
+                id="introduction"
+                name="name"
+                type="name"
+                placeholder="談談你自己吧..."
+                autocomplete="off"
+                autofocus
+                v-model="user.introduction"
+              />
+            </div>
+            <span class="form__text-length montserrat-font">0/160</span>
           </div>
         </div>
       </div>
-
-      <!-- 表格 -->
-      <form class="form form__container">
-        <div class="form__input">
-          <div class="form__input__container">
-            <label for="name">名稱</label>
-            <input
-              id="name"
-              name="name"
-              type="name"
-              placeholder="John Doe"
-              autocomplete="name"
-              required
-              autofocus
-              v-model="user.name"
-            />
-          </div>
-          <span class="form__text-length montserrat-font">8/50</span>
-        </div>
-        <div class="form__input" id="introduction__input">
-          <div class="form__input__container">
-            <label for="introduction">自我介紹</label>
-            <input
-              id="introduction"
-              name="name"
-              type="name"
-              placeholder="談談你自己吧..."
-              autocomplete="name"
-              required
-              autofocus
-              v-model="user.introduction"
-            />
-          </div>
-          <span class="form__text-length montserrat-font">0/160</span>
-        </div>
-      </form>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
+import { Toast } from "../utils/helpers";
 export default {
   name: "UserEditModal",
   props: {
@@ -112,11 +146,138 @@ export default {
       }),
     },
   },
-  data(){
-    return{
-      user:this.initialUser
-      
+  data() {
+    return {
+      user: {...this.initialUser},
+      formErrorName: false,
+      formErrorIntroduction: false,
+    };
+  },
+  watch: {
+    // initialUser有改變值時把值代入到子層
+    initialUser(newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue,
+      };
+    },
+    // 監聽user裡的name, introduction數量變化
+    user: {
+      handler: function (newValue) {
+        console.log(this.initialUser);
+        if (newValue.name.length > 0) {
+          this.formErrorName = false;
+        }
+
+        // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
+        if (newValue.name.length > 50) {
+          Toast.fire({
+            icon: "error",
+            title: "字數超過上限！",
+          });
+          this.user.name = this.user.name.slice(0, 50); // name會停留在50字內
+          return;
+        }
+
+        if (newValue.introduction.length > 0) {
+          this.formErrorName = false;
+        }
+
+        // introduction 字數限制在160字以內，若超過會有錯誤提示「字數超過上限！」
+        if (newValue.introduction.length > 160) {
+          Toast.fire({
+            icon: "error",
+            title: "字數超過上限！",
+          });
+          this.user.introduction = this.introduction.slice(0, 160); // name會停留在50字內
+          return;
+        }
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    handleSubmit() {
+      try {
+        console.log('submitted')
+        // 當按下按鈕後，所有底線為黑/藍線
+        this.formErrorName = false;
+        this.formErrorIntroduction = false;
+
+        // 欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
+        //TODO:(待優化)
+        if (!this.user.name) {
+          this.formErrorName = true;
+          Toast.fire({
+            icon: "error",
+            title: "名稱欄位為必填",
+          });
+          return;
+        }
+
+        if (!this.user.introduction) {
+          this.formErrorName = true;
+          Toast.fire({
+            icon: "error",
+            title: "名稱欄位為必填",
+          });
+          return;
+        }
+
+        // 把表單資料打包給後端
+        const formData = {
+          name: this.user.name,
+          introduction: this.user.introduction,
+          profilePhoto: this.user.profilePhoto,
+          coverPhoto: this.user.coverPhoto,
+        };
+
+        console.log(formData)
+        this.$emit("after-submit", formData);
+
+        // 成功取得資料，所有底線為黑/藍線
+        this.formErrorName = false;
+        this.formErrorIntroduction = false;
+
+        this.$emit('after-submit-close')
+      } catch (error) {
+        // 想要拿到data.message，要知道是包在error.response裡
+        const message = error.response.data.message.toLowerCase();
+
+        Toast.fire({
+          icon: "error",
+          title: message,
+        });
+      }
+    },
+    handleCoverPhotoChange(e){
+      const {files } = e.target
+      if (files.length === 0) {
+        // 使用者沒有選擇上傳檔案
+        this.user.coverPhoto = ''
+        return 
+      } else {
+        // 可以接收files物件，當帶進來 window.URL.createObjectURL() 的時候，會自動產生一個URL(類似存在記憶體暫時的連結blob)
+        const imageURL = window.URL.createObjectURL(files[0]) 
+        this.user.coverPhoto = imageURL
+      }
+    },
+    handleProfilePhotoChange(e){
+      const {files } = e.target
+      if (files.length === 0) {
+        // 使用者沒有選擇上傳檔案
+        this.user.profilePhoto = ''
+        return 
+      } else {
+        // 可以接收files物件，當帶進來 window.URL.createObjectURL() 的時候，會自動產生一個URL(類似存在記憶體暫時的連結blob)
+        const imageURL = window.URL.createObjectURL(files[0]) 
+        this.user.profilePhoto = imageURL
+      }
+    },
+    handleCancelClicked () {
+      this.user = this.initialUser
+      this.$emit('after-submit-close')
     }
-  }
+  },
 };
 </script>
