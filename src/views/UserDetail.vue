@@ -15,45 +15,83 @@
           @after-submit-close="handleCloseModal"
           @after-submit="handleAfterSubmit"
         />
-
-        <MainReplyModal
-          v-if="isReplyModalToggled"
-          @after-submit-close="handleCloseModal"
-          @after-submit="handleAddTweet"
-        />
-
+        
         <MainTweetModal
           v-if="isModalToggled"
           @after-submit-close="handleCloseModal"
           @after-submit="handleAddTweet"
         />
+             
+        <MainReplyModal v-if="isReplyModalToggled"
+        @after-submit-close="handleCloseModal"
+        :initial-tweet="clickedTweet"
+        :is-in-detail-page="false"/>
 
-        <UserHeader :content="`Raven`" :counts="tweets.length" />
+        <UserHeader :content="user.name" :counts="tweets.length"/>
         <UserPanel
           :ini-is-modal-toggled="isModalToggled"
           :initialUser="user"
           @after-toggle-modal="handleToggleEditModal"
         />
 
-        <HomeTabs :user-id="currentUser.id" :current-tab="currentTab" />
-        <div v-if="!isLoading" class="tweets__container">
-          <p v-if="!tweets.length">目前還沒有推文</p>
-          <TweetCard
-            :ini-is-modal-toggled="isModalToggled"
-            @after-toggle-modal="handleToggleReplyModal"
-            v-for="tweet in tweets"
-            :key="tweet.id"
-            :initial-tweet="tweet"
-            :user="user"
-          />
-
-          <!-- <p v-if="!replies.length">目前還沒有回覆</p>
+        <HomeTabs 
+        :clicked-tab="currentTab"
+        :user-id="currentUser.id"
+        />
+            <!-- tab=tweet -->
+                <div v-if="!isLoading && currentTab==='tweet'" 
+                class="tweets__container">
+                    <p v-if="!tweets.length">目前還沒有推文</p>
+                    <TweetCard 
+                    v-else
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
+                    v-for="tweet in tweets" 
+                    :key="tweet.id"
+                    :initial-tweet="tweet"
+                    :user="user"/>
+                </div>
+                
+            <!-- tab=reply -->
+                <div v-if="!isLoading && currentTab==='reply'" 
+                class="tweets__container">
+                    <p v-if="!replies.length">目前還沒有回覆</p>
                     <ReplyCard 
                     v-else
                     v-for="reply in replies" 
                     :key="reply.id"
                     :reply="reply"
-                    :user="user"/> -->
+                    :user="user"/>
+                </div>
+                
+            <!-- tab=like -->
+                <div v-if="!isLoading && currentTab==='like'" 
+                class="tweets__container">
+                    <p v-if="!likes.length">目前還沒有喜歡的內容</p>
+                    <TweetCard 
+                    v-else
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleReplyModal"
+                    @after-clicked-reply="handlePassTweetData"
+                    v-for="like in likes" 
+                    :key="like.id"
+                    :initial-tweet="like"
+                    :user="user"/>
+                </div>
+                
+            </main> 
+            <section class="right__container">
+                <RecommendUsers />
+            </section>
+
+
+            <div class="modal__mask"             
+            @click.stop.prevent="handleCloseModal"
+            v-if="isModalToggled || isReplyModalToggled || isEditModalToggled" @touchmove.prevent @mousewheel.prevent>
+
+            </div>
+
         </div>
       </main>
       <section class="right__container">
@@ -71,205 +109,230 @@
 </template>
 
 <script>
-import TweetCard from "../components/TweetCard.vue";
-// import ReplyCard from '../components/ReplyCard.vue'
-import SideBar from "../components/SideBar.vue";
-import RecommendUsers from "../components/RecommendUsers.vue";
-import UserHeader from "../components/UserHeader.vue";
-import HomeTabs from "../components/HomeTabs.vue";
-import UserEditModal from "../components/UserEditModal.vue";
-import MainReplyModal from "../components/MainReplyModal.vue";
-import MainTweetModal from "../components/MainTweetModal.vue";
-import Footer from "../components/Footer.vue";
-import UserPanel from "../components/UserPanel.vue";
-import usersAPI from "../apis/users.js";
-import { Toast } from "../utils/helpers.js";
-import { mapState } from "vuex";
+import TweetCard from '../components/TweetCard.vue'
+import ReplyCard from '../components/ReplyCard.vue'
+import SideBar from '../components/SideBar.vue'
+import RecommendUsers from '../components/RecommendUsers.vue'
+import UserHeader from '../components/UserHeader.vue'
+import HomeTabs from '../components/HomeTabs.vue'
+import UserEditModal from '../components/UserEditModal.vue'
+import MainReplyModal from '../components/MainReplyModal.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
+import Footer from '../components/Footer.vue'
+import UserPanel from '../components/UserPanel.vue'
+import usersAPI from '../apis/users.js'
+import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 export default {
-  components: {
-    TweetCard,
-    // ReplyCard,
-    SideBar,
-    RecommendUsers,
-    UserHeader,
-    HomeTabs,
-    UserEditModal,
-    Footer,
-    UserPanel,
-    MainReplyModal,
-    MainTweetModal,
-  },
-  data() {
-    return {
-      user: {
-        account: "",
-        coverPhoto: "",
-        email: "",
-        introduction: "",
-        name: "",
-        profilePhoto: "",
-      },
-      tweets: [],
-      replies: [],
-      likes: [],
-      isUserLoading: true,
-      isTweetLoading: true,
-      currentTab: "tweet",
-      isModalToggled: false,
-      isReplyModalToggled: false,
-      isEditModalToggled: false,
-    };
-  },
-  created() {
-    const { id: userId } = this.$route.params;
-    this.fetchUser(userId);
-    const { tab } = this.$route.query;
-    if (tab === "tweet") {
-      this.fetchUserTweets(userId);
-    } else if (tab === "reply") {
-      this.fetchUserReplies(userId);
-    } else if (tab === "like") {
-      this.fetchUserLikes(userId);
-    }
-    this.currentTab = tab;
-  },
-  beforeRouteUpdate(to, from, next) {
-    const { id: userId } = to.params;
-    this.fetchUser(userId);
+    components: {
+        TweetCard,
+        ReplyCard,
+        SideBar,
+        RecommendUsers,
+        UserHeader,
+        HomeTabs,
+        UserEditModal,
+        Footer,
+        UserPanel,
+        MainReplyModal,
+        MainTweetModal
+    },
+    data () {
+        return {
+            user: {
+                account: '',
+                coverPhoto: '',
+                email: '',
+                introduction: '',
+                name: '',
+                profilePhoto: '',
+                followerCounts: '',
+                followingCounts: '',
+                isFollowed: ''
+            },
+            tweets: [],
+            replies: [],
+            likes: [],
+            isUserLoading: true,
+            isTweetLoading: true,
+            currentTab: 'tweet',
+            isModalToggled: false,
+            isReplyModalToggled: false,
+            isEditModalToggled: false,
+            clickedTweet: {}
+        }
+    },
+    created () {
+        const { id: userId } = this.$route.params
+        this.fetchUser(userId)
 
-    const { tab } = to.query;
-    if (tab === "tweet") {
-      this.fetchUserTweets(userId);
-    } else if (tab === "reply") {
-      this.fetchUserReplies(userId);
-    } else if (tab === "like") {
-      this.fetchUserLikes(userId);
-    }
-    this.currentTab = tab;
-    next();
-  },
-  computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
-    isLoading() {
-      if (!this.isUserLoading && !this.isTweetLoading) {
-        return false;
-      }
-      return true;
-    },
-  },
-  methods: {
-    async fetchUser(userId) {
-      try {
-        const response = await usersAPI.getUser({ userId });
-        const { account, coverPhoto, email, introduction, name, profilePhoto } =
-          response.data;
-        this.user = {
-          ...this.user,
-          account,
-          coverPhoto,
-          email,
-          introduction,
-          name,
-          profilePhoto,
-        };
-        this.isUserLoading = false;
-      } catch (error) {
-        console.log(error);
-        this.isUserLoading = false;
-        Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
-        });
-      }
-    },
-    async fetchUserTweets(userId) {
-      try {
-        const response = await usersAPI.getUserTweets({ userId });
-        this.tweets = [...response.data];
-        this.isTweetLoading = false;
-      } catch (error) {
-        console.log(error);
-        this.isTweetLoading = false;
-        Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
-        });
-      }
-    },
-    async fetchUserReplies(userId) {
-      try {
-        const response = await usersAPI.getUserReplies({ userId });
-        this.replies = [...response.data];
-        this.isTweetLoading = false;
-      } catch (error) {
-        console.log(error);
-        this.isTweetLoading = false;
-        Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
-        });
-      }
-    },
-    async fetchUserLikes(userId) {
-      try {
-        const response = await usersAPI.getUserLikes({ userId });
-        this.likes = [...response.data];
-        this.isTweetLoading = false;
-      } catch (error) {
-        console.log(error);
-        this.isTweetLoading = false;
-        Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
-        });
-      }
-    },
-    handleToggleModal(isModalToggled) {
-      this.isModalToggled = isModalToggled;
-    },
-    handleCloseModal() {
-      this.isModalToggled = false;
-      this.isReplyModalToggled = false;
-      this.isEditModalToggled = false;
-    },
-    handleAddTweet(tweet) {
-      this.tweets = [tweet, ...this.tweets];
-      this.fetchTweets();
-    },
-    handleToggleReplyModal(isReplyModalToggled) {
-      this.isReplyModalToggled = isReplyModalToggled;
-    },
-    handleToggleEditModal(isEditModalToggled) {
-      this.isEditModalToggled = isEditModalToggled;
-    },
-    async handleAfterSubmit(formData) {
-      try {
-        console.log("hi", formData);
-        const { data } = await usersAPI.updateProfile({
-          userId: this.currentUser.id,
-          formData,
-        });
-
-        if (data.status === "error") {
-          throw new Error(data.message);
+        const { tab } = this.$route.query
+        if (tab === 'tweet') {
+            this.fetchUserTweets(userId)
+        }
+        else if (tab === 'reply') {
+            this.fetchUserReplies(userId)
+        }
+        else if (tab === 'like') {
+            this.fetchUserLikes(userId)
         }
 
-        // 直接把從UserEditModal傳來的資料更新到畫面，這樣UserPanel就可以立刻watch到資料有改變
-        this.user = formData
-
-        Toast.fire({
-          icon: "success",
-          title: "成功更新使用者資料",
-        });
-      } catch (error) {
-        console.log(error);
-        Toast.fire({
-          icon: "error",
-          title: "無法更新使用者資料，請稍後再試",
-        });
-      }
+        this.currentTab = tab
     },
-  },
-};
+    beforeRouteUpdate(to, from, next){
+        const {id: userId} = to.params
+        this.fetchUser(userId)
+        
+        const { tab } = to.query
+        this.currentTab = tab
+        if (tab === 'tweet') {
+            this.fetchUserTweets(userId)
+        }
+        else if (tab === 'reply') {
+            this.fetchUserReplies(userId)
+        }
+        else if (tab === 'like') {
+            this.fetchUserLikes(userId)
+        }
+        next()
+
+    },
+    methods: {
+        async fetchUser (userId) {
+            try {
+                this.isUserLoading = true
+                const response = await usersAPI.getUser({userId})
+                const {
+                    account, coverPhoto, email, introduction, name, profilePhoto, followerCounts, followingCounts, isFollowed
+                } = response.data
+                this.user = {
+                    ...this.user,
+                    account, coverPhoto, email, introduction, name, profilePhoto, followerCounts, followingCounts, isFollowed
+                }
+                this.isUserLoading = false
+            }
+            catch (error) {
+                console.log(error)
+                this.isUserLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
+        async fetchUserTweets (userId) {
+            try {
+                this.isTweetLoading = true
+                const response = await usersAPI.getUserTweets({userId})
+                console.log(response)
+                //裡面不是 likeCounts
+                this.tweets = [...response.data]
+                this.isTweetLoading = false
+            }
+            catch (error) {
+                console.log(error)
+                this.isTweetLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
+        async fetchUserReplies (userId) {
+            try {
+                this.isTweetLoading = true
+                const response = await usersAPI.getUserReplies({userId})
+                this.replies = [...response.data]
+                this.isTweetLoading = false
+            }
+            catch (error) {
+                console.log(error)
+                this.isTweetLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
+        async fetchUserLikes (userId) {
+            try {
+                this.isTweetLoading = true
+                const response = await usersAPI.getUserLikes({userId})
+                console.log(response)
+                // response.data = response.data.map(like => {
+                //     return { ...like.Tweet }
+                // })
+                this.likes = [...response.data]
+                this.isTweetLoading = false
+            }
+            catch (error) {
+                console.log(error)
+                this.isTweetLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得推文,請稍後再試`,
+                })
+            }
+        },
+        async handleAfterSubmit(formData) {
+          try {
+            console.log("hi", formData);
+            const { data } = await usersAPI.updateProfile({
+              userId: this.currentUser.id,
+              formData,
+            });
+
+            if (data.status === "error") {
+              throw new Error(data.message);
+            }
+
+            // 直接把從UserEditModal傳來的資料更新到畫面，這樣UserPanel就可以立刻watch到資料有改變
+            this.user = formData
+
+            Toast.fire({
+              icon: "success",
+              title: "成功更新使用者資料",
+            });
+          } catch (error) {
+            console.log(error);
+            Toast.fire({
+              icon: "error",
+              title: "無法更新使用者資料，請稍後再試",
+            });
+          }
+        },
+        handleToggleModal(isModalToggled){
+            this.isModalToggled = isModalToggled
+            history.pushState({ name: "new-tweet" }, null, '/tweet/new')
+        },
+        handleCloseModal(){
+            this.isModalToggled = false
+            this.isReplyModalToggled = false
+            this.isEditModalToggled = false
+            this.$router.back()
+        },
+        handleAddTweet(tweet){
+            this.tweets = [
+                tweet, ...this.tweets
+            ]
+            this.fetchUserTweets(this.currentUser.id)
+        },
+        handleToggleReplyModal(isReplyModalToggled){
+            this.isReplyModalToggled = isReplyModalToggled
+            history.pushState({ name: "new-reply" }, null, '/reply/new')
+        },
+        handleToggleEditModal(isEditModalToggled){
+            this.isEditModalToggled = isEditModalToggled
+        },
+        handlePassTweetData(tweet){
+            this.clickedTweet = tweet
+        },
+        handleAddReply(reply){
+            // this.$router.push({name: 'tweet-detail', params: { id: this.clickedTweet.id }})
+            this.replies = this.replies.push(reply)
+        },
+    }
+}
+
 </script>
