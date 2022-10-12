@@ -68,7 +68,7 @@ export default {
         return {
             isModalToggled: this.iniIsModalToggled,
 
-            darkMode: false // 深色模式
+            darkMode: false, // 深色模式
 
             isCurrentUser: false
 
