@@ -28,6 +28,13 @@
                 <img src="../assets/images/sidebar_tweet_ipad.svg" alt="">
                 <h5>推文</h5>
             </button>
+            <!-- 加入深色模式 -->
+            <button v-if="darkMode" @click.stop.prevent="shiftToDarkMode" type="button" class="side-bar__button">
+                <h5>Dark Mode</h5>
+            </button>
+            <button v-if="darkMode" @click.stop.prevent="shiftToLightMode" type="button" class="side-bar__button">
+                <h5>Light Mode</h5>
+            </button>
         </div>
 
         <div @click.stop.prevent="logout" class="side-bar__link side-bar__link--logout">
@@ -51,6 +58,7 @@ export default {
     data () {
         return {
             isModalToggled: this.iniIsModalToggled,
+            darkMode: false // 深色模式
         }
     },
     computed: {
@@ -64,7 +72,16 @@ export default {
         logout(){
             this.$store.commit('revokeAuthentication')
             this.$router.push('/login')
-        }
+        },
+        // 深色模式
+        shiftToDarkMode(){
+            this.darkMode = true
+            document.documentElement.setAttribute("data-theme", "dark")
+        },
+        shiftToLightMode(){
+            this.darkMode = false
+            document.documentElement.setAttribute("data-theme", "light")
+        },
     }
 }
 </script>

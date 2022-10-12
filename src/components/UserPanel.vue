@@ -111,7 +111,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    user: {
+    initialUser: {
       type: Object,
       default: () => ({
         account: "",
@@ -125,8 +125,22 @@ export default {
   },
   data() {
     return {
-      isEditModalToggled :this.iniIsModalToggled
-    }
+      isEditModalToggled: this.iniIsModalToggled,
+      user: {...this.initialUser},
+    };
+  },
+  // initialUser有改變值時把值代入到子層
+  watch: {
+    initialUser: {
+      handler: function (newValue) {
+        console.log(newValue)
+        this.user = {
+          ...this.user,
+          ...newValue,
+        };
+      },
+      deep: true
+    },
   },
   methods: {
     toggleModal() {

@@ -10,10 +10,13 @@
     margin-bottom: 2rem;
     border-bottom: 2px solid var(--tab-text-color);
     border-radius: 2px;
+
     // 當使用者滑過或focus格子時變藍底
-    &:hover, &:focus-within{
+    &:hover,
+    &:focus-within {
       border-bottom: 2px solid var(--tab-hover-focus);
     }
+
     &__container {
       height: 100%;
       // border: 1px solid #000;
@@ -36,11 +39,34 @@
       }
     }
 
+    // 錯誤提示(顯示於輸入框下方)
+    &__hint {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      &-error {
+        font-size: var(--small-size);
+        color: var(--tab-error);
+        margin-top: 0.25rem;
+      }
+
+      &-length{
+        font-size: var(--small-size);
+        color: var(--text-label-color);
+        margin-top: 0.25rem;
+      }
+    }
+
+    &__count{
+      justify-content: flex-end;
+    }
+
   }
 
-.container-focus{
-  border-bottom: 2px solid var(--tab-hover-focus);
-}
+  .container-focus {
+    border-bottom: 2px solid var(--tab-hover-focus);
+  }
 
   &__button__container {
     margin: 0.5rem 0.125rem;
@@ -59,13 +85,15 @@
   }
 
   &__links {
-    &__login{
+    &__login {
       display: flex;
       justify-content: flex-end;
-      span{
+
+      span {
         margin: 0 0.75rem;
       }
     }
+
     &--link {
       color: var(--link-color);
       text-decoration-line: underline; // 底線
@@ -75,7 +103,7 @@
 }
 
 // 表格錯誤提示： 輸入框底線為紅色
-.formError{
+.formError {
   border-bottom: 2px solid var(--tab-error);
 }
 
