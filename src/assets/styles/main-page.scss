@@ -53,7 +53,9 @@
         display: flex;
         justify-content: flex-end;
     }
-
+    .main__container {
+        padding-bottom: 0;
+    }
 
     .footer__controller {
         display: none;

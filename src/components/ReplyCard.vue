@@ -1,17 +1,22 @@
 <template>
     <div class="reply__container">
         <div class="tweet__avatar">
-            <img class="tweet__avatar--photo" :src="reply.User.profilePhoto" alt="">
+            <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__avatar--photo" >
+                <img :src="reply.User.profilePhoto" alt="">
+            </router-link>
         </div>
         <div class="tweet__info">
             <div class="tweet__top">
-                <span class="tweet__top--prim">{{reply.User.name}}</span>
-                <span class="tweet__top--sec">@{{reply.User.account}}</span>
-                <span class="tweet__top--sec">．3小時</span>
+
+                <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__top--prim">{{reply.User.name}}</router-link>
+
+                <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__top--sec">@{{reply.User.account}}</router-link>
+
+                <span class="tweet__top--sec">．{{reply.createdAt | fromNow}}</span>
             </div>
             <div class="tweet__target">
                 <span class="tweet__target--sec">回覆</span>
-                <span class="tweet__target--prim">@{{tweetOwner}}</span>
+                <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__target--prim">@{{reply.Tweet.User.account}}</router-link>
             </div>
             <div class="tweet__info--content">
                 {{reply.comment}}
@@ -21,15 +26,18 @@
 </template>
 
 <script>
+import {
+  showDescriptionFilter,
+  fromNowFilter,
+  emptyImageFilter,
+} from "../utils/mixins";
+
 export default {
     props: {
         reply: {
             type: Object
         },
-        tweetOwner: {
-            type: String,
-            required: true
-        }
     },
+    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
 }
 </script>
