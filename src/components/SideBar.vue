@@ -2,23 +2,32 @@
     <div class="side-bar__panel">
         <div class="side-bar__container">
 
-            <router-link :to="{name: 'main-page'}" class="side-bar__icon">
+            <router-link
+            @click.native.stop.prevent="handleMainPage('main')" 
+            :to="{name: 'main-page'}" class="side-bar__icon">
                 <img src="../assets/images/sidebar_logo.svg" alt="">
             </router-link>
 
-            <router-link :to="{name: 'main-page'}" class="side-bar__link">
+            <router-link 
+            @click.native.stop.prevent="handleMainPage('main')"
+            :to="{name: 'main-page'}" 
+            class="side-bar__link">
                 <img v-if="currentPage === `main`" src="../assets/images/sidebar_home_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_home.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `main`}">首頁</h5>
             </router-link>
             
-            <router-link :to="{name: 'user-detail', params: {id: currentUser.id}, query: { 'tab': 'tweet'}}" class="side-bar__link">
-                <img v-if="currentPage === `user`" src="../assets/images/sidebar_user_active.svg" alt="">
+            <router-link 
+            @click.native.stop.prevent="handleMainPage('user')"
+            :to="{name: 'user-detail', params: {id: currentUser.id}, query: { 'tab': 'tweet'}}" class="side-bar__link">
+                <img v-if="currentPage === `user` && isCurrentUser" src="../assets/images/sidebar_user_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_user.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `user`}">個人資料</h5>
             </router-link>
 
-            <router-link :to="{name: 'settings'}" class="side-bar__link">
+            <router-link 
+            @click.native.stop.prevent="handleMainPage('setting')"
+            :to="{name: 'settings'}" class="side-bar__link">
                 <img v-if="currentPage === `setting`" src="../assets/images/sidebar_setting_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_setting.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `setting`}">設定</h5>
@@ -58,8 +67,32 @@ export default {
     data () {
         return {
             isModalToggled: this.iniIsModalToggled,
-            darkMode: false // 深色模式
+
+            darkMode: false, // 深色模式
+
+            isCurrentUser: false
+
         }
+    },
+    created () {
+        const { id: userId } = this.$route.params
+        
+        if (userId === userId) {
+            this.isCurrentUser = true
+        }
+        else {
+            this.isCurrentUser = false
+        }
+    },
+    beforeRouteUpdate (to, from, next) {
+        const {id: userId} = to.params
+        if (userId === this.currentUser.id) {
+            this.isCurrentUser = true
+        }
+        else {
+            this.isCurrentUser = false
+        }
+        next()
     },
     computed: {
         ...mapState(['currentUser', 'isAuthenticated'])
@@ -73,6 +106,7 @@ export default {
             this.$store.commit('revokeAuthentication')
             this.$router.push('/login')
         },
+
         // 深色模式
         shiftToDarkMode(){
             this.darkMode = true
@@ -82,6 +116,11 @@ export default {
             this.darkMode = false
             document.documentElement.setAttribute("data-theme", "light")
         },
+
+        handleMainPage (currentPage) {
+            if (this.currentPage === currentPage) return history.go(0)
+        }
+
     }
 }
 </script>

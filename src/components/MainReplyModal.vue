@@ -38,7 +38,7 @@
       <form class="tweet__input">
         <div class="tweet__input--info__container">
           <div class="tweet__input--avatar">
-            <img src="../assets/images/avatar.svg" alt="" />
+            <img v-if="!isLoading" :src="userprofilePhoto" alt="" />
           </div>
           <textarea
             v-model="tweetContent"
@@ -53,6 +53,7 @@
 
           <div v-show="tweetLength <= 0" class="tweet__input--warning">內容不可空白</div>
           <button
+            @click.stop.prevent=""
             v-if="tweetLength <= 0"
             class="tweet__input--button tweet__input--button-dis">回覆</button>
           <button
@@ -68,6 +69,8 @@
 <script>
 import { Toast } from '../utils/helpers'
 import tweetsAPI from '../apis/tweets.js'
+import usersAPI from '../apis/users.js'
+import { mapState } from 'vuex'
 import {
   showDescriptionFilter,
   fromNowFilter,
@@ -79,12 +82,17 @@ export default {
     initialTweet: {
       type: Object,
       required: true
+    },
+    isInDetailPage: {
+      type: Boolean
     }
   },
   mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
   data() {
     return {
       tweetContent: '',
+      userprofilePhoto: '',
+      isLoading: true
     }
   },
   watch: {
@@ -94,12 +102,32 @@ export default {
       }
     }
   },
+  created() {
+    this.fetchUser(this.currentUser.id)
+  },
   computed: {
+    ...mapState(['currentUser', 'isAuthenticated']),
     tweetLength() {
       return this.tweetContent.length
     }
   },
   methods: {
+    async fetchUser (userId) {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.getUser({userId})
+        this.userprofilePhoto = data.profilePhoto
+        this.isLoading = false
+      }
+      catch (error) {
+        console.log(error.message)
+        this.isLoading = false
+        return Toast.fire({
+            icon: 'error',
+            title: '目前無法取得使用者頭像，請稍後再試'
+        })
+      }
+    },
     async handleSubmit (id) {
       try {
         const response = await tweetsAPI.addReply({
@@ -109,8 +137,12 @@ export default {
         if(response.status !== 200) throw new Error(response.data.message)
         this.$emit('after-submit-close', false)
         this.$emit('after-submit', response.data)
+        
         //回覆完回到詳細頁面
-        this.$router.push({name: 'tweet-detail', params: {id}})
+        if (!this.isInDetailPage) {
+          this.$router.push({name: 'tweet-detail', params: {id}})
+          // this.$router.push({name: 'tweet-detail', params: {id}}).catch(() => true)
+        }
         
         return Toast.fire({
           icon: 'success',

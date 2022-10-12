@@ -32,24 +32,14 @@ export default {
         userId: {
             type: Number
         },
-        currentTab: {
+        clickedTab: {
             type: String
         }
     },
-    created () {
-        //失敗的話試試看寫在父層
-        // const { tab } = this.$route.query
-        // this.currentTab = tab
-    },
-    data() {
-        return {
-            // currentTab: 'tweet',
+    computed: {
+        currentTab () {
+            return this.clickedTab
         }
     },
-    methods: {
-        // handleClickTab () {
-            
-        // }
-    }
 }
 </script>

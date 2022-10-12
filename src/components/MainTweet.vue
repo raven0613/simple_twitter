@@ -20,11 +20,11 @@
         </div>
         <div class="tweet-detail__info">
             <div class="tweet-detail__info--reply">
-                <span class="montserrat-font">{{tweet.repliesCount}}</span> 
+                <span class="montserrat-font">{{tweet.replyCounts}}</span> 
                 <span> 回覆</span>
             </div>
             <div class="tweet-detail__info--like">
-                <span class="montserrat-font">{{tweet.likedCount}}</span> 
+                <span class="montserrat-font">{{tweet.likeCounts}}</span> 
                 <span> 喜歡次數</span>
             </div>
         </div>
@@ -78,7 +78,7 @@ export default {
                 }
                 this.isLoading = false
             },
-            deep: true
+            immediate: true
         }
     },
     methods: {
@@ -93,7 +93,7 @@ export default {
                 this.tweet = {
                     ...this.tweet,
                     isLiked: true,
-                    likedCount: this.tweet.likedCount + 1
+                    likeCounts: this.tweet.likeCounts + 1
                 }
             }
             catch (error) {
@@ -111,7 +111,7 @@ export default {
                 this.tweet = {
                     ...this.tweet,
                     isLiked: false,
-                    likedCount: this.tweet.likedCount - 1
+                    likeCounts: this.tweet.likeCounts - 1
                 }
             }
             catch (error) {

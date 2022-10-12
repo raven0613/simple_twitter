@@ -83,17 +83,16 @@
           </div>
           <div class="user-info__panel--follow__container">
             <router-link
-              :to="{ name: 'user-following', params: { id: 4 } }"
-              class="user-info__panel--follow"
-            >
-              <span>「待改」個</span>
+              :to="{ name: 'user-following'}"
+              class="user-info__panel--follow">
+              <span>{{user.followingCounts}}個</span>
               <span>跟隨中</span>
             </router-link>
+
             <router-link
-              :to="{ name: 'user-follower', params: { id: 4 } }"
-              class="user-info__panel--follow"
-            >
-              <span>「待改」位</span>
+              :to="{ name: 'user-follower'}"
+              class="user-info__panel--follow">
+              <span>{{user.followerCounts}}位</span>
               <span>跟隨者</span>
             </router-link>
           </div>
@@ -104,6 +103,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: "UserPanel",
   props: {
@@ -120,8 +121,12 @@ export default {
         introduction: "",
         name: "",
         profilePhoto: "",
+        followerCounts: '',
+        followingCounts: '',
+        isFollowed: ''
       }),
     },
+
   },
   data() {
     return {
@@ -141,6 +146,9 @@ export default {
       },
       deep: true
     },
+  },
+  computed: {
+      ...mapState(['currentUser', 'isAuthenticated']),
   },
   methods: {
     toggleModal() {

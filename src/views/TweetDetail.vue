@@ -8,20 +8,27 @@
             <main class="main__container">
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"
-                :initial-tweet="tweet"/>
+                @after-submit="handleAddReply"
+                :initial-tweet="tweet"
+                :is-in-detail-page="true"/>
 
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"/>
 
-                <MainHeader :content="`推文`" :tweet-id="1"/>
-                <MainTweet :initial-data="tweet"
+                <MainHeader :content="`推文`" :tweet-id="tweet.id"/>
+
+                <MainTweet 
+                v-if="!isLoading"
+                :initial-data="tweet"
                 @after-toggle-modal="handleToggleReplyModal"/>
 
                 <div class="tweet-detail__input">
+                    <MainTweetInput 
+                    :ini-is-modal-toggled="isModalToggled"
+                    @after-toggle-modal="handleToggleModal"/>
                 </div>
-                <div class="tweets__container">
+                <div v-if="!isLoading" class="tweets__container">
                     <ReplyCard 
                     v-for="reply in replies" 
                     :key="reply.id"
@@ -35,7 +42,8 @@
             </section>
             <div class="modal__mask" 
             @click.stop.prevent="handleCloseModal"
-            v-if="isModalToggled || isReplyModalToggled">
+            v-if="isModalToggled || isReplyModalToggled"
+            @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
         <Footer />
@@ -51,8 +59,10 @@ import MainTweet from '../components/MainTweet.vue'
 import Footer from '../components/Footer.vue'
 import MainReplyModal from '../components/MainReplyModal.vue'
 import MainTweetModal from '../components/MainTweetModal.vue'
+import MainTweetInput from "../components/MainTweetInput.vue"
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 export default {
     components: {
@@ -63,14 +73,17 @@ export default {
         MainTweet,
         Footer,
         MainReplyModal,
-        MainTweetModal
+        MainTweetModal,
+        MainTweetInput
     },
     data () {
         return {
             tweet: {},
             replies: [],
             isModalToggled: false,
-            isReplyModalToggled: false
+            isReplyModalToggled: false,
+            isTweetLoading: true,
+            isReplyLoading: true
         }
     },
     created () {
@@ -84,15 +97,26 @@ export default {
         this.fetchReplies(id)
         next()
     },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated']),
+        isLoading () {
+            if (!this.isTweetLoading && !this.isReplyLoading) {
+                return false
+            }
+            return true
+        }
+    },
     methods: {
         async fetchTweet (id) {
             try {
+                this.isTweetLoading = true
                 const response = await tweetsAPI.getTweet({id})
                 this.tweet = response.data
-                console.log(response.data)
+                this.isTweetLoading = false
             }
             catch (error) {
                 console.log(error)
+                this.isTweetLoading = false
                 return Toast.fire({
                     icon: 'error',
                     title: '目前無法取得推文，請稍後再試'
@@ -101,11 +125,14 @@ export default {
         },
         async fetchReplies (id) {
             try {
+                this.isReplyLoading = true
                 const response = await tweetsAPI.getReplies({id})
                 this.replies = response.data
+                this.isReplyLoading = false
             }
             catch (error) {
                 console.log(error)
+                this.isReplyLoading = false
                 return Toast.fire({
                     icon: 'error',
                     title: '目前無法取得回覆，請稍後再試'
@@ -126,7 +153,12 @@ export default {
             this.isReplyModalToggled = isReplyModalToggled
         },
         handleAddReply(reply){
-            this.replies = this.replies.push(reply)
+            this.replies.push(reply)
+            this.tweet = {
+                ...this.tweet,
+                replyCounts: this.tweet.replyCounts + 1
+            }
+            //
             this.fetchReplies(this.tweet.id)
         },
     }

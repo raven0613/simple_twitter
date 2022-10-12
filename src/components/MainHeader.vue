@@ -2,11 +2,11 @@
     <header class="header main__header">
 
         <div class="main__header--icon">
-            <img class="main__header--icon-back" v-if="tweetId" 
+            <img @click="$router.back()" class="main__header--icon-back" v-if="tweetId" 
             src="../assets/images/last-step.svg" alt="">
             
-            <img class="main__header--icon-avatar" v-if="userId" 
-            src="https://ipetgroup.com/photo/117457_0_620.jpeg" alt="">
+            <img class="main__header--icon-avatar" v-if="isMobile" 
+            :src="user.profilePhoto" alt="">
         </div>
 
         <div class="main__header--word">
@@ -25,8 +25,11 @@ export default {
         tweetId: {
             type: Number
         },
-        userId: {
-            type: Number
+        user: {
+            type: Object
+        },
+        isMobile: {
+            type: Boolean
         }
     },
 }

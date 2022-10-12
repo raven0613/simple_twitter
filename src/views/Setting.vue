@@ -2,7 +2,9 @@
     <div class="twitter__project">
         <div class="container setting-page">
             <section class="left__container">
-                <SideBar :current-page="`setting`"/>
+                <SideBar :current-page="`setting`"
+                :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
                 <MainHeader :content="`帳戶設定`"/>
@@ -12,11 +14,19 @@
                     @after-submit="handleAfterSubmit"
                   />
                 </div>
+                <MainTweetModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
             </main>
 
             <section class="right__container">
-                
             </section>
+
+            <div class="modal__mask" 
+            @click.stop.prevent="handleCloseModal"
+            v-if="isModalToggled"
+            @touchmove.prevent @mousewheel.prevent>
+            </div>
         </div>
         <Footer :current-page="`setting`"/>
     </div>
@@ -25,6 +35,7 @@
 import SettingPanel from './../components/SettingPanel'
 import SideBar from '../components/SideBar.vue'
 import MainHeader from '../components/MainHeader.vue'
+import MainTweetModal from '../components/MainTweetModal.vue'
 import Footer from '../components/Footer.vue'
 import usersAPI from "../apis/users";
 import { Toast } from "../utils/helpers";
@@ -36,7 +47,8 @@ export default {
     SettingPanel,
     SideBar,
     MainHeader,
-    Footer
+    Footer,
+    MainTweetModal
   },
   data(){
     return{
@@ -45,6 +57,7 @@ export default {
         email: "",
         account: ""
       },
+      isModalToggled: false,
     }
   },
   created() {
@@ -102,7 +115,16 @@ export default {
           title: '無法更新使用者資料，請稍後再試'
         })
       }
-    }
+    },
+    handleToggleModal(isModalToggled){
+        this.isModalToggled = isModalToggled
+    },
+    handleCloseModal(){
+        this.isModalToggled = false
+    },
+    handleAddTweet(){
+        this.$router.push({name: 'main-page'})
+    },
   }
 
 }

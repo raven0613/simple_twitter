@@ -3,7 +3,7 @@
         <h4>推薦跟隨</h4>
         <div class="recommend__container">
 
-            <router-link :to="{ name: 'user-detail', params: {id: user.id} }" v-for="user in users" :key="user.id" class="recommend__user">
+            <router-link :to="{ name: 'user-detail', params: {id: user.id}, query: {tab: 'tweet'}}" v-for="user in users" :key="user.id" class="recommend__user">
                 <div class="recommend__user--avatar">
                     <img :src="user.profilePhoto" alt="">
                 </div>
@@ -23,6 +23,7 @@
 <script>
 import followshipsAPI from '../apis/followships.js'
 import { Toast } from '../utils/helpers.js'
+import { mapState } from 'vuex'
 
 export default {
     data () {
@@ -33,12 +34,14 @@ export default {
     created () {
         this.fecthTopUsers()
     },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated'])
+    },
     methods: {
         async fecthTopUsers () {
             try {
-                const ROOT_ID = 4
                 const { data } = await followshipsAPI.getTopUsers()
-                this.users = data.filter(data => data.id !== ROOT_ID)
+                this.users = data.filter(data => data.id !== this.currentUser.id).slice(0, 10)
             }
             catch (error) {
                 console.log(error)
