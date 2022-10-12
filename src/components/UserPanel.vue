@@ -45,31 +45,33 @@
         <!-- 各種按鈕誒 -->
         <div class="user-info__controller">
           <button
+            v-if="currentUser.id === user.id"
             class="user-info__controller--edit prim-button prim-button__edit"
-            @click.stop.prevent="toggleModal"
-          >
+            @click.stop.prevent="toggleModal">
             編輯個人資料
           </button>
-          <button class="user-info__controller--message">
+          <button 
+            v-if="currentUser.id !== user.id" 
+            class="user-info__controller--message">
             <img src="../assets/images/userinfo_msg.svg" alt="" />
           </button>
-          <button class="user-info__controller--noti">
+          <button 
+            v-if="currentUser.id !== user.id"
+            class="user-info__controller--noti">
             <img src="../assets/images/userinfo_noti.svg" alt="" />
           </button>
           <button
-            class="
-              user-info__controller--message
-              prim-button prim-button__followed
-            "
-          >
+            @click.stop.prevent="deleteFollowship(user.id)"
+            v-if="user.isFollowed && currentUser.id !== user.id"
+            class="user-info__controller--message
+              prim-button prim-button__followed">
             正在跟隨
           </button>
           <button
-            class="
-              user-info__controller--message
-              prim-button prim-button__unfollowed
-            "
-          >
+            @click.stop.prevent="addFollowship(user.id)"
+            v-else-if="!user.isFollowed && currentUser.id !== user.id"
+            class="user-info__controller--message
+              prim-button prim-button__unfollowed">
             跟隨
           </button>
         </div>
@@ -103,6 +105,8 @@
 </template>
 
 <script>
+import followshipsAPI from '../apis/followships.js'
+import { Toast } from '../utils/helpers.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -123,7 +127,8 @@ export default {
         profilePhoto: "",
         followerCounts: '',
         followingCounts: '',
-        isFollowed: ''
+        isFollowed: '',
+        id: -1
       }),
     },
 
@@ -152,10 +157,54 @@ export default {
   },
   methods: {
     toggleModal() {
-      console.log("123");
       this.isEditModalToggled = true;
       this.$emit("after-toggle-modal", this.isEditModalToggled);
     },
-  },
+    async addFollowship (id) {
+        try{
+            const response = await followshipsAPI.addFollowship({id})
+            console.log(response)
+
+            if (response.status !==  200) {
+                throw new Error(response.data.message)
+            }
+            this.user = {
+                ...this.user,
+                isFollowed: true
+            }
+            this.$emit('after-like-user', this.users)
+        }
+        catch(error) {
+            const message = error.response.data.message
+            console.log(message)
+            return Toast.fire({
+                icon: 'error',
+                title: message
+            })
+        }
+
+    },
+    async deleteFollowship (followingId) {
+        try{
+            const response = await followshipsAPI.deleteFollowship({followingId})
+
+            if (response.status !==  200) {
+                throw new Error(response.data.message)
+            }
+            this.user = {
+                ...this.user,
+                isFollowed: false
+            }
+        }
+        catch(error) {
+            const message = error.response.data.message
+            console.log(message)
+            return Toast.fire({
+                icon: 'error',
+                title: message
+            })
+        }
+    },
+  }
 };
 </script>

@@ -11,7 +11,10 @@
                 @after-submit="handleAddTweet"/>
                 
                 <UserHeader :content="currentUser.name" :counts="25"/>
-                <HomeTabs />
+                <HomeTabs 
+                :clicked-tab="currentTab"
+                @after-click-tab="handleClickTab"/>
+
                 <div v-if="!isLoading" class="tweets__container">
                     <p v-if="!followers.length">目前還沒有追隨者喔</p>
                     <UserFollowCard 
@@ -57,14 +60,30 @@ export default {
     },
     data () {
         return {
+            userId: '',
             followers: [],
             isModalToggled: false,
-            isLoading: true
+            isLoading: true,
+            currentTab: "follower",
         }
     },
     created () {
         const { id } = this.$route.params
+        this.userId = id
         this.fetchFollower(id)
+        this.getUrl()
+    },
+    beforeRouteUpdate(to, from, next){
+        this.isLoading = true
+        const {id} = to.params
+        this.getUrl()
+        if (this.currentTab === 'follower') {
+            this.fetchFollower(id)
+        }
+        else if (this.currentTab === 'following') {
+            this.fetchFollowing(id)
+        }
+        next()
     },
     computed: {
         ...mapState(['currentUser', 'isAuthenticated']),
@@ -87,8 +106,26 @@ export default {
                 })
             }
         },
+        async fetchFollowing (userId) {
+            try {
+                this.isLoading = true
+                const { data } = await usersAPI.getUserFollowings({userId})
+                console.log(data)
+                this.followers = [...data]
+                this.isLoading = false
+            }
+            catch (error) {
+                console.log(error.message)
+                this.isLoading = false
+                Toast.fire({
+                    icon: 'error',
+                    title: `無法取得追隨者清單,請稍後再試`,
+                })
+            }
+        },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
+            history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
         },
         handleCloseModal(){
             this.isModalToggled = false
@@ -96,6 +133,25 @@ export default {
         handleAddTweet(){
             this.$router.push({name: 'main-page'})
         },
+        handleClickTab (clickedTab) {
+            this.currentTab = clickedTab
+            if (clickedTab === 'follower') {
+                this.fetchFollower(this.userId)
+                history.pushState({ name: "user-follower" }, null, `/#/users/${this.userId}/follower`)
+            }
+            else if (clickedTab === 'following') {
+                this.fetchFollowing(this.userId)
+                history.pushState({ name: "user-following" }, null, `/#/users/${this.userId}/following`);
+            }
+        },
+        getUrl() {
+            if(this.$route.matched[0].name === 'user-follower') {
+                this.currentTab = 'follower'
+            }
+            else if(this.$route.matched[0].name === 'user-following') {
+                this.currentTab = 'following'
+            }
+        }
     }
 }
 </script>

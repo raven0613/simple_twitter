@@ -13,6 +13,8 @@
             flex: 1;
             line-height: 1.5625rem;
             font-weight: var(--medium-weight);
+            display: flex;
+            flex-direction: column;
             :nth-child(2) {
                 color: var(--main-second-color);
                 font-size: var(--second-size);

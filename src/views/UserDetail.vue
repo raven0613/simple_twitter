@@ -9,6 +9,7 @@
         />
       </section>
       <main class="main__container">
+    <!-- 使用者資料編輯視窗 -->
         <UserEditModal
           v-if="isEditModalToggled"
           :initialUser="user"
@@ -17,13 +18,13 @@
           @after-submit-close="handleCloseModal"
           @after-submit="handleAfterSubmit"
         />
-
+    <!-- 推文視窗 -->
         <MainTweetModal
           v-if="isModalToggled"
           @after-submit-close="handleCloseModal"
           @after-submit="handleAddTweet"
         />
-
+    <!-- 回覆視窗 -->
         <MainReplyModal
           v-if="isReplyModalToggled"
           @after-submit-close="handleCloseModal"
@@ -33,6 +34,7 @@
 
         <UserHeader :content="user.name" :counts="tweets.length"/>
         <UserPanel
+          v-if="!isUserLoading"
           :ini-is-modal-toggled="isModalToggled"
           :initialUser="user"
           @after-toggle-modal="handleToggleEditModal"
@@ -43,7 +45,7 @@
         :user-id="currentUser.id"
         />
     <!-- tab=tweet -->
-        <div v-if="!isLoading && currentTab==='tweet'" 
+        <div v-if="!isTweetLoading && currentTab==='tweet'" 
         class="tweets__container">
             <p v-if="!tweets.length">目前還沒有推文</p>
             <TweetCard 
@@ -54,10 +56,10 @@
             v-for="tweet in tweets" 
             :key="tweet.id"
             :initial-tweet="tweet"
-            :user="user"/>
+            />
         </div>
     <!-- tab=reply -->
-        <div v-if="!isLoading && currentTab==='reply'" 
+        <div v-if="!isTweetLoading && currentTab==='reply'" 
         class="tweets__container">
             <p v-if="!replies.length">目前還沒有回覆</p>
             <ReplyCard 
@@ -68,7 +70,7 @@
             :user="user"/>
         </div>
     <!-- tab=like -->
-        <div v-if="!isLoading && currentTab==='like'" 
+        <div v-if="!isTweetLoading && currentTab==='like'" 
         class="tweets__container">
             <p v-if="!likes.length">目前還沒有喜歡的內容</p>
             <TweetCard 
@@ -131,17 +133,7 @@ export default {
   },
   data() {
     return {
-      user: {
-        account: "",
-        coverPhoto: "",
-        email: "",
-        introduction: "",
-        name: "",
-        profilePhoto: "",
-        followerCounts: "",
-        followingCounts: "",
-        isFollowed: "",
-      },
+      user: {},
       tweets: [],
       replies: [],
       likes: [],
@@ -157,8 +149,17 @@ export default {
     };
   },
   created() {
+    this.isTweetLoading = true
+    this.isUserLoading = true
     const { id: userId } = this.$route.params;
-    this.fetchUser(userId);
+    if (userId) {
+      this.fetchUser(userId);
+    }
+    else {
+      //直接貼編輯網址的話上面沒有id
+      this.fetchUser(this.currentUser.id);
+    }
+    this.getUrl()
 
     const { tab } = this.$route.query;
     if (tab === "tweet") {
@@ -172,6 +173,8 @@ export default {
     this.currentTab = tab;
   },
   beforeRouteUpdate(to, from, next) {
+    this.isTweetLoading = true
+    this.isUserLoading = true
     const { id: userId } = to.params;
     this.fetchUser(userId);
 
@@ -189,7 +192,7 @@ export default {
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
     isLoading () {
-      if (!this.isTweetLoading && !this.isReplyLoading) {
+      if (!this.isTweetLoading && !this.isUserLoading) {
           return false
       }
       return true
@@ -201,6 +204,7 @@ export default {
         this.isUserLoading = true;
         const response = await usersAPI.getUser({ userId });
         const {
+          id,
           account,
           coverPhoto,
           email,
@@ -213,6 +217,7 @@ export default {
         } = response.data;
         this.user = {
           ...this.user,
+          id,
           account,
           coverPhoto,
           email,
@@ -322,7 +327,7 @@ export default {
     },
     handleToggleModal(isModalToggled) {
       this.isModalToggled = isModalToggled;
-      history.pushState({ name: "new-tweet" }, null, "/tweet/new");
+      history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
     },
     handleCloseModal() {
       this.isModalToggled = false;
@@ -336,11 +341,13 @@ export default {
     },
     handleToggleReplyModal(isReplyModalToggled) {
       this.isReplyModalToggled = isReplyModalToggled;
-      history.pushState({ name: "new-reply" }, null, "/reply/new");
+      history.pushState({ name: "new-reply" }, null, "/#/reply/new");
     },
      handleToggleEditModal(isEditModalToggled) {
       this.isEditModalToggled = isEditModalToggled;
-      history.pushState({ name: "user-edit" }, null, "/users/edit");
+
+      history.pushState({ name: "user-edit" }, null, "/#/users/edit");
+
     },
     handlePassTweetData(tweet) {
       this.clickedTweet = tweet;
@@ -349,6 +356,12 @@ export default {
       // this.$router.push({name: 'tweet-detail', params: { id: this.clickedTweet.id }})
       this.replies = this.replies.push(reply);
     },
+    // 別人直接貼網址的狀況
+    getUrl() {
+        if(this.$route.matched[0].name === 'user-edit') {
+            this.isEditModalToggled = true
+        }
+    }
   },
 };
 </script>

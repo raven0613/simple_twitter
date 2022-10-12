@@ -71,12 +71,13 @@ export default {
         },
         async deleteFollowship (followingId) {
             try{
-                const { data } = await followshipsAPI.deleteFollowship({followingId})
-                console.log(data)
-
+                const response = await followshipsAPI.deleteFollowship({followingId})
+                if (response.status !==  200) {
+                    throw new Error(response.data.message)
+                }
                 this.user = {
                     ...this.user,
-                    isFollowed: true
+                    isFollowed: false
                 }
                 this.$emit('after-like-user', this.user)
             }

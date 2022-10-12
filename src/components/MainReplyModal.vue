@@ -140,6 +140,7 @@ export default {
         
         //回覆完回到詳細頁面
         if (!this.isInDetailPage) {
+          console.log('11111')
           this.$router.push({name: 'tweet-detail', params: {id}})
           // this.$router.push({name: 'tweet-detail', params: {id}}).catch(() => true)
         }

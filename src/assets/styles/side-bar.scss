@@ -5,7 +5,7 @@
 @media screen and (min-width: 600px) {
     .setting-page {
         .side-bar__link--logout {
-            display: none;
+            display: flex;
         }
     }
     .side-bar__panel {
