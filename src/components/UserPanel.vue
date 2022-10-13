@@ -85,7 +85,7 @@
 
 <script>
 import followshipsAPI from '../apis/followships.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -157,8 +157,7 @@ export default {
             const message = error.response.data.message
             console.log(message)
             return Toast.fire({
-                icon: 'error',
-                title: message
+              html: innerHtml(message,'error')
             })
         }
 
@@ -179,8 +178,7 @@ export default {
             const message = error.response.data.message
             console.log(message)
             return Toast.fire({
-                icon: 'error',
-                title: message
+              html: innerHtml(message,'error')
             })
         }
     },

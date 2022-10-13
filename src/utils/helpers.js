@@ -35,4 +35,30 @@ export const Toast = Swal.mixin({
   position: 'top-end', // 顯示的位置
   showConfirmButton: false, // 要不要顯示確認按鈕
   timer: 3000, // 顯示時間
+  
 })
+
+
+// 統一把SweetAlert2的html寫在這邊
+export const innerHtml = (message,state) => {
+  return `
+  <div class="alert__container">
+    <div class="alert-message">${message}</div>
+    <div class="alert-photo__container alert-photo__container__${state}">
+      <div class="alert-photo alert-photo__${state}"></div>
+    </div>
+  </div>
+  `
+}
+
+// AdminTweet的刪除Toast
+export const innerHtmlConfirm = (message,state) => {
+  return `
+  <div class="alert__container">
+    <div class="alert-message">${message}</div>
+    <div class="alert-photo__container alert-photo__container__${state}">
+      <div class="alert-photo alert-photo__${state}"></div>
+    </div>
+  </div>
+  `
+}

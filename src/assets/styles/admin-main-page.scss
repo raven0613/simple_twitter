@@ -53,10 +53,20 @@
 
 // AdminUser
 .admin-user {
-    &__container {
-        grid-template-columns: repeat(auto-fit, 1fr);
+        .main__container {
+            width: 100%;
+        }
+
+        &__container {
+            // border: 1px solid black;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(15.5625rem, 1fr));
+            grid-gap: 1rem;
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
     }
-}
 
 @media screen and (min-width: 600px) {
     .admin-container {
@@ -78,22 +88,6 @@
         display: block;
     }
 
-    // AdminUser
-    .admin-user {
-        .main__container {
-            width: 100%;
-        }
-
-        &__container {
-            // border: 1px solid black;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(15.5625rem, 1fr));
-            grid-gap: 1rem;
-            width: 100%;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-    }
 }
 
 

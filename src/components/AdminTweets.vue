@@ -3,7 +3,7 @@
     <div class="tweet__avatar">
       <img
         class="tweet__avatar--photo"
-        :src="tweet.User.profilePhoto | emptyImage"
+        :src="tweet.User.profilePhoto"
         alt=""
       />
     </div>
@@ -31,12 +31,11 @@
 </template>
 
 <script>
-import { Toast } from "../utils/helpers";
+import { Toast, innerHtml, innerHtmlConfirm } from "../utils/helpers";
 import adminAPI from "../apis/admin.js";
 import {
   showDescriptionFilter,
-  fromNowFilter,
-  emptyImageFilter,
+  fromNowFilter
 } from "../utils/mixins";
 
 export default {
@@ -50,20 +49,18 @@ export default {
       tweet: this.initialTweet,
     };
   },
-  mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
+  mixins: [showDescriptionFilter, fromNowFilter],
   methods: {
     async adminDeleteTweet(id) {
       try {
         // 因為Toast傳進來是Promise，所以要用await去非同步，要去看回傳值是什麼
         const result = await Toast.fire({
-          title: "您確定嗎？",
-          text: "刪除的文章是回不來的喔！",
-          icon: "warning",
+          html: innerHtmlConfirm('您確定嗎？刪除的文章是回不來的喔！'),
           showConfirmButton: true,
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           confirmButtonText: "確認",
-          timer: undefined,
+          timer: undefined, 
         });
 
         // 按取消可以取消動作，按確認功能可以刪貼文
@@ -78,11 +75,14 @@ export default {
       } catch (error) {
         console.log(error.response);
         return Toast.fire({
-          icon: "error",
-          title: "目前無法刪除推文，請稍後再試",
+          html: innerHtml('目前無法刪除貼文，請稍後再試','error')
         });
       }
     },
   },
+  // 當頁面消失時，即使使用者沒有關掉Toast，也要讓Toast消失
+  destroyed(){
+    Toast.close()
+  }
 };
 </script>

@@ -31,7 +31,7 @@ import MainHeader from '../components/MainHeader.vue'
 import AdminTweets from '../components/AdminTweets.vue'
 import Spinner from '../components/Spinner.vue'
 import adminAPI from '../apis/admin.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import { mapState } from 'vuex'
 
 
@@ -68,8 +68,7 @@ export default {
                 console.log(error)
                 this.isLoading = false
                 return Toast.fire({
-                    icon: 'error',
-                    title: '無法取得推文，請稍候再試'
+                    html: innerHtml('無法取得貼文，請稍後再試','error')
                 })
             }
         },

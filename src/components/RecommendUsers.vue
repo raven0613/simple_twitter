@@ -22,7 +22,7 @@
 
 <script>
 import followshipsAPI from '../apis/followships.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -46,8 +46,7 @@ export default {
             catch (error) {
                 console.log(error)
                 Toast.fire ({
-                    icon: 'error',
-                    title: '無法取得推薦使用者，請稍後再試'
+                    html: innerHtml('目前無法推薦使用者，請稍後再試','error')
                 })
             }
         },
@@ -74,8 +73,7 @@ export default {
                 const message = error.response.data.message
                 console.log(message)
                 return Toast.fire({
-                    icon: 'error',
-                    title: message
+                    html: innerHtml(message,'error')
                 })
             }
 
@@ -102,8 +100,7 @@ export default {
                 const message = error.response.data.message
                 console.log(message)
                 return Toast.fire({
-                    icon: 'error',
-                    title: message
+                    html: innerHtml(message,'error')
                 })
             }
         },

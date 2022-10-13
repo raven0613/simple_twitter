@@ -58,7 +58,7 @@ import Spinner from '../components/Spinner.vue'
 import tweetsAPI from '../apis/tweets.js'
 import usersAPI from '../apis/users.js'
 import { mapState } from 'vuex'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import MainTweetInput from "../components/MainTweetInput.vue"
 
 export default {
@@ -105,8 +105,7 @@ export default {
                 console.log(error.message)
                 this.isUserLoading = false
                 return Toast.fire({
-                    icon: 'error',
-                    title: '目前無法取得使用者頭像，請稍後再試'
+                    html: innerHtml('無法取得使用者頭像，請稍後再試','error')
                 })
             }
         },
@@ -122,8 +121,7 @@ export default {
                 console.log(error)
                 this.isTweetLoading = false
                 Toast.fire({
-                    icon: 'error',
-                    title: '無法取得推文,請稍後再試'
+                    html: innerHtml('無法取得推文，請稍後再試','error')
                 })
             }
         },

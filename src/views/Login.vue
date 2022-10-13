@@ -106,10 +106,10 @@
 
 <script>
 import usersAPI from "./../apis/users";
-import { Toast } from "./../utils/helpers";
+import { Toast, innerHtml } from "./../utils/helpers";
 
 export default {
-  name: "Register",
+  name: "Login",
   data() {
     return {
       account: "",
@@ -135,8 +135,8 @@ export default {
     },
   },
   methods: {
+    // 狀態的部分完全正確才進入非同步，好處：報錯較容易發現
     async handleSubmit() {
-      try {
         // 當按下按鈕後，所有底線為黑/藍線
         this.formErrorAccount = false;
         this.formErrorPassword = false;
@@ -152,6 +152,11 @@ export default {
           this.formErrorPassword = true;
         }
 
+        // 只要狀態有報錯，就不會發請求給後端
+        if (this.allFalse){
+          return
+        }
+      try {
         const { data } = await usersAPI.login({
           account: this.account,
           password: this.password,
@@ -176,14 +181,13 @@ export default {
         this.$store.commit("setCurrentUser", userData);
 
         Toast.fire({
-          icon: "success",
-          title: "please wait",
+          html: innerHtml('登入成功','succeed')
         });
 
         // 成功登入後會跳轉至 Twitter 首頁，並查看所有推文
         this.$router.push("/main");
       } catch (error) {
-        const message = error.response.data.message.toLowerCase();
+        const message = error.response.data.message
         console.log(error.response);
         if (message.includes("帳號或密碼錯誤")) {
           this.formErrorAccountOrPassword = true;
@@ -193,5 +197,18 @@ export default {
       }
     },
   },
+  computed:{
+    // 只要狀態有報錯，就不會發請求給後端
+    allFalse(){
+      if(this.formErrorAccount ||
+      this.formErrorPassword ||
+      this.formErrorAccountNotExisted ||
+      this.formErrorAccountOrPassword){
+        return true
+      }else{
+        return false
+      }
+    }
+  }
 };
 </script>

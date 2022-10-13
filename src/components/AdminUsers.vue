@@ -12,7 +12,7 @@
 
     <!-- 資訊 -->
     <div class="user-card__info">
-      <div class="user-card__info--name">{{user.name}}</div>
+      <div class="user-card__info--name">{{user.name | showDescription(15)}}</div>
       <div class="user-card__info--account">@{{user.account}}</div>
       <div class="user-card__info--icons">
         <div class="user-card__info--icon">
@@ -40,7 +40,7 @@
     
 
 <script>
-// import { emptyImageFilter } from "../utils/mixins";
+import {showDescriptionFilter } from "../utils/mixins";
 
 export default {
   props: {
@@ -52,7 +52,7 @@ export default {
     return {
       user: this.initialUser,
     };
-  }
-  // mixins: [emptyImageFilter],
+  },
+  mixins: [ showDescriptionFilter ],
 };
 </script>

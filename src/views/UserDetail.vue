@@ -118,7 +118,7 @@ import Footer from "../components/Footer.vue";
 import UserPanel from "../components/UserPanel.vue";
 import Spinner from '../components/Spinner.vue'
 import usersAPI from "../apis/users.js";
-import { Toast } from "../utils/helpers.js";
+import { Toast, innerHtml } from "../utils/helpers.js";
 import { mapState } from "vuex";
 
 export default {
@@ -238,8 +238,7 @@ export default {
         console.log(error);
         this.isUserLoading = false;
         Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
+          html: innerHtml('目前無法取得推文，請稍後再試','error')
         });
       }
     },
@@ -255,8 +254,7 @@ export default {
         console.log(error);
         this.isTweetLoading = false;
         Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
+          html: innerHtml('目前無法取得推文，請稍後再試','error')
         });
       }
     },
@@ -270,8 +268,7 @@ export default {
         console.log(error);
         this.isTweetLoading = false;
         Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
+          html: innerHtml('目前無法取得推文，請稍後再試','error')
         });
       }
     },
@@ -289,8 +286,7 @@ export default {
         console.log(error);
         this.isTweetLoading = false;
         Toast.fire({
-          icon: "error",
-          title: `無法取得推文,請稍後再試`,
+          html: innerHtml('目前無法取得推文，請稍後再試','error')
         });
       }
     },
@@ -311,8 +307,7 @@ export default {
         this.fetchUserTweets(this.currentUser.id)
 
         Toast.fire({
-          icon: "success",
-          title: "成功更新使用者資料",
+          html: innerHtml('成功更新使用者資料','succeed')
         });
       } catch (error) {
         const message = error.response.data.message.toLowerCase();
@@ -326,8 +321,7 @@ export default {
 
 
         Toast.fire({
-          icon: "error",
-          title: "無法更新使用者資料，請稍後再試",
+          html: innerHtml('目前無法更新使用者資料，請稍後再試','error')
         });
       }
     },

@@ -28,8 +28,7 @@
 <script>
 import {
   showDescriptionFilter,
-  fromNowFilter,
-  emptyImageFilter,
+  fromNowFilter
 } from "../utils/mixins";
 
 export default {
@@ -38,6 +37,6 @@ export default {
             type: Object
         },
     },
-    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
+    mixins: [showDescriptionFilter, fromNowFilter],
 }
 </script>

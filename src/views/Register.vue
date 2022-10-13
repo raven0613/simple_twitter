@@ -185,7 +185,7 @@
 </template>
 
 <script>
-import { Toast } from "../utils/helpers";
+import { Toast, innerHtml } from "../utils/helpers";
 import usersAPI from "./../apis/users";
 
 export default {
@@ -223,8 +223,7 @@ export default {
       // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
       if (newValue.length >= 50) {
         Toast.fire({
-          icon: "error",
-          title: "字數超過上限！",
+          html: innerHtml('字數超過上限！','error')
         });
         this.name = this.name.slice(0, 50); // name會停留在50字內
         this.formErrorNameLimited = true;
@@ -328,8 +327,7 @@ export default {
 
         // 使用者成功建立帳號會自動跳轉 login 頁面，並出現成功提示「建立帳號成功！」
         Toast.fire({
-          icon: "success",
-          title: "建立帳號成功！",
+          html: innerHtml('建立帳號成功！','succeed')
         });
 
         this.$router.push("/login");
@@ -344,8 +342,7 @@ export default {
         }
 
         Toast.fire({
-          icon: "error",
-          title: message,
+          html: innerHtml(message,'error')
         });
       }
     },
