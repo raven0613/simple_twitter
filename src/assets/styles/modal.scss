@@ -1,20 +1,14 @@
 //手機版
 .modal {
   &__mask {
-    position: absolute;
-    background-color: var(--background-gray);
-    opacity: 0.6;
-    top: 0;
-    bottom: -20rem;
-    left: 0;
-    right: 0;
-    z-index: 5;
+    display: none;
   }
   
   &__container {
     position: absolute;
     z-index: 10;
-    top: 3.375rem;
+    top: 4.6875rem;
+    bottom: 0;
     width: 100%;
     background-color: var(--white);
     .form__input__container{
@@ -169,8 +163,20 @@
 // TODO:改善表格RWD寬度的問題
 @media screen and (min-width: 600px) {
   .modal {
+    &__mask {
+      display: block;
+      position: absolute;
+      background-color: var(--background-gray);
+      opacity: 0.6;
+      top: 0;
+      bottom: -20rem;
+      left: 0;
+      right: 0;
+      z-index: 5;
+    }
     &__container {
       z-index: 999;
+      top: 3.375rem;
       width: 30rem;
       margin: 0 auto;
       border-radius: 14px;

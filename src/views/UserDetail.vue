@@ -39,7 +39,8 @@
           :initialUser="user"
           @after-toggle-modal="handleToggleEditModal"
         />
-
+        <Spinner v-else/>
+        
         <HomeTabs 
         :clicked-tab="currentTab"
         :user-id="currentUser.id"
@@ -69,6 +70,7 @@
             :reply="reply"
             :user="user"/>
         </div>
+        
     <!-- tab=like -->
         <div v-if="!isTweetLoading && currentTab==='like'" 
         class="tweets__container">
@@ -84,6 +86,7 @@
             :user="user"/>
         </div>
 
+        <Spinner v-else/>
       </main>
       <section class="right__container">
         <RecommendUsers />
@@ -113,6 +116,7 @@ import MainReplyModal from "../components/MainReplyModal.vue";
 import MainTweetModal from "../components/MainTweetModal.vue";
 import Footer from "../components/Footer.vue";
 import UserPanel from "../components/UserPanel.vue";
+import Spinner from '../components/Spinner.vue'
 import usersAPI from "../apis/users.js";
 import { Toast } from "../utils/helpers.js";
 import { mapState } from "vuex";
@@ -130,6 +134,7 @@ export default {
     UserPanel,
     MainReplyModal,
     MainTweetModal,
+    Spinner
   },
   data() {
     return {
@@ -162,7 +167,7 @@ export default {
     this.getUrl()
 
     const { tab } = this.$route.query;
-    if (tab === "tweet") {
+    if (!tab || tab === "tweet") {
       this.fetchUserTweets(userId);
     } else if (tab === "reply") {
       this.fetchUserReplies(userId);

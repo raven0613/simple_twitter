@@ -22,6 +22,7 @@
                 v-if="!isLoading"
                 :initial-data="tweet"
                 @after-toggle-modal="handleToggleReplyModal"/>
+                <Spinner v-else/>
 
                 <div class="tweet-detail__input">
                     <MainTweetInput 
@@ -60,6 +61,7 @@ import Footer from '../components/Footer.vue'
 import MainReplyModal from '../components/MainReplyModal.vue'
 import MainTweetModal from '../components/MainTweetModal.vue'
 import MainTweetInput from "../components/MainTweetInput.vue"
+import Spinner from '../components/Spinner.vue'
 import tweetsAPI from '../apis/tweets.js'
 import { Toast } from '../utils/helpers.js'
 import { mapState } from 'vuex'
@@ -74,7 +76,8 @@ export default {
         Footer,
         MainReplyModal,
         MainTweetModal,
-        MainTweetInput
+        MainTweetInput,
+        Spinner
     },
     data () {
         return {

@@ -1,32 +1,21 @@
 <template>
-    <footer class="footer">
+    <footer class="footer admin-footer">
 
-        <router-link :to="{name: 'main-page'}" class="footer__button">
+        <router-link :to="{name: 'admin-tweet'}" class="footer__button">
             <img v-if="currentPage === `main`" src="../assets/images/sidebar_home_active.svg" alt="">
             <img v-else src="../assets/images/sidebar_home.svg" alt="">
         </router-link>
 
-        <button type="button" 
-        @click.stop.prevent="toggleModal" 
-        class="footer__button">
-            <img src="../assets/images/sidebar_tweet_mobile.svg" alt="">
-        </button>
-
         <router-link 
             @click.native.stop.prevent="handleMainPage('user')"
-            :to="{name: 'user-detail', params: {id: currentUser.id}, query: { 'tab': 'tweet'}}" class="footer__button">
-
+            :to="{name: 'admin-user'}" class="footer__button">
             <img v-if="currentPage === `user`" src="../assets/images/sidebar_user_active.svg" alt="">
             <img v-else src="../assets/images/sidebar_user.svg" alt="">
         </router-link>
 
-        <router-link 
-        :to="{name: 'settings'}" 
-        class="footer__button">
-        
-            <img v-if="currentPage === `setting`" src="../assets/images/sidebar_setting_active.svg" alt="">
-            <img v-else src="../assets/images/sidebar_setting.svg" alt="">
-        </router-link>
+        <div @click.stop.prevent="logout" class="footer__button">
+            <img src="../assets/images/sidebar_logout.svg" alt="">
+        </div>
         
     </footer>
 </template>
@@ -39,13 +28,9 @@ export default {
         currentPage: {
             type: String,
         },
-        iniIsModalToggled: {
-            type: Boolean,
-        }
     },
     data () {
         return {
-            isModalToggled: this.iniIsModalToggled,
             isCurrentUser: false
         }
     },
@@ -73,9 +58,9 @@ export default {
         ...mapState(['currentUser', 'isAuthenticated']),
     },
     methods: {
-        toggleModal () {
-            this.isModalToggled = true
-            this.$emit("after-toggle-modal", this.isModalToggled)
+        logout(){
+            this.$store.commit('revokeAuthentication')
+            this.$router.push('/login')
         },
         handleMainPage (currentPage) {
             if (this.currentPage === currentPage) return history.go(0)
