@@ -148,7 +148,7 @@ export default {
         }
         
 
-        return Toast.fire({
+        Toast.fire({
           html: innerHtml('回覆成功','succeed')
         })
         this.isProcessing = false
