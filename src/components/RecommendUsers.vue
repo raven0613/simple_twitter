@@ -82,8 +82,11 @@ export default {
         },
         async deleteFollowship (followingId) {
             try{
-                const { data } = await followshipsAPI.deleteFollowship({followingId})
-                console.log(data)
+                const response = await followshipsAPI.deleteFollowship({followingId})
+
+                if (response.status !==  200) {
+                    throw new Error(response.data.message)
+                }
 
                 this.users = this.users.map(user => {
                     if(user.id === followingId) {

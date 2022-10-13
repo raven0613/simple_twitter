@@ -35,8 +35,9 @@
 
             <button @click.stop.prevent="toggleModal" type="button" class="side-bar__button">
                 <img src="../assets/images/sidebar_tweet_ipad.svg" alt="">
-                <h5>推文</h5>
+                <span>推文</span>
             </button>
+
             <!-- 加入深色模式 -->
             <button v-if="darkMode" @click.stop.prevent="shiftToDarkMode" type="button" class="side-bar__button">
                 <h5>Dark Mode</h5>

@@ -6,7 +6,7 @@
             </section>
             <main class="main__container">
                 <MainHeader :content="`推文清單`"/>
-                <div class="tweets__container">
+                <div v-if="!isLoading" class="tweets__container">
                     <p v-if="!tweets.length">目前無任何推文</p>
                     <AdminTweets v-else 
                     v-for="tweet in tweets" 
@@ -14,20 +14,22 @@
                     :initial-tweet="tweet"
                     @after-delete-tweet="afterDeleteTweet"/>
                 </div>
+                <Spinner v-else/>
             </main>
 
             
         </div>
-        <footer class="footer__controller">
-            
-        </footer>
+        <FooterAdmin 
+        :current-page="`main`"/>
     </div>
 </template>
 
 <script>
 import SideBarAdmin from '../components/SideBarAdmin.vue'
+import FooterAdmin from '../components/FooterAdmin.vue'
 import MainHeader from '../components/MainHeader.vue'
 import AdminTweets from '../components/AdminTweets.vue'
+import Spinner from '../components/Spinner.vue'
 import adminAPI from '../apis/admin.js'
 import { Toast } from '../utils/helpers.js'
 import { mapState } from 'vuex'
@@ -38,11 +40,14 @@ export default {
     components: {
         SideBarAdmin,
         MainHeader,
-        AdminTweets
+        AdminTweets,
+        FooterAdmin,
+        Spinner
     },
     data () {
         return {
-            tweets: []
+            tweets: [],
+            isLoading: true
         }
     },
     created () {
@@ -54,11 +59,14 @@ export default {
     methods: {
         async fetchAdminTweets () {
             try {
+                this.isLoading = true
                 const { data } = await adminAPI.getAdminTweets()
                 this.tweets = [...data]
+                this.isLoading = false
             }
             catch (error) {
                 console.log(error)
+                this.isLoading = false
                 return Toast.fire({
                     icon: 'error',
                     title: '無法取得推文，請稍候再試'

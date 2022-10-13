@@ -29,6 +29,7 @@
                     :key="tweet.id"
                     :initial-tweet="tweet"/>
                 </div>
+                <Spinner v-else/>
             </main>
             <section class="right__container">
                 <RecommendUsers />
@@ -38,7 +39,10 @@
             @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
-        <Footer :current-page="`main`"/>
+        <Footer 
+        :current-page="`main`"
+        :ini-is-modal-toggled="isModalToggled"
+        @after-toggle-modal="handleToggleModal"/>
     </div>
 </template>
 
@@ -50,6 +54,7 @@ import MainHeader from '../components/MainHeader.vue'
 import MainTweetModal from '../components/MainTweetModal.vue'
 import MainReplyModal from '../components/MainReplyModal.vue'
 import Footer from '../components/Footer.vue'
+import Spinner from '../components/Spinner.vue'
 import tweetsAPI from '../apis/tweets.js'
 import usersAPI from '../apis/users.js'
 import { mapState } from 'vuex'
@@ -64,6 +69,7 @@ export default {
         MainHeader,
         MainTweetModal,
         Footer,
+        Spinner,
         MainTweetInput,
         MainReplyModal
     },

@@ -70,7 +70,12 @@ export default {
     created () {
         const { id } = this.$route.params
         this.userId = id
-        this.fetchFollower(id)
+        if (this.currentTab === 'follower') {
+            this.fetchFollower(id)
+        }
+        else if (this.currentTab === 'following') {
+            this.fetchFollowing(id)
+        }
         this.getUrl()
     },
     beforeRouteUpdate(to, from, next){
