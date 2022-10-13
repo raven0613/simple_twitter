@@ -44,6 +44,7 @@
         <HomeTabs 
         :clicked-tab="currentTab"
         :user-id="currentUser.id"
+        @after-click-tab="handleClickTab"
         />
     <!-- tab=tweet -->
         <div v-if="!isTweetLoading && currentTab==='tweet'" 
@@ -361,6 +362,22 @@ export default {
     handleAddReply(reply) {
       // this.$router.push({name: 'tweet-detail', params: { id: this.clickedTweet.id }})
       this.replies = this.replies.push(reply);
+    },
+    handleClickTab (clickedTab) {
+      if (this.currentTab === clickedTab) return
+      this.currentTab = clickedTab
+      if (clickedTab === 'tweet') {
+        this.fetchUserTweets(this.user.id)
+        history.pushState({ name: "user-tweet" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`)
+      }
+      else if (clickedTab === 'reply') {
+        this.fetchUserReplies(this.user.id)
+        history.pushState({ name: "user-reply" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
+      }
+      else if (clickedTab === 'like'){
+        this.fetchUserLikes(this.user.id)
+        history.pushState({ name: "user-like" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
+      }
     },
     // 別人直接貼網址的狀況
     getUrl() {
