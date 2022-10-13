@@ -10,8 +10,14 @@
         <div class="tweet__info">
             <div class="follow-user__info">
                 <span>{{ user.name }}</span>
-                <button @click.stop.prevent="addFollowship(user.id)" v-if="!user.isFollowed" class="prim-button prim-button__unfollowed">跟隨</button>
-                <button @click.stop.prevent="deleteFollowship(user.id)" v-else class="prim-button prim-button__followed">正在跟隨</button>
+            <!-- 按鈕區 -->
+                <button 
+                @click.stop.prevent="addFollowship(user.id)" 
+                v-if="!user.isFollowed" 
+                class="primbutton primbutton__unfollowed" :class="{primbutton__unfollowed_processing: isProcessing}">跟隨</button>
+                <button 
+                @click.stop.prevent="deleteFollowship(user.id)" v-else 
+                class="primbutton primbutton__followed" :class="{primbutton__followed_processing: isProcessing}">正在跟隨</button>
             </div>
             <div class="follow-user__description">
                 {{ user.introduction }}
@@ -23,7 +29,6 @@
 <script>
 import followshipsAPI from '../apis/followships.js'
 import { Toast } from '../utils/helpers.js'
-// import { mapState } from 'vuex'
 
 export default {
     props: {
@@ -33,7 +38,8 @@ export default {
     },
     data() {
         return {
-            user: this.initFollower
+            user: this.initFollower,
+            isProcessing: false
         }
     },
     watch: {
@@ -47,6 +53,9 @@ export default {
     methods: {
         async addFollowship (id) {
             try{
+                if (this.isProcessing) return
+                this.isProcessing = true
+
                 const response = await followshipsAPI.addFollowship({id})
                 console.log(response)
 
@@ -58,9 +67,11 @@ export default {
                     isFollowed: true
                 }
                 this.$emit('after-like-user', this.user)
+                this.isProcessing = false
             }
             catch(error) {
                 const message = error.response.data.message
+                this.isProcessing = false
                 console.log(message)
                 return Toast.fire({
                     icon: 'error',
@@ -71,6 +82,9 @@ export default {
         },
         async deleteFollowship (followingId) {
             try{
+                if (this.isProcessing) return
+                this.isProcessing = true
+
                 const response = await followshipsAPI.deleteFollowship({followingId})
                 if (response.status !==  200) {
                     throw new Error(response.data.message)
@@ -80,9 +94,11 @@ export default {
                     isFollowed: false
                 }
                 this.$emit('after-like-user', this.user)
+                this.isProcessing = false
             }
             catch(error) {
                 const message = error.response.data.message
+                this.isProcessing = false
                 console.log(message)
                 return Toast.fire({
                     icon: 'error',

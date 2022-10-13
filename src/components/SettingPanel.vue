@@ -165,7 +165,7 @@
 
       <!-- button們 -->
       <div class="form__button__container">
-        <button class="form__button" type="submit">儲存</button>
+        <button class="form__button" :class="{form__button_processing: isProcessing}" type="submit">儲存</button>
       </div>
     </form>
   </div>
@@ -193,6 +193,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isProcessing: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

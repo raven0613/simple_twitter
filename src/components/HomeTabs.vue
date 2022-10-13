@@ -1,20 +1,17 @@
 <template>
     <div class="home__tabs">
         <section class="home__tabs--panel__container" v-if="userId">
-            <router-link 
-            :to="{name: 'user-detail', query: { tab: 'tweet' }}" 
+            <div @click.stop.prevent="handleClickTab('tweet')"
             class="home__tab home__tab--user"
-            :class="{active: currentTab === 'tweet'}">推文</router-link>
+            :class="{active: currentTab === 'tweet'}">推文</div>
+<!-- 點了tab就傳emit回去 -->
+            <div @click.stop.prevent="handleClickTab('reply')"
+            class="home__tab home__tab--user"
+            :class="{active: currentTab === 'reply'}">回覆</div>
 
-            <router-link 
-            :to="{name: 'user-detail', query: { tab: 'reply' }}" 
+            <div @click.stop.prevent="handleClickTab('like')"
             class="home__tab home__tab--user"
-            :class="{active: currentTab === 'reply'}">回覆</router-link>
-
-            <router-link 
-            :to="{name: 'user-detail', query: { tab: 'like' }}" 
-            class="home__tab home__tab--user"
-            :class="{active: currentTab === 'like'}">喜歡的內容</router-link>
+            :class="{active: currentTab === 'like'}">喜歡的內容</div>
         </section>
 
         <section v-else>
