@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import { Toast } from "../utils/helpers";
+import { Toast, innerHtml } from "../utils/helpers";
 export default {
   name: "UserEditModal",
   props: {
@@ -253,8 +253,7 @@ export default {
         // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
         if (newValue.name.length >= 50) {
           Toast.fire({
-            icon: "error",
-            title: "字數超過上限！",
+            html: innerHtml('字數超過上限','error')
           });
 
           this.user.name = this.user.name.slice(0, 50); // name會停留在50字內
@@ -273,8 +272,7 @@ export default {
         // introduction 字數限制在160字以內，若超過會有錯誤提示「字數超過上限！」
         if (newValue.introduction.length > 160) {
           Toast.fire({
-            icon: "error",
-            title: "字數超過上限！",
+            html: innerHtml('字數超過上限','error')
           });
           this.user.introduction = this.user.introduction.slice(0, 160); // introduction會停留在160字內
 
@@ -330,12 +328,6 @@ export default {
         for(let [name, value] of formData.entries()){
           console.log(name + ': ' + value)
         }
-        // const formData = {
-        //   name: this.user.name,
-        //   introduction: this.user.introduction,
-        //   profilePhoto: this.user.profilePhoto,
-        //   coverPhoto: this.user.coverPhoto,
-        // };
 
         // console.log(formData);
         this.$emit("after-submit", formData);
@@ -353,8 +345,7 @@ export default {
         const message = error.response.data.message;
         this.isProcessing = false
         Toast.fire({
-          icon: "error",
-          title: message,
+          html: innerHtml(message,'error')
         });
       }
     },

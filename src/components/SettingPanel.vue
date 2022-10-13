@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import { Toast } from "../utils/helpers";
+import { Toast, innerHtml } from "../utils/helpers";
 
 export default {
   name: "SettingPanel",
@@ -230,7 +230,7 @@ export default {
   watch: {
     userData: {
       handler(newValue) {
-        console.log(newValue.length);
+        console.log(newValue.name.length);
         newValue.name = newValue.name.trim();
         newValue.account = newValue.account.trim();
         newValue.email = newValue.email.trim();
@@ -245,13 +245,13 @@ export default {
         }
 
         // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
-        if (newValue.name.length > 50) {
+        if (newValue.name.length >= 50) {
           Toast.fire({
-            icon: "error",
-            title: "字數超過上限！",
+            html: innerHtml('字數超過上限','error')
           });
           newValue.name = newValue.name.slice(0, 50); // name會停留在50字內
           this.formErrorNameLimited = true;
+          console.log(this.formErrorNameLimited)
           return;
         } else {
           this.formErrorNameLimited = false;
@@ -328,8 +328,7 @@ export default {
         if (this.userData.password !== this.userData.checkPassword) {
           this.formErrorPasswordUnmatched = true;
           Toast.fire({
-            icon: "error",
-            title: "密碼與確認密碼不符",
+            html: innerHtml('密碼與確認密碼不符','error')
           });
           return;
         }
@@ -368,11 +367,6 @@ export default {
         } else if (message.includes("email")) {
           this.formErrorEmailExisted = true;
         }
-
-        // Toast.fire({
-        //   icon: "error",
-        //   title: message,
-        // });
       }
     },
   },

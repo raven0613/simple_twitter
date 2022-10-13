@@ -44,7 +44,7 @@ import MainTweetModal from '../components/MainTweetModal.vue'
 import HomeTabs from '../components/HomeTabs.vue'
 import Footer from '../components/Footer.vue'
 import usersAPI from '../apis/users.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import { mapState } from 'vuex'
 
 
@@ -106,8 +106,7 @@ export default {
                 console.log(error.message)
                 this.isLoading = false
                 Toast.fire({
-                    icon: 'error',
-                    title: `無法取得追隨者清單,請稍後再試`,
+                    html: innerHtml('無法取得追隨者清單，請稍後再試','error')
                 })
             }
         },
@@ -123,8 +122,7 @@ export default {
                 console.log(error.message)
                 this.isLoading = false
                 Toast.fire({
-                    icon: 'error',
-                    title: `無法取得追隨者清單,請稍後再試`,
+                    html: innerHtml('無法取得追隨者清單，請稍後再試','error')
                 })
             }
         },

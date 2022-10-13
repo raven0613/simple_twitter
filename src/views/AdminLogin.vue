@@ -92,7 +92,7 @@
 
 <script>
 import adminAPI from "./../apis/admin";
-import { Toast } from "./../utils/helpers";
+import { Toast, innerHtml } from "./../utils/helpers";
 
 export default {
   name: "AdminLogin",
@@ -163,8 +163,7 @@ export default {
         this.$store.commit("setCurrentUser", userData);
 
         Toast.fire({
-          icon: "success",
-          title: "please wait",
+          html: innerHtml('登入成功！','succeed')
         });
         this.$router.push("/admin");
       } catch (error) {

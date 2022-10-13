@@ -28,7 +28,8 @@
 
 <script>
 import followshipsAPI from '../apis/followships.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
+
 
 export default {
     props: {
@@ -74,8 +75,7 @@ export default {
                 this.isProcessing = false
                 console.log(message)
                 return Toast.fire({
-                    icon: 'error',
-                    title: message
+                    html: innerHtml(message,'error')
                 })
             }
 
@@ -101,8 +101,7 @@ export default {
                 this.isProcessing = false
                 console.log(message)
                 return Toast.fire({
-                    icon: 'error',
-                    title: message
+                    html: innerHtml(message,'error')
                 })
             }
         },

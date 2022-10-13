@@ -63,7 +63,7 @@ import MainTweetModal from '../components/MainTweetModal.vue'
 import MainTweetInput from "../components/MainTweetInput.vue"
 import Spinner from '../components/Spinner.vue'
 import tweetsAPI from '../apis/tweets.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -123,8 +123,7 @@ export default {
                 console.log(error)
                 this.isTweetLoading = false
                 return Toast.fire({
-                    icon: 'error',
-                    title: '目前無法取得推文，請稍後再試'
+                    html: innerHtml('目前無法取得推文，請稍後再試','error')
                 })
             }
         },
@@ -139,8 +138,7 @@ export default {
                 console.log(error)
                 this.isReplyLoading = false
                 return Toast.fire({
-                    icon: 'error',
-                    title: '目前無法取得回覆，請稍後再試'
+                    html: innerHtml('目前無法取得回覆，請稍後再試','error')
                 })
             }
         },

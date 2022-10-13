@@ -67,14 +67,13 @@
 </template>
 
 <script>
-import { Toast } from '../utils/helpers'
+import { Toast, innerHtml } from '../utils/helpers'
 import tweetsAPI from '../apis/tweets.js'
 import usersAPI from '../apis/users.js'
 import { mapState } from 'vuex'
 import {
   showDescriptionFilter,
-  fromNowFilter,
-  emptyImageFilter,
+  fromNowFilter
 } from "../utils/mixins";
 
 export default {
@@ -87,7 +86,7 @@ export default {
       type: Boolean
     }
   },
-  mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
+  mixins: [showDescriptionFilter, fromNowFilter],
   data() {
     return {
       tweetContent: '',
@@ -124,8 +123,7 @@ export default {
         console.log(error.message)
         this.isLoading = false
         return Toast.fire({
-            icon: 'error',
-            title: '目前無法取得使用者頭像，請稍後再試'
+            html: innerHtml('目前無法取得使用者頭像，請稍後再試','error')
         })
       }
     },
@@ -149,9 +147,9 @@ export default {
           // this.$router.push({name: 'tweet-detail', params: {id}}).catch(() => true)
         }
         
-        Toast.fire({
-          icon: 'success',
-          title: '回覆成功！'
+
+        return Toast.fire({
+          html: innerHtml('回覆成功','succeed')
         })
         this.isProcessing = false
       }
@@ -159,8 +157,7 @@ export default {
         console.log(error.message)
         this.isProcessing = false
         return Toast.fire({
-          icon: 'error',
-          title: '無法回覆貼文，請稍後再試'
+          html: innerHtml('無法回覆貼文，請稍後再試','error')
         })
       }
     },

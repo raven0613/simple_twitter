@@ -40,11 +40,10 @@
 
 <script>
 import tweetsAPI from '../apis/tweets.js'
-import { Toast } from '../utils/helpers.js'
+import { Toast, innerHtml } from '../utils/helpers.js'
 import {
   showDescriptionFilter,
-  fromNowFilter,
-  emptyImageFilter,
+  fromNowFilter
 } from "../utils/mixins";
 
 export default {
@@ -56,7 +55,7 @@ export default {
             type: Boolean,
         }
     },
-    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
+    mixins: [showDescriptionFilter, fromNowFilter],
     data () {
         return {
             tweet: this.initialTweet,
@@ -96,8 +95,7 @@ export default {
                 console.log(error.message)
                 this.isProcessing = false
                 Toast.fire({
-                    icon: 'error',
-                    title: `目前無法操作,請稍後再試`,
+                    html: innerHtml('目前無法操作','error')
                 })
             }
         },
@@ -118,8 +116,7 @@ export default {
                 console.log(error.message)
                 this.isProcessing = false
                 Toast.fire({
-                    icon: 'error',
-                    title: `目前無法操作,請稍後再試`,
+                    html: innerHtml('目前無法操作','error')
                 })
             }
         }

@@ -22,17 +22,16 @@
                 @after-submit="handleAddTweet"/>
             </main>
 
-            <section class="right__container">
-            </section>
 
-            <div class="modal__mask" 
-            @click.stop.prevent="handleCloseModal"
-            v-if="isModalToggled"
-            @touchmove.prevent @mousewheel.prevent>
-            </div>
-        </div>
-        <Footer :current-page="`setting`"/>
+      <section class="right__container">
+      </section>
+
+      <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled" @touchmove.prevent
+        @mousewheel.prevent>
+      </div>
     </div>
+    <Footer :current-page="`setting`" />
+  </div>
 </template>
 <script>
 import SettingPanel from './../components/SettingPanel'
@@ -41,21 +40,21 @@ import MainHeader from '../components/MainHeader.vue'
 import MainTweetModal from '../components/MainTweetModal.vue'
 import Footer from '../components/Footer.vue'
 import usersAPI from "../apis/users";
-import { Toast } from "../utils/helpers";
+import { Toast, innerHtml } from "../utils/helpers";
 import { mapState } from "vuex";
 
 export default {
   name: "Setting",
-  components:{
+  components: {
     SettingPanel,
     SideBar,
     MainHeader,
     Footer,
     MainTweetModal
   },
-  data(){
-    return{
-      userData:{
+  data() {
+    return {
+      userData: {
         name: "",
         email: "",
         account: ""
@@ -78,26 +77,25 @@ export default {
       return true;
     },
   },
-  methods:{
+  methods: {
     async fetchUser(userId) {
       try {
-        const {data} = await usersAPI.getUser({ userId });
+        const { data } = await usersAPI.getUser({ userId });
         const { name, email, account } = data
         this.userData = {
           ...this.userData,
           name,
-          email, 
+          email,
           account
         }
 
       } catch (error) {
         Toast.fire({
-          icon: "error",
-          title: "無法取得使用者資料,請稍後再試",
+          html: innerHtml('無法取得使用者資料，請稍後再試','error')
         });
       }
     },
-    async handleAfterSubmit(formData){
+    async handleAfterSubmit(formData) {
       try {
         if (this.isProcessing) return
         this.isProcessing = true
@@ -113,8 +111,7 @@ export default {
         }
 
         Toast.fire({
-          icon: 'success',
-          title: '成功更新使用者資料'
+          html: innerHtml('成功更新使用者資料','succeed')
         })
         this.isProcessing = false
 
@@ -129,21 +126,20 @@ export default {
         }
 
         Toast.fire({
-          icon: 'error',
-          title: message
+          html: innerHtml(message,'error')
         })
       }
     },
-    handleToggleModal(isModalToggled){
-        this.isModalToggled = isModalToggled
-        history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
+    handleToggleModal(isModalToggled) {
+      this.isModalToggled = isModalToggled
+      history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
     },
-    handleCloseModal(){
-        this.isModalToggled = false
-        this.$router.back();
+    handleCloseModal() {
+      this.isModalToggled = false
+      this.$router.back();
     },
-    handleAddTweet(){
-        this.$router.push({name: 'main-page'})
+    handleAddTweet() {
+      this.$router.push({ name: 'main-page' })
     },
   }
 

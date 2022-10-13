@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { Toast } from '../utils/helpers'
+import { Toast, innerHtml } from '../utils/helpers'
 import tweetsAPI from '../apis/tweets.js'
 import usersAPI from '../apis/users.js'
 import { mapState } from 'vuex'
@@ -93,8 +93,7 @@ export default {
         console.log(error.message)
         this.isLoading = false
         return Toast.fire({
-            icon: 'error',
-            title: '目前無法取得使用者頭像，請稍後再試'
+            html: innerHtml('目前無法取得使用者頭像，請稍後再試','error')
         })
       }
     },
@@ -109,9 +108,9 @@ export default {
         if(response.status !== 200) throw new Error(response.data.message)
         this.$emit('after-submit-close', false)
         this.$emit('after-submit', response.data)
+
         Toast.fire({
-          icon: 'success',
-          title: '建立推文成功！'
+          html: innerHtml('建立推文成功！','succeed')
         })
         this.isProcessing = false
       }
@@ -119,8 +118,7 @@ export default {
         console.log(error.message)
         this.isProcessing = false
         return Toast.fire({
-          icon: 'error',
-          title: '無法新增推文，請稍後再試'
+          html: innerHtml('無法新增推文','error')
         })
       }
     },
