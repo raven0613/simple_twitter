@@ -21,74 +21,83 @@
 
         <!-- 背景圖片跟個人照 -->
         <div class="user-info__image__container">
-          <div class="user-info__background__container">
+          <div class="user-info__background__container hover__background-controller">
             <img
               :src="user.coverPhoto"
               alt=""
               class="user-info__background--photo"
             />
-            <span class="user-info__background--mask"></span>
-            <div class="user-info__background__icons__container">
-              <button>
-                <input
-                  type="file"
-                  ref="coverPhotoInput"
-                  style="display: none"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  class="form-control-file"
-                  @change="handleCoverPhotoChange"
-                />
+            <div class="hover__background-container">
+              <span class="user-info__background--mask"></span>
+              <div class="user-info__background__icons__container">
+                <button>
+                  <input
+                    type="file"
+                    ref="coverPhotoInput"
+                    style="display: none"
+                    id="image"
+                    name="coverPhoto"
+                    accept="image/*"
+                    class="form-control-file"
+                    @change="handleCoverPhotoChange"
+                  />
+                  <img
+                    @click.prevent.stop="$refs.coverPhotoInput.click()"
+                    src="../assets/images/add-photo.svg"
+                    alt=""
+                    class="user-info__background__icon"
+                  />
+                </button>
+
                 <img
-                  @click.prevent.stop="$refs.coverPhotoInput.click()"
-                  src="../assets/images/add-photo.svg"
+                  src="../assets/images/cancel-white.svg"
                   alt=""
                   class="user-info__background__icon"
                 />
-              </button>
-
-              <img
-                src="../assets/images/cancel-white.svg"
-                alt=""
-                class="user-info__background__icon"
-              />
+              </div>
             </div>
           </div>
 
-          <div class="user-info__avatar__container">
+          <div class="user-info__avatar__container hover__avatar-controller">
             <img
               :src="user.profilePhoto"
               alt=""
               class="user-info__avatar--photo"
             />
-            <span class="user-info__avatar--mask"></span>
-            <div class="user-info__avatar__icons__container">
-              <button>
-                <input
-                  type="file"
-                  ref="profilePhotoInput"
-                  style="display: none"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  class="form-control-file"
-                  @change="handleProfilePhotoChange"
-                />
-                <img
-                  @click.prevent.stop="$refs.profilePhotoInput.click()"
-                  src="../assets/images/add-photo.svg"
-                  alt=""
-                  class="user-info__background__icon"
-                />
-              </button>
+            <div class="hover__avatar-container">
+              <span class="user-info__avatar--mask"></span>
+              <div class="user-info__avatar__icons__container">
+                <button>
+                  <input
+                    type="file"
+                    ref="profilePhotoInput"
+                    style="display: none"
+                    id="image"
+                    name="profilePhoto"
+                    accept="image/*"
+                    class="form-control-file"
+                    @change="handleProfilePhotoChange"
+                  />
+                  <img
+                    @click.prevent.stop="$refs.profilePhotoInput.click()"
+                    src="../assets/images/add-photo.svg"
+                    alt=""
+                    class="user-info__background__icon"
+                  />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- 表格 -->
+        
         <div class="form form__container">
-          <div :class="['form__input', { formError: formErrorName || formErrorNameLimited }]">
+          <div
+            :class="[
+              'form__input',
+              { formError: formErrorName || formErrorNameLimited },
+            ]"
+          >
             <div class="form__input__container">
               <label for="name">名稱</label>
               <input
@@ -126,15 +135,21 @@
             </div>
           </div>
           <div
-            :class="['form__input', { formError: formErrorIntroduction || formErrorIntroductionLimited }]"
+            :class="[
+              'form__input',
+              {
+                formError:
+                  formErrorIntroduction || formErrorIntroductionLimited,
+              },
+            ]"
             id="introduction__input"
           >
             <div class="form__input__container">
               <label for="introduction">自我介紹</label>
               <input
                 id="introduction"
-                name="name"
-                type="name"
+                name="introduction"
+                type="text"
                 placeholder="談談你自己吧..."
                 autocomplete="off"
                 autofocus
@@ -146,11 +161,15 @@
                 'form__input__hint',
                 {
                   form__input__count:
-                    !formErrorIntroduction && !formErrorIntroductionLimited && lengthOfIntroduction,
+                    !formErrorIntroduction &&
+                    !formErrorIntroductionLimited &&
+                    lengthOfIntroduction,
                 },
               ]"
             >
-              <span class="form__input__hint-error" v-show="formErrorIntroduction"
+              <span
+                class="form__input__hint-error"
+                v-show="formErrorIntroduction"
                 >自我介紹欄位為必填</span
               >
               <span
@@ -236,10 +255,10 @@ export default {
             icon: "error",
             title: "字數超過上限！",
           });
-          
+
           this.user.name = this.user.name.slice(0, 50); // name會停留在50字內
           this.formErrorNameLimited = true;
-          console.log(this.user.name)
+          console.log(this.user.name);
           return;
         } else {
           this.formErrorNameLimited = false;
@@ -271,12 +290,12 @@ export default {
       this.formErrorEmail = newValue;
     },
   },
-  created(){
-    this.lengthOfName = this.initialUser.name.length
-    this.lengthOfIntroduction = this.initialUser.introduction.length
+  created() {
+    this.lengthOfName = this.initialUser.name.length;
+    this.lengthOfIntroduction = this.initialUser.introduction.length;
   },
   methods: {
-    handleSubmit() {
+    handleSubmit(e) {
       try {
         // 當按下按鈕後，所有底線為黑/藍線
         this.formErrorName = false;
@@ -287,28 +306,34 @@ export default {
         // 欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
         if (!this.user.introduction && !this.user.name) {
           this.formErrorName = true;
-          this.formErrorIntroduction= true; 
-          return
+          this.formErrorIntroduction = true;
+          return;
         }
         if (!this.user.name) {
           this.formErrorName = true;
-          return
+          return;
         }
 
         if (!this.user.introduction) {
-          this.formErrorIntroduction= true;
-          return
+          this.formErrorIntroduction = true;
+          return;
         }
 
         // 把表單資料打包給後端
-        const formData = {
-          name: this.user.name,
-          introduction: this.user.introduction,
-          profilePhoto: this.user.profilePhoto,
-          coverPhoto: this.user.coverPhoto,
-        };
+        const form = e.target
+        const formData = new FormData(form)
+        console.log(form, formData)
+        for(let [name, value] of formData.entries()){
+          console.log(name + ': ' + value)
+        }
+        // const formData = {
+        //   name: this.user.name,
+        //   introduction: this.user.introduction,
+        //   profilePhoto: this.user.profilePhoto,
+        //   coverPhoto: this.user.coverPhoto,
+        // };
 
-        console.log(formData);
+        // console.log(formData);
         this.$emit("after-submit", formData);
 
         // 成功取得資料，所有底線為黑/藍線
@@ -320,7 +345,7 @@ export default {
         this.$emit("after-submit-close");
       } catch (error) {
         // 想要拿到data.message，要知道是包在error.response裡
-        const message = error.response.data.message
+        const message = error.response.data.message;
 
         Toast.fire({
           icon: "error",
