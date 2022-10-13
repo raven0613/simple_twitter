@@ -9,19 +9,6 @@
             alt=""
             class="user-info__background--photo"
           />
-          <!-- <span class="user-info__background--mask"></span>
-          <div class="user-info__background__icons__container">
-            <img
-              src="../assets/images/add-photo.svg"
-              alt=""
-              class="user-info__background__icon"
-            />
-            <img
-              src="../assets/images/cancel-white.svg"
-              alt=""
-              class="user-info__background__icon"
-            />
-          </div> -->
         </div>
 
         <div class="user-info__avatar__container">
@@ -30,14 +17,6 @@
             alt=""
             class="user-info__avatar--photo"
           />
-          <!-- <span class="user-info__avatar--mask"></span>
-          <div class="user-info__avatar__icons__container">
-            <img
-              src="../assets/images/add-photo.svg"
-              alt=""
-              class="user-info__avatar__icon"
-            />
-          </div> -->
         </div>
       </div>
 

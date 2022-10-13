@@ -307,7 +307,8 @@ export default {
         }
 
         // 直接把從UserEditModal傳來的資料更新到畫面，這樣UserPanel就可以立刻watch到資料有改變
-        this.user = formData;
+        this.fetchUser(this.currentUser.id)
+        this.fetchUserTweets(this.currentUser.id)
 
         Toast.fire({
           icon: "success",

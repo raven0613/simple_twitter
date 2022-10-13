@@ -75,6 +75,7 @@
   }
 
   &__background {
+
     &__container {
       height: 7.75rem;
       width: 100%;
@@ -159,6 +160,30 @@
   display: none;
 }
 
+
+// 滑過背景照片才可以開啟編輯照片功能
+.hover__background{
+  &-container{
+    display: none;
+  }
+  &-controller:hover{
+    .hover__background-container{
+      display: block;
+    }
+  }
+}
+
+// 滑過個人照片才可以開啟編輯照片功能
+.hover__avatar{
+  &-container{
+    display: none;
+  }
+  &-controller:hover{
+    .hover__avatar-container{
+      display: block;
+    }
+  }
+}
 
 // TODO:改善表格RWD寬度的問題
 @media screen and (min-width: 600px) {
