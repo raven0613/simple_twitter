@@ -25,7 +25,7 @@
         <div class="user-info__controller">
           <button
             v-if="currentUser.id === user.id"
-            class="user-info__controller--edit prim-button prim-button__edit"
+            class="user-info__controller--edit primbutton primbutton__edit"
             @click.stop.prevent="toggleModal">
             編輯個人資料
           </button>
@@ -43,14 +43,16 @@
             @click.stop.prevent="deleteFollowship(user.id)"
             v-if="user.isFollowed && currentUser.id !== user.id"
             class="user-info__controller--message
-              prim-button prim-button__followed">
+              primbutton primbutton__followed"
+            :class="{primbutton__followed_processing: isProcessing}">
             正在跟隨
           </button>
           <button
             @click.stop.prevent="addFollowship(user.id)"
             v-else-if="!user.isFollowed && currentUser.id !== user.id"
             class="user-info__controller--message
-              prim-button prim-button__unfollowed">
+              primbutton primbutton__unfollowed"
+            :class="{primbutton__unfollowed_processing: isProcessing}">
             跟隨
           </button>
         </div>
@@ -115,7 +117,8 @@ export default {
   data() {
     return {
       isEditModalToggled: this.iniIsModalToggled,
-      user: {...this.initialUser},
+      user: { ...this.initialUser },
+      isProcessing: false
     };
   },
   // initialUser有改變值時把值代入到子層
@@ -141,8 +144,9 @@ export default {
     },
     async addFollowship (id) {
         try{
+            if (this.isProcessing) return
+            this.isProcessing = true
             const response = await followshipsAPI.addFollowship({id})
-            console.log(response)
 
             if (response.status !==  200) {
                 throw new Error(response.data.message)
@@ -152,10 +156,12 @@ export default {
                 isFollowed: true
             }
             this.$emit('after-like-user', this.users)
+            this.isProcessing = false
         }
         catch(error) {
             const message = error.response.data.message
             console.log(message)
+            this.isProcessing = false
             return Toast.fire({
                 icon: 'error',
                 title: message
@@ -165,6 +171,8 @@ export default {
     },
     async deleteFollowship (followingId) {
         try{
+            if (this.isProcessing) return
+            this.isProcessing = true
             const response = await followshipsAPI.deleteFollowship({followingId})
 
             if (response.status !==  200) {
@@ -174,10 +182,12 @@ export default {
                 ...this.user,
                 isFollowed: false
             }
+            this.isProcessing = false
         }
         catch(error) {
             const message = error.response.data.message
             console.log(message)
+            this.isProcessing = false
             return Toast.fire({
                 icon: 'error',
                 title: message

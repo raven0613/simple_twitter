@@ -61,7 +61,8 @@ export default {
     return {
       tweetContent: '',
       userprofilePhoto: '',
-      isLoading: true
+      isLoading: true,
+      isProcessing: false
     }
   },
   watch: {
@@ -99,19 +100,24 @@ export default {
     },
     async handleSubmit () {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+
         const response = await tweetsAPI.addTweet({
           description: this.tweetContent
         })
         if(response.status !== 200) throw new Error(response.data.message)
         this.$emit('after-submit-close', false)
         this.$emit('after-submit', response.data)
-        return Toast.fire({
+        Toast.fire({
           icon: 'success',
           title: '建立推文成功！'
         })
+        this.isProcessing = false
       }
       catch (error) {
         console.log(error.message)
+        this.isProcessing = false
         return Toast.fire({
           icon: 'error',
           title: '無法新增推文，請稍後再試'

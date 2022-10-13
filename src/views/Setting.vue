@@ -13,6 +13,7 @@
                     :initialUserData="userData"
                     :initialFormErrorAccountExisted="formErrorAccountExisted"
                     :initialFormErrorEmailExisted="formErrorEmailExisted"
+                    :is-processing="isProcessing"
                     @after-submit="handleAfterSubmit"
                   />
                 </div>
@@ -61,7 +62,8 @@ export default {
       },
       isModalToggled: false,
       formErrorAccountExisted: false,
-      formErrorEmailExisted: false
+      formErrorEmailExisted: false,
+      isProcessing: false
     }
   },
   created() {
@@ -97,6 +99,9 @@ export default {
     },
     async handleAfterSubmit(formData){
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+
         console.log('hi', formData)
         const { data } = await usersAPI.updateSetting({
           userId: this.currentUser.id,
@@ -111,9 +116,11 @@ export default {
           icon: 'success',
           title: '成功更新使用者資料'
         })
+        this.isProcessing = false
 
       } catch (error) {
         const message = error.response.data.message.toLowerCase();
+        this.isProcessing = false
         console.log(message)
         if (message.includes("此帳號已被使用")) {
           this.formErrorAccountExisted = true;

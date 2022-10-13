@@ -60,7 +60,7 @@
             />
         </div>
     <!-- tab=reply -->
-        <div v-if="!isTweetLoading && currentTab==='reply'" 
+        <div v-else-if="!isTweetLoading && currentTab==='reply'" 
         class="tweets__container">
             <p v-if="!replies.length">目前還沒有回覆</p>
             <ReplyCard 
@@ -72,7 +72,7 @@
         </div>
         
     <!-- tab=like -->
-        <div v-if="!isTweetLoading && currentTab==='like'" 
+        <div v-else-if="!isTweetLoading && currentTab==='like'" 
         class="tweets__container">
             <p v-if="!likes.length">目前還沒有喜歡的內容</p>
             <TweetCard 

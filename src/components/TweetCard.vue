@@ -61,7 +61,7 @@ export default {
         return {
             tweet: this.initialTweet,
             isModalToggled: this.iniIsModalToggled,
-            // user: {}
+            isProcessing: false
         }
     },
     watch: {
@@ -81,6 +81,8 @@ export default {
         },
         async addLike(tweet_id){
             try {
+                if (this.isProcessing) return
+                this.isProcessing = true
                 const response = await tweetsAPI.addLike({tweet_id})
                 console.log(response)
                 this.tweet = {
@@ -88,9 +90,11 @@ export default {
                     isLiked: true,
                     likeCounts: this.tweet.likeCounts + 1
                 }
+                this.isProcessing = false
             }
             catch (error) {
                 console.log(error.message)
+                this.isProcessing = false
                 Toast.fire({
                     icon: 'error',
                     title: `目前無法操作,請稍後再試`,
@@ -99,6 +103,8 @@ export default {
         },
         async deleteLike(tweet_id){
             try {
+                if (this.isProcessing) return
+                this.isProcessing = true
                 const response = await tweetsAPI.deleteLike({tweet_id})
                 console.log(response)
                 this.tweet = {
@@ -106,9 +112,11 @@ export default {
                     isLiked: false,
                     likeCounts: this.tweet.likeCounts - 1
                 }
+                this.isProcessing = false
             }
             catch (error) {
                 console.log(error.message)
+                this.isProcessing = false
                 Toast.fire({
                     icon: 'error',
                     title: `目前無法操作,請稍後再試`,
