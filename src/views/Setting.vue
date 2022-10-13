@@ -1,18 +1,27 @@
 <template>
-  <div class="twitter__project">
-    <div class="container setting-page">
-      <section class="left__container">
-        <SideBar :current-page="`setting`" :ini-is-modal-toggled="isModalToggled"
-          @after-toggle-modal="handleToggleModal" />
-      </section>
-      <main class="main__container">
-        <MainHeader :content="`帳戶設定`" />
-        <div class="tweets__container">
-          <SettingPanel :initialUserData="userData" :initialFormErrorAccountExisted="formErrorAccountExisted"
-            :initialFormErrorEmailExisted="formErrorEmailExisted" @after-submit="handleAfterSubmit" />
-        </div>
-        <MainTweetModal v-if="isModalToggled" @after-submit-close="handleCloseModal" @after-submit="handleAddTweet" />
-      </main>
+    <div class="twitter__project">
+        <div class="container setting-page">
+            <section class="left__container">
+                <SideBar :current-page="`setting`"
+                :ini-is-modal-toggled="isModalToggled"
+                @after-toggle-modal="handleToggleModal"/>
+            </section>
+            <main class="main__container">
+                <MainHeader :content="`帳戶設定`"/>
+                <div class="tweets__container">
+                  <SettingPanel 
+                    :initialUserData="userData"
+                    :initialFormErrorAccountExisted="formErrorAccountExisted"
+                    :initialFormErrorEmailExisted="formErrorEmailExisted"
+                    :is-processing="isProcessing"
+                    @after-submit="handleAfterSubmit"
+                  />
+                </div>
+                <MainTweetModal v-if="isModalToggled"
+                @after-submit-close="handleCloseModal"
+                @after-submit="handleAddTweet"/>
+            </main>
+
 
       <section class="right__container">
       </section>
@@ -52,7 +61,8 @@ export default {
       },
       isModalToggled: false,
       formErrorAccountExisted: false,
-      formErrorEmailExisted: false
+      formErrorEmailExisted: false,
+      isProcessing: false
     }
   },
   created() {
@@ -87,6 +97,9 @@ export default {
     },
     async handleAfterSubmit(formData) {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+
         console.log('hi', formData)
         const { data } = await usersAPI.updateSetting({
           userId: this.currentUser.id,
@@ -100,9 +113,11 @@ export default {
         Toast.fire({
           html: innerHtml('成功更新使用者資料','succeed')
         })
+        this.isProcessing = false
 
       } catch (error) {
         const message = error.response.data.message.toLowerCase();
+        this.isProcessing = false
         console.log(message)
         if (message.includes("此帳號已被使用")) {
           this.formErrorAccountExisted = true;

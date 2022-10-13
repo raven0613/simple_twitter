@@ -35,7 +35,7 @@
                 <img src="../assets/images/tweet_reply.svg" alt="">
             </div>
         
-            <div v-if="!tweet.isLiked" @click.stop.prevent="addLike(tweet.id)" >
+            <div v-if="!tweet.isLiked" @click.stop.prevent="addLike(tweet.id)">
                 <img src="../assets/images/tweet_like.svg" alt="">
             </div>
             <div v-else @click.stop.prevent="deleteLike(tweet.id)" >
@@ -68,7 +68,8 @@ export default {
         return {
             tweet: this.initialData,
             isModalToggled: this.iniIsModalToggled,
-            isLoading: true
+            isLoading: true,
+            isProcessing: false
         }
     },
     watch: {
@@ -89,6 +90,9 @@ export default {
         },
          async addLike(tweet_id){
             try {
+                if (this.isProcessing) return
+                this.isProcessing = true
+
                 const response = await tweetsAPI.addLike({tweet_id})
                 console.log(response)
                 this.tweet = {
@@ -96,9 +100,11 @@ export default {
                     isLiked: true,
                     likeCounts: this.tweet.likeCounts + 1
                 }
+                this.isProcessing = false
             }
             catch (error) {
                 console.log(error.message)
+                this.isProcessing = false
                 Toast.fire({
                     html: innerHtml('目前無法操作','error')
                 })
@@ -106,6 +112,9 @@ export default {
         },
         async deleteLike(tweet_id){
             try {
+                if (this.isProcessing) return
+                this.isProcessing = true
+
                 const response = await tweetsAPI.deleteLike({tweet_id})
                 console.log(response)
                 this.tweet = {
@@ -113,9 +122,11 @@ export default {
                     isLiked: false,
                     likeCounts: this.tweet.likeCounts - 1
                 }
+                this.isProcessing = false
             }
             catch (error) {
                 console.log(error.message)
+                this.isProcessing = false
                 Toast.fire({
                     html: innerHtml('目前無法操作','error')
                 })

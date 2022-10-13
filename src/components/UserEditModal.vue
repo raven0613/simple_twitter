@@ -224,6 +224,7 @@ export default {
       formErrorIntroductionLimited: false,
       lengthOfName: "",
       lengthOfIntroduction: "",
+      isProcessing: false
     };
   },
   watch: {
@@ -295,6 +296,9 @@ export default {
   methods: {
     handleSubmit(e) {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+
         // 當按下按鈕後，所有底線為黑/藍線
         this.formErrorName = false;
         this.formErrorIntroduction = false;
@@ -335,10 +339,11 @@ export default {
         this.formErrorIntroductionLimited = false;
 
         this.$emit("after-submit-close");
+        this.isProcessing = false
       } catch (error) {
         // 想要拿到data.message，要知道是包在error.response裡
         const message = error.response.data.message;
-
+        this.isProcessing = false
         Toast.fire({
           html: innerHtml(message,'error')
         });

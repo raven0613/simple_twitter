@@ -82,6 +82,10 @@
     color: var(--white);
     margin-bottom: 1.375rem;
     font-size: 1.25rem;
+    
+    &_processing {
+      background-color: var(--top-user-second-color);
+    }
   }
 
   &__links {

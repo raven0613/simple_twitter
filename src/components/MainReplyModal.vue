@@ -91,7 +91,8 @@ export default {
     return {
       tweetContent: '',
       userprofilePhoto: '',
-      isLoading: true
+      isLoading: true,
+      isProcessing: false
     }
   },
   watch: {
@@ -128,6 +129,9 @@ export default {
     },
     async handleSubmit (id) {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+
         const response = await tweetsAPI.addReply({
           id,
           comment: this.tweetContent
@@ -143,12 +147,15 @@ export default {
           // this.$router.push({name: 'tweet-detail', params: {id}}).catch(() => true)
         }
         
+
         return Toast.fire({
           html: innerHtml('回覆成功','succeed')
         })
+        this.isProcessing = false
       }
       catch (error) {
         console.log(error.message)
+        this.isProcessing = false
         return Toast.fire({
           html: innerHtml('無法回覆貼文，請稍後再試','error')
         })
