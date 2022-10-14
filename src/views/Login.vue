@@ -122,13 +122,13 @@ export default {
   },
   watch: {
     account(newValue) {
-      this.account = newValue.trim()
+      this.account = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorAccount = false;
       }
     },
     password(newValue) {
-      this.password = newValue.trim()
+      this.password = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorPassword = false;
       }
@@ -137,25 +137,24 @@ export default {
   methods: {
     // 狀態的部分完全正確才進入非同步，好處：報錯較容易發現
     async handleSubmit() {
-        // 當按下按鈕後，所有底線為黑/藍線
-        this.formErrorAccount = false;
-        this.formErrorPassword = false;
-        this.formErrorAccountNotExisted = false;
-        this.formErrorAccountOrPassword = false;
+      // 當按下按鈕後，所有底線為黑/藍線
+      this.formErrorAccount = false;
+      this.formErrorPassword = false;
+      this.formErrorAccountNotExisted = false;
+      this.formErrorAccountOrPassword = false;
 
-        // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        if (!this.account) {
-          this.formErrorAccount = true;
-        }
+      // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
+      if (!this.account) {
+        this.formErrorAccount = true;
+      }
 
-        if (!this.password) {
-          this.formErrorPassword = true;
-        }
+      if (!this.password) {
+        this.formErrorPassword = true;
+      }
 
-        // 只要狀態有報錯，就不會發請求給後端
-        if (this.allFalse){
-          return
-        }
+      // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+      if (this.allFalse) return;
+
       try {
         const { data } = await usersAPI.login({
           account: this.account,
@@ -181,13 +180,13 @@ export default {
         this.$store.commit("setCurrentUser", userData);
 
         Toast.fire({
-          html: innerHtml('登入成功','succeed')
+          html: innerHtml("登入成功", "succeed"),
         });
 
         // 成功登入後會跳轉至 Twitter 首頁，並查看所有推文
         this.$router.push("/main");
       } catch (error) {
-        const message = error.response.data.message
+        const message = error.response.data.message;
         console.log(error.response);
         if (message.includes("帳號或密碼錯誤")) {
           this.formErrorAccountOrPassword = true;
@@ -197,18 +196,20 @@ export default {
       }
     },
   },
-  computed:{
-    // 只要狀態有報錯，就不會發請求給後端
-    allFalse(){
-      if(this.formErrorAccount ||
-      this.formErrorPassword ||
-      this.formErrorAccountNotExisted ||
-      this.formErrorAccountOrPassword){
-        return true
-      }else{
-        return false
+  computed: {
+    // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+    allFalse() {
+      if (
+        this.formErrorAccount ||
+        this.formErrorPassword ||
+        this.formErrorAccountNotExisted ||
+        this.formErrorAccountOrPassword
+      ) {
+        return true;
+      } else {
+        return false;
       }
-    }
-  }
+    },
+  },
 };
 </script>

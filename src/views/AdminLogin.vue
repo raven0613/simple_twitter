@@ -17,12 +17,17 @@
       @keyup.enter.prevent.stop="handleSubmit"
       class="form form__container"
     >
-      <div :class="['form__input', {
+      <div
+        :class="[
+          'form__input',
+          {
             formError:
               formErrorAccount ||
               formErrorAccountNotExisted ||
               formErrorAccountOrPassword,
-          }]">
+          },
+        ]"
+      >
         <div class="form__input__container">
           <label for="account">帳號</label>
           <input
@@ -52,7 +57,12 @@
         </div>
       </div>
 
-      <div :class="['form__input', { formError: formErrorPassword || formErrorAccountOrPassword }]">
+      <div
+        :class="[
+          'form__input',
+          { formError: formErrorPassword || formErrorAccountOrPassword },
+        ]"
+      >
         <div class="form__input__container">
           <label for="password">密碼</label>
           <input
@@ -108,13 +118,13 @@ export default {
   },
   watch: {
     account(newValue) {
-      this.account = newValue.trim()
+      this.account = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorAccount = false;
       }
     },
     password(newValue) {
-      this.password = newValue.trim()
+      this.password = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorPassword = false;
       }
@@ -122,23 +132,26 @@ export default {
   },
   methods: {
     async handleSubmit() {
+      // 當按下按鈕後，所有底線為黑/藍線
+      this.formErrorAccount = false;
+      this.formErrorPassword = false;
+      this.formErrorAccountNotExisted = false;
+      this.formErrorAccountOrPassword = false;
+
+      // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
+      //TODO:(待優化)
+      if (!this.account) {
+        this.formErrorAccount = true;
+      }
+
+      if (!this.password) {
+        this.formErrorPassword = true;
+      }
+
+      // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+      if (this.allFalse) return;
+
       try {
-        // 當按下按鈕後，所有底線為黑/藍線
-        this.formErrorAccount = false;
-        this.formErrorPassword = false;
-        this.formErrorAccountNotExisted = false;
-        this.formErrorAccountOrPassword = false;
-
-        // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        //TODO:(待優化)
-        if (!this.account) {
-          this.formErrorAccount = true;
-        }
-
-        if (!this.password) {
-          this.formErrorPassword = true;
-        }
-
         const { data } = await adminAPI.login({
           account: this.account,
           password: this.password,
@@ -163,17 +176,32 @@ export default {
         this.$store.commit("setCurrentUser", userData);
 
         Toast.fire({
-          html: innerHtml('登入成功！','succeed')
+          html: innerHtml("登入成功！", "succeed"),
         });
         this.$router.push("/admin");
       } catch (error) {
-        const message = error.response.data.message.toLowerCase();
+        const message = error.response.data.message
         console.log(error.response);
         if (message.includes("帳號或密碼錯誤")) {
           this.formErrorAccountOrPassword = true;
         } else if (message.includes("帳號不存在")) {
           this.formErrorAccountNotExisted = true;
         }
+      }
+    },
+  },
+  computed: {
+    // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+    allFalse() {
+      if (
+        this.formErrorAccount ||
+        this.formErrorPassword ||
+        this.formErrorAccountNotExisted ||
+        this.formErrorAccountOrPassword
+      ) {
+        return true;
+      } else {
+        return false;
       }
     },
   },

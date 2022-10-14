@@ -3,7 +3,7 @@
   &__mask {
     display: none;
   }
-  
+
   &__container {
     position: absolute;
     z-index: 10;
@@ -11,63 +11,66 @@
     bottom: 0;
     width: 100%;
     background-color: var(--white);
-    .form__input__container{
-      label{
+
+    .form__input__container {
+      label {
         color: var(--text-label-color);
       }
-      input{
+
+      input {
         color: var(--main-text-color);
       }
     }
   }
 
   &__input {
-      &__container {
-        margin: 0 auto;
-        width: 100%;
-        height: 4.6875rem;
-        display: grid;
-        grid-template-columns: 2.8125rem auto 7rem;
-        align-items: center;
-      }
-
-      &--last-step{
-        grid-column: 1 / 2;
-        width: 1rem;
-        display: block;
-        margin-left: 1.75rem;
-      }
-
-      &--cancel {
-        display: none;
-      }
-
-      &--title {
-        grid-column: 2 / 3;
-        font-size: 1.125rem;
-        padding: 1rem;
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-
-      &--save {
-        grid-column: 3 / 4;
-        width: 4rem;
-        height: 2.5rem;
-        color: var(--white);
-        background-color: var(--main-color);
-        border-radius: 50px;
-        margin: auto;
-      }
+    &__container {
+      margin: 0 auto;
+      width: 100%;
+      height: 4.6875rem;
+      display: grid;
+      grid-template-columns: 2.8125rem auto 7rem;
+      align-items: center;
     }
+
+    &--last-step {
+      grid-column: 1 / 2;
+      width: 1rem;
+      display: block;
+      margin-left: 1.75rem;
+    }
+
+    &--cancel {
+      display: none;
+    }
+
+    &--title {
+      grid-column: 2 / 3;
+      font-size: var(--h5-size);
+      padding: 1rem;
+      font-size: var(--h4-size);
+      font-weight: var(--bold-weight);
+    }
+
+    &--save {
+      grid-column: 3 / 4;
+      width: 4rem;
+      height: 2.5rem;
+      color: var(--white);
+      background-color: var(--main-color);
+      border-radius: 50px;
+      margin: auto;
+    }
+  }
 }
 
-
+// 使用者頁面
 .user-info {
   &__image__container {
     width: 100%;
     position: relative;
     margin-bottom: 3.5rem;
+    // border: 1px solid black;
 
     img {
       object-fit: cover;
@@ -127,7 +130,9 @@
       left: 1.5rem;
       bottom: -2.5rem;
       z-index: 999;
-      img{
+      background-color: var(--white);
+
+      img {
         border-radius: 50%;
       }
     }
@@ -160,30 +165,45 @@
   display: none;
 }
 
-
-// 滑過背景照片才可以開啟編輯照片功能
-.hover__background{
-  &-container{
-    display: none;
-  }
-  &-controller:hover{
-    .hover__background-container{
-      display: block;
+// UserEditModal
+.user-edit {
+  .modal{
+    &__container{
+      height: 39.625rem;
     }
+    
+  }
+  // 滑過背景照片才可以開啟編輯照片功能
+  .hover__background {
+    &-container {
+      display: none;
+    }
+
+    &-controller:hover {
+      .hover__background-container {
+        display: block;
+      }
+    }
+  }
+
+  // 滑過個人照片才可以開啟編輯照片功能
+  .hover__avatar {
+    &-container {
+      display: none;
+    }
+
+    &-controller:hover {
+      .hover__avatar-container {
+        display: block;
+      }
+    }
+  }
+
+  .form__container{
+    width: 87.2%
   }
 }
 
-// 滑過個人照片才可以開啟編輯照片功能
-.hover__avatar{
-  &-container{
-    display: none;
-  }
-  &-controller:hover{
-    .hover__avatar-container{
-      display: block;
-    }
-  }
-}
 
 // TODO:改善表格RWD寬度的問題
 @media screen and (min-width: 600px) {
@@ -199,6 +219,7 @@
       right: 0;
       z-index: 5;
     }
+
     &__container {
       z-index: 999;
       top: 3.375rem;
@@ -227,18 +248,19 @@
 
       &--title {
         grid-column: 2 / 3;
-        font-size: 1.125rem;
+        font-size: var(--h5-size);
       }
     }
   }
 
+  // 使用者頁面
   .user-info {
     &__image__container {
-      margin-bottom: 5rem;
+      margin-bottom: 13.5rem;
     }
 
-    &__background{
-      &__container{
+    &__background {
+      &__container {
         height: 12.5rem;
         background-color: var(--white);
       }
@@ -251,8 +273,7 @@
         left: 1rem;
         bottom: -4.375rem;
         border: 0.25rem solid var(--white);
-        background-color: var(--white);
-        
+
       }
     }
   }
@@ -265,10 +286,18 @@
     display: block;
     width: 100%;
     text-align: right;
-    font-size: 0.75rem;
+    font-size: var(--small-size);
     line-height: 1.25rem;
     margin-top: 0.25rem;
     color: var(--text-label-color);
+  }
+  
+  .user-edit{
+    .user-info{
+      &__image__container{
+        margin-bottom: 5rem;
+      }
+    }
   }
 }
 

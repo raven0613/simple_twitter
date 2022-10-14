@@ -2,7 +2,7 @@
     <div class="reply__container">
         <div class="tweet__avatar">
             <router-link :to="{name: 'user-detail', params: {id: reply.UserId}, query: {tab: 'tweet'}}" class="tweet__avatar--photo" >
-                <img :src="reply.User.profilePhoto" alt="">
+                <img :src="reply.User.profilePhoto | emptyImage" alt="">
             </router-link>
         </div>
         <div class="tweet__info">
@@ -28,7 +28,8 @@
 <script>
 import {
   showDescriptionFilter,
-  fromNowFilter
+  fromNowFilter,
+  emptyImageFilter
 } from "../utils/mixins";
 
 export default {
@@ -37,6 +38,6 @@ export default {
             type: Object
         },
     },
-    mixins: [showDescriptionFilter, fromNowFilter],
+    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
 }
 </script>

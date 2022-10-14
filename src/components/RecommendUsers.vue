@@ -6,7 +6,7 @@
             <router-link :to="{ name: 'user-detail', params: {id: user.id}, query: {tab: 'tweet'}}" v-for="user in users" :key="user.id" class="recommend__user">
             <!-- 個人資訊區 -->
                 <div class="recommend__user--avatar">
-                    <img :src="user.profilePhoto" alt="">
+                    <img :src="user.profilePhoto | emptyImage" alt="">
                 </div>
                 <div class="recommend__user--info">
                     <p>{{user.name}}</p>
@@ -29,9 +29,11 @@
 <script>
 import followshipsAPI from '../apis/followships.js'
 import { Toast, innerHtml } from '../utils/helpers.js'
+import { emptyImageFilter } from '../utils/mixins.js'
 import { mapState } from 'vuex'
 
 export default {
+    mixins:[emptyImageFilter],
     data () {
         return {
             users: [],

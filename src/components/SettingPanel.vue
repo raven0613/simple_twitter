@@ -165,7 +165,20 @@
 
       <!-- button們 -->
       <div class="form__button__container">
-        <button class="form__button" :class="{form__button_processing: isProcessing}" type="submit">儲存</button>
+        <button
+          class="form__button"
+          :class="{ form__button_processing: isProcessing }"
+          type="submit"
+        >
+          儲存
+        </button>
+        <div class="form__links form__links__logout">
+          <div
+            @click.stop.prevent="logout"
+            class="form__links--link"
+            >登出</div
+          >
+        </div>
       </div>
     </form>
   </div>
@@ -195,8 +208,8 @@ export default {
     },
     isProcessing: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -247,11 +260,11 @@ export default {
         // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
         if (newValue.name.length >= 50) {
           Toast.fire({
-            html: innerHtml('字數超過上限','error')
+            html: innerHtml("字數超過上限", "error"),
           });
           newValue.name = newValue.name.slice(0, 50); // name會停留在50字內
           this.formErrorNameLimited = true;
-          console.log(this.formErrorNameLimited)
+          console.log(this.formErrorNameLimited);
           return;
         } else {
           this.formErrorNameLimited = false;
@@ -293,9 +306,8 @@ export default {
     },
   },
   methods: {
-    handleSubmit() {
-      try {
-        // 當按下按鈕後，所有底線為黑/藍線
+    async handleSubmit() {
+      // 當按下按鈕後，所有底線為黑/藍線
         this.formErrorName = false;
         this.formErrorEmail = false;
         this.formErrorAccount = false;
@@ -328,11 +340,15 @@ export default {
         if (this.userData.password !== this.userData.checkPassword) {
           this.formErrorPasswordUnmatched = true;
           Toast.fire({
-            html: innerHtml('密碼與確認密碼不符','error')
+            html: innerHtml("密碼與確認密碼不符", "error"),
           });
           return;
         }
 
+        // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+      if (this.allFalse) return;
+
+      try {
         // 把表單資料打包給後端
         const formData = {
           account: this.userData.account,
@@ -367,6 +383,30 @@ export default {
         } else if (message.includes("email")) {
           this.formErrorEmailExisted = true;
         }
+      }
+    },
+    logout() {
+      this.$store.commit("revokeAuthentication");
+      this.$router.push("/login");
+    },
+  },
+  computed: {
+    // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+    allFalse() {
+      if (
+        this.formErrorName ||
+        this.formErrorEmail ||
+        this.formErrorAccount ||
+        this.formErrorPassword ||
+        this.formErrorCheckPassword ||
+        this.formErrorPasswordUnmatched ||
+        this.formErrorAccountExisted ||
+        this.formErrorNameExisted ||
+        this.formErrorNameLimited 
+      ) {
+        return true;
+      } else {
+        return false;
       }
     },
   },

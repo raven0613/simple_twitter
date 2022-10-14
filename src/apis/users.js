@@ -30,6 +30,10 @@ export default {
     console.log(userId, formData)
     return apiHelper.put(`/users/${userId}`, formData,)
   },
+  // 刪除個人帳號資訊頁面的封面照，使用新增(patch)的方式來刪除
+  removeCoverPhoto({userId}){
+    return apiHelper.patch(`/users/${userId}/cover`)
+  },
   getUser ({userId}) {
       return apiHelper.get(`/users/${userId}`)
   },

@@ -3,7 +3,7 @@
 
         <div class="tweet__avatar">
             <router-link :to="{name: 'user-detail', params: {id: tweet.UserId}, query: {tab: 'tweet'}}" class="tweet__avatar--photo" >
-                <img :src="tweet.User.profilePhoto" alt="">
+                <img :src="tweet.User.profilePhoto | emptyImage" alt="">
             </router-link>
 
         </div>
@@ -43,7 +43,8 @@ import tweetsAPI from '../apis/tweets.js'
 import { Toast, innerHtml } from '../utils/helpers.js'
 import {
   showDescriptionFilter,
-  fromNowFilter
+  fromNowFilter,
+  emptyImageFilter
 } from "../utils/mixins";
 
 export default {
@@ -55,7 +56,7 @@ export default {
             type: Boolean,
         }
     },
-    mixins: [showDescriptionFilter, fromNowFilter],
+    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
     data () {
         return {
             tweet: this.initialTweet,

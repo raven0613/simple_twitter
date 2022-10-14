@@ -17,6 +17,7 @@
           :initialFormErrorIntroduction="formErrorIntroduction"
           @after-submit-close="handleCloseModal"
           @after-submit="handleAfterSubmit"
+          @after-remove-cover-photo="handleRemoveCoverPhoto"
         />
     <!-- 推文視窗 -->
         <MainTweetModal
@@ -335,6 +336,7 @@ export default {
       this.isReplyModalToggled = false;
       this.isEditModalToggled = false;
       this.$router.back();
+      this.fetchUser(this.currentUser.id)
     },
     handleAddTweet(tweet) {
       this.tweets = [tweet, ...this.tweets];
@@ -378,6 +380,19 @@ export default {
         if(this.$route.matched[0].name === 'user-edit') {
             this.isEditModalToggled = true
         }
+    },
+    // 刪除封面照片
+    async handleRemoveCoverPhoto(){
+      try{
+        const { data } = await usersAPI.removeCoverPhoto({
+          userId: this.currentUser.id
+        })
+        console.log(data)
+      } catch(error) {
+        Toast.fire({
+          html: innerHtml('目前無法刪除照片，請稍後再試','error')
+        });
+      }
     }
   },
 };
