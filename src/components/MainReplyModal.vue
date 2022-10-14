@@ -141,11 +141,10 @@ export default {
         
         this.$emit('after-submit', response.data)
         
-        //回覆完回到詳細頁面
+        //如果不是在詳細頁回覆，回覆完就導到詳細頁
         if (!this.isInDetailPage) {
-          console.log('11111')
+          history.replaceState({ name: "tweet-detail" }, null, `/#/tweets/${id}`);
           this.$router.push({name: 'tweet-detail', params: {id}})
-          // this.$router.push({name: 'tweet-detail', params: {id}}).catch(() => true)
         }
         
 

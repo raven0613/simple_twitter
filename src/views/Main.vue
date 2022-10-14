@@ -87,11 +87,13 @@ export default {
         }
     },
     created () {
+        console.log('M created')
         this.getUrl()
         this.fetchTweets()
         this.fetchUser(this.currentUser.id)
     },
     beforeRouteUpdate(to, from, next) {
+        console.log('M beforeRouteUpdate')
         this.getUrl()
         next()
     },
@@ -144,7 +146,7 @@ export default {
             this.tweets = [
                 tweet, ...this.tweets
             ]
-            //data裡面的tweets有增加  但是資料傳不進TweetCard
+            //TODO:data裡面的tweets有增加  但是資料傳不進TweetCard
             // this.fetchTweets()
         },
         handleToggleReplyModal(isReplyModalToggled){
@@ -156,7 +158,7 @@ export default {
         },
         // 別人直接貼網址的狀況
         getUrl() {
-            console.log(this.$route.matched[0])
+            console.log('M getUrl')
             if(this.$route.matched[0].name === 'tweet-new') {
                 this.isModalToggled = true
             }
