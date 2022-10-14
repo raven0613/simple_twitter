@@ -3,7 +3,7 @@
     <div class="tweet__avatar">
       <img
         class="tweet__avatar--photo"
-        :src="tweet.User.profilePhoto"
+        :src="tweet.User.profilePhoto | emptyImage"
         alt=""
       />
     </div>
@@ -35,7 +35,8 @@ import { Toast, innerHtml, innerHtmlConfirm } from "../utils/helpers";
 import adminAPI from "../apis/admin.js";
 import {
   showDescriptionFilter,
-  fromNowFilter
+  fromNowFilter,
+  emptyImageFilter
 } from "../utils/mixins";
 
 export default {
@@ -49,7 +50,7 @@ export default {
       tweet: this.initialTweet,
     };
   },
-  mixins: [showDescriptionFilter, fromNowFilter],
+  mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
   methods: {
     async adminDeleteTweet(id) {
       try {

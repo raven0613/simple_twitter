@@ -5,7 +5,7 @@
       <div class="user-info__image__container">
         <div class="user-info__background__container">
           <img
-            :src="user.coverPhoto"
+            :src="user.coverPhoto | emptyImage"
             alt=""
             class="user-info__background--photo"
           />
@@ -13,7 +13,7 @@
 
         <div class="user-info__avatar__container">
           <img
-            :src="user.profilePhoto"
+            :src="user.profilePhoto | emptyImage"
             alt=""
             class="user-info__avatar--photo"
           />
@@ -88,6 +88,7 @@
 <script>
 import followshipsAPI from '../apis/followships.js'
 import { Toast, innerHtml } from '../utils/helpers.js'
+import { emptyImageFilter } from '../utils/mixins.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -114,6 +115,7 @@ export default {
     },
 
   },
+  mixins: [ emptyImageFilter ],
   data() {
     return {
       isEditModalToggled: this.iniIsModalToggled,

@@ -4,7 +4,7 @@
     class="follow-user">
 
         <div class="tweet__avatar">
-            <img class="tweet__avatar--photo" :src="user.profilePhoto" alt="">
+            <img class="tweet__avatar--photo" :src="user.profilePhoto | emptyImage" alt="">
         </div>
 
         <div class="tweet__info">
@@ -31,7 +31,9 @@
 <script>
 import followshipsAPI from '../apis/followships.js'
 import { Toast, innerHtml } from '../utils/helpers.js'
+import { emptyImageFilter } from '../utils/mixins.js'
 import { mapState } from 'vuex'
+
 
 export default {
     props: {
@@ -39,6 +41,7 @@ export default {
             type: Object
         }
     },
+    mixins:[emptyImageFilter],
     data() {
         return {
             user: this.initFollower,

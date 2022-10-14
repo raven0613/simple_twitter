@@ -14,11 +14,15 @@
       <form @submit.stop.prevent="handleSubmit" class="tweet__input">
         <div class="tweet__input--info__container">
           <div class="tweet__input--avatar">
-            <img v-if="!isLoading" :src="userprofilePhoto" alt=""/>
+            <img
+              v-if="!isLoading"
+              :src="userprofilePhoto | emptyImage"
+              alt=""
+            />
           </div>
           <textarea
             v-model="tweetContent"
-            wrap="hard" 
+            wrap="hard"
             class="tweet__input--content"
             name="description"
             type="text"
@@ -30,33 +34,44 @@
         </div>
 
         <div class="tweet__input--button__container">
-          <div v-show="tweetLength >= 140" class="tweet__input--warning">字數不可超過<span class="montserrat-font">140</span>字</div>
+          <div v-show="tweetLength >= 140" class="tweet__input--warning">
+            字數不可超過<span class="montserrat-font" style="color: var(--tab-error);">140</span>字
+          </div>
 
-          <div v-show="tweetLength <= 0" class="tweet__input--warning">內容不可空白</div>
+          <div v-show="tweetLength <= 0" class="tweet__input--warning">
+            內容不可空白
+          </div>
 
           <button
             @click.stop.prevent=""
             v-if="tweetLength <= 0"
-            class="tweet__input--button tweet__input--button-dis">推文</button>
+            class="tweet__input--button tweet__input--button-dis"
+          >
+            推文
+          </button>
           <button
-          @click.stop.prevent="handleSubmit"
-          v-else type="submit" 
-          class="tweet__input--button">推文</button>
-
+            @click.stop.prevent="handleSubmit"
+            v-else
+            type="submit"
+            class="tweet__input--button"
+          >
+            推文
+          </button>
         </div>
-
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { Toast, innerHtml } from '../utils/helpers'
-import tweetsAPI from '../apis/tweets.js'
-import usersAPI from '../apis/users.js'
-import { mapState } from 'vuex'
+import { Toast, innerHtml } from "../utils/helpers";
+import { emptyImageFilter } from "../utils/mixins";
+import tweetsAPI from "../apis/tweets.js";
+import usersAPI from "../apis/users.js";
+import { mapState } from "vuex";
 
 export default {
+  mixins: [emptyImageFilter],
   props: {
     isMainPage: {
       type: Boolean,
@@ -65,48 +80,47 @@ export default {
   },
   data() {
     return {
-      tweetContent: '',
-      userprofilePhoto: '',
+      tweetContent: "",
+      userprofilePhoto: "",
       isLoading: true,
-      isProcessing: false
-    }
+      isProcessing: false,
+    };
   },
   watch: {
-    tweetContent(newValue){
+    tweetContent(newValue) {
       if (newValue.length >= 140) {
-        this.tweetContent = this.tweetContent.slice(0, 140)
-      }
-    }
-  },
-  created() {
-    this.fetchUser(this.currentUser.id)
-  },
-  computed: {
-    ...mapState(['currentUser', 'isAuthenticated']),
-    tweetLength() {
-      return this.tweetContent.length
-    }
-  },
-  methods: {
-    async fetchUser (userId) {
-      try {
-        this.isLoading = true
-        const { data } = await usersAPI.getUser({userId})
-        this.userprofilePhoto = data.profilePhoto
-        this.isLoading = false
-      }
-      catch (error) {
-        console.log(error.message)
-        this.isLoading = false
-        return Toast.fire({
-            html: innerHtml('目前無法取得使用者頭像，請稍後再試','error')
-        })
+        this.tweetContent = this.tweetContent.slice(0, 140);
       }
     },
-    async handleSubmit () {
+  },
+  created() {
+    this.fetchUser(this.currentUser.id);
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+    tweetLength() {
+      return this.tweetContent.length;
+    },
+  },
+  methods: {
+    async fetchUser(userId) {
       try {
-        if (this.isProcessing) return
-        this.isProcessing = true
+        this.isLoading = true;
+        const { data } = await usersAPI.getUser({ userId });
+        this.userprofilePhoto = data.profilePhoto;
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error.message);
+        this.isLoading = false;
+        return Toast.fire({
+          html: innerHtml("目前無法取得使用者頭像，請稍後再試", "error"),
+        });
+      }
+    },
+    async handleSubmit() {
+      try {
+        if (this.isProcessing) return;
+        this.isProcessing = true;
 
         const response = await tweetsAPI.addTweet({
           description: this.tweetContent
@@ -132,13 +146,13 @@ export default {
         console.log(error.message)
         this.isProcessing = false
         return Toast.fire({
-          html: innerHtml('無法新增推文','error')
-        })
+          html: innerHtml("無法新增推文", "error"),
+        });
       }
     },
-    handleCancelClicked () {
-      this.$emit('after-submit-close')
-    }
-  }
-}
+    handleCancelClicked() {
+      this.$emit("after-submit-close");
+    },
+  },
+};
 </script>

@@ -27,11 +27,11 @@
 
   // 個人資訊
   &__panel {
-    font-size: 0.875rem;
+    font-size: var(--second-size);
     margin-top: 1rem;
 
     &--name {
-      font-size: 1.125rem;
+      font-size: var(--h5-size);
       color: var(--main-text-color);
     }
 

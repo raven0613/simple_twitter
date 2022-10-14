@@ -25,14 +25,14 @@
       padding: 0.125rem 0.625rem 0.125rem;
 
       label {
-        font-size: 0.875rem;
+        font-size: var(--second-size);
         height: 1.375rem;
         line-height: 1.375rem;
         color: var(--text-label-color);
       }
 
       input {
-        font-size: 1rem;
+        font-size: var(--basic-size);
         height: 1.625rem;
         line-height: 1.625rem;
         color: var(--text-placeholder-color);
@@ -98,10 +98,14 @@
       }
     }
 
+    &__logout{
+      display: block;
+    }
+
     &--link {
       color: var(--link-color);
       text-decoration-line: underline; // 底線
-      font-size: 1rem;
+      font-size: var(--basic-size);
     }
   }
 }
@@ -111,11 +115,17 @@
   border-bottom: 2px solid var(--tab-error);
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 600px) {
   .form {
     &__container {
       width: 22.25rem;
       margin: 0 auto;
+    }
+
+    &__links{
+      &__logout{
+        display: none;
+      }
     }
   }
 }

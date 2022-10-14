@@ -212,7 +212,7 @@ export default {
   watch: {
     name(newValue) {
       console.log(newValue.length);
-      this.name = newValue.trim()
+      this.name = newValue.trim();
       // 計算目前輸入的字數
       this.lengthOfName = newValue.length;
 
@@ -223,7 +223,7 @@ export default {
       // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
       if (newValue.length >= 50) {
         Toast.fire({
-          html: innerHtml('字數超過上限！','error')
+          html: innerHtml("字數超過上限！", "error"),
         });
         this.name = this.name.slice(0, 50); // name會停留在50字內
         this.formErrorNameLimited = true;
@@ -233,74 +233,77 @@ export default {
       }
     },
     email(newValue) {
-      this.email = newValue.trim()
+      this.email = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorEmail = false;
         this.formErrorEmailExisted = false;
       }
     },
     account(newValue) {
-      this.account = newValue.trim()
+      this.account = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorAccount = false;
         this.formErrorAccountExisted = false;
       }
     },
     password(newValue) {
-      this.password = newValue.trim()
+      this.password = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorPassword = false;
         this.formErrorPasswordUnmatched = false;
       }
     },
     checkPassword(newValue) {
-      this.checkPassword = newValue.trim()
+      this.checkPassword = newValue.trim();
       if (newValue.length > 0) {
         this.formErrorCheckPassword = false;
         this.formErrorPasswordUnmatched = false;
       }
     },
   },
-  created(){
-    this.lengthOfName = 0
+  created() {
+    this.lengthOfName = 0;
   },
   methods: {
     async handleSubmit() {
+      // 當按下按鈕後，所有底線為黑/藍線
+      this.formErrorName = false;
+      this.formErrorEmail = false;
+      this.formErrorAccount = false;
+      this.formErrorPassword = false;
+      this.formErrorCheckPassword = false;
+      this.formErrorPasswordUnmatched = false;
+      this.formErrorAccountExisted = false;
+      this.formErrorNameExisted = false;
+      this.formErrorNameLimited = false;
+
+      // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
+      if (!this.account) {
+        this.formErrorAccount = true;
+      }
+      if (!this.name) {
+        this.formErrorName = true;
+      }
+      if (!this.email) {
+        this.formErrorEmail = true;
+      }
+      if (!this.password) {
+        this.formErrorPassword = true;
+      }
+      if (!this.checkPassword) {
+        this.formErrorCheckPassword = true;
+      }
+
+      // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
+      if (this.password !== this.checkPassword) {
+        this.formErrorPasswordUnmatched = true;
+        return;
+      }
+
+      // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+      if (this.allFalse) return;
+
       try {
-        // 當按下按鈕後，所有底線為黑/藍線
-        this.formErrorName = false;
-        this.formErrorEmail = false;
-        this.formErrorAccount = false;
-        this.formErrorPassword = false;
-        this.formErrorCheckPassword = false;
-        this.formErrorPasswordUnmatched = false;
-        this.formErrorAccountExisted = false;
-        this.formErrorNameExisted = false;
-        this.formErrorNameLimited = false;
-
-        // 每一個欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        if (!this.account) {
-          this.formErrorAccount = true;
-        }
-        if (!this.name) {
-          this.formErrorName = true;
-        }
-        if (!this.email) {
-          this.formErrorEmail = true;
-        }
-        if (!this.password) {
-          this.formErrorPassword = true;
-        }
-        if (!this.checkPassword) {
-          this.formErrorCheckPassword = true;
-        }
-
-        // 當使用者密碼與確認密碼不相同會有錯誤提示「密碼與確認密碼不符」，兩欄都呈現紅線
-        if (this.password !== this.checkPassword) {
-          this.formErrorPasswordUnmatched = true;
-          return;
-        }
-
         // 串接API
         const { data } = await usersAPI.register({
           name: this.name,
@@ -327,7 +330,7 @@ export default {
 
         // 使用者成功建立帳號會自動跳轉 login 頁面，並出現成功提示「建立帳號成功！」
         Toast.fire({
-          html: innerHtml('建立帳號成功！','succeed')
+          html: innerHtml("建立帳號成功！", "succeed"),
         });
 
         this.$router.push("/login");
@@ -342,8 +345,28 @@ export default {
         }
 
         Toast.fire({
-          html: innerHtml(message,'error')
+          html: innerHtml(message, "error"),
         });
+      }
+    },
+  },
+  computed: {
+    // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+    allFalse() {
+      if (
+        this.formErrorName ||
+        this.formErrorEmail ||
+        this.formErrorAccount ||
+        this.formErrorPassword ||
+        this.formErrorCheckPassword ||
+        this.formErrorPasswordUnmatched ||
+        this.formErrorAccountExisted ||
+        this.formErrorNameExisted ||
+        this.formErrorNameLimited
+      ) {
+        return true;
+      } else {
+        return false;
       }
     },
   },

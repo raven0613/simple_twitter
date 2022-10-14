@@ -2,12 +2,12 @@
   <div class="user-card__container" >
     <!-- 背景圖 -->
     <div class="user-card__background">
-      <img :src="user.coverPhoto" alt="">
+      <img :src="user.coverPhoto | emptyImage" alt="">
     </div>
 
     <!-- 頭像 -->
     <div class="user-card__avatar">
-      <img :src="user.profilePhoto" alt="">
+      <img :src="user.profilePhoto | emptyImage" alt="">
     </div>
 
     <!-- 資訊 -->
@@ -40,7 +40,7 @@
     
 
 <script>
-import {showDescriptionFilter } from "../utils/mixins";
+import {showDescriptionFilter, emptyImageFilter } from "../utils/mixins";
 
 export default {
   props: {
@@ -53,6 +53,6 @@ export default {
       user: this.initialUser,
     };
   },
-  mixins: [ showDescriptionFilter ],
+  mixins: [ showDescriptionFilter , emptyImageFilter],
 };
 </script>

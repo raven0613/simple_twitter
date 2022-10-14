@@ -1,6 +1,6 @@
 <template>
-  <div class="modal">
-    <form @submit.prevent.stop="handleSubmit" enctype="multipart/form-data">
+  <div class="modal user-edit">
+    <form @submit.prevent.stop="handleSubmit">
       <div class="modal__container">
         <!-- 最上方的區塊 -->
         <div class="modal__input__container">
@@ -21,9 +21,14 @@
 
         <!-- 背景圖片跟個人照 -->
         <div class="user-info__image__container">
-          <div class="user-info__background__container hover__background-controller">
+          <div
+            class="
+              user-info__background__container
+              hover__background-controller
+            "
+          >
             <img
-              :src="user.coverPhoto"
+              :src="user.coverPhoto | emptyImage"
               alt=""
               class="user-info__background--photo"
             />
@@ -50,6 +55,7 @@
                 </button>
 
                 <img
+                  @click.prevent.stop="handleRemoveCoverPhoto"
                   src="../assets/images/cancel-white.svg"
                   alt=""
                   class="user-info__background__icon"
@@ -60,7 +66,7 @@
 
           <div class="user-info__avatar__container hover__avatar-controller">
             <img
-              :src="user.profilePhoto"
+              :src="user.profilePhoto | emptyImage"
               alt=""
               class="user-info__avatar--photo"
             />
@@ -90,7 +96,7 @@
           </div>
         </div>
 
-        
+        <!-- 表格 -->
         <div class="form form__container">
           <div
             :class="[
@@ -191,7 +197,9 @@
 </template>
 
 <script>
-import { Toast, innerHtml } from "../utils/helpers";
+import { Toast, innerHtml, innerHtmlConfirm } from "../utils/helpers";
+import { emptyImageFilter } from "../utils/mixins";
+
 export default {
   name: "UserEditModal",
   props: {
@@ -215,6 +223,7 @@ export default {
       default: false,
     },
   },
+  mixins: [emptyImageFilter],
   data() {
     return {
       user: { ...this.initialUser },
@@ -224,7 +233,7 @@ export default {
       formErrorIntroductionLimited: false,
       lengthOfName: "",
       lengthOfIntroduction: "",
-      isProcessing: false
+      isProcessing: false,
     };
   },
   watch: {
@@ -253,7 +262,7 @@ export default {
         // name 字數限制在50字以內，若超過會有錯誤提示「字數超過上限！」
         if (newValue.name.length >= 50) {
           Toast.fire({
-            html: innerHtml('字數超過上限','error')
+            html: innerHtml("字數超過上限", "error"),
           });
 
           this.user.name = this.user.name.slice(0, 50); // name會停留在50字內
@@ -272,7 +281,7 @@ export default {
         // introduction 字數限制在160字以內，若超過會有錯誤提示「字數超過上限！」
         if (newValue.introduction.length > 160) {
           Toast.fire({
-            html: innerHtml('字數超過上限','error')
+            html: innerHtml("字數超過上限", "error"),
           });
           this.user.introduction = this.user.introduction.slice(0, 160); // introduction會停留在160字內
 
@@ -294,39 +303,33 @@ export default {
     this.lengthOfIntroduction = this.initialUser.introduction.length;
   },
   methods: {
-    handleSubmit(e) {
+    async handleSubmit(e) {
+      if (this.isProcessing) return;
+      this.isProcessing = true;
+
+      // 當按下按鈕後，所有底線為黑/藍線
+      this.formErrorName = false;
+      this.formErrorIntroduction = false;
+      this.formErrorNameLimited = false;
+      this.formErrorIntroductionLimited = false;
+
+      // 欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
+
+      if (!this.user.name) {
+        this.formErrorName = true;
+        return;
+      }
+
+      // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+      if (this.allFalse) return;
+
       try {
-        if (this.isProcessing) return
-        this.isProcessing = true
-
-        // 當按下按鈕後，所有底線為黑/藍線
-        this.formErrorName = false;
-        this.formErrorIntroduction = false;
-        this.formErrorNameLimited = false;
-        this.formErrorIntroductionLimited = false;
-
-        // 欄位都是必填，若有欄位為空會有錯誤提示「該項目為必填」，錯誤底線就為紅色
-        if (!this.user.introduction && !this.user.name) {
-          this.formErrorName = true;
-          this.formErrorIntroduction = true;
-          return;
-        }
-        if (!this.user.name) {
-          this.formErrorName = true;
-          return;
-        }
-
-        if (!this.user.introduction) {
-          this.formErrorIntroduction = true;
-          return;
-        }
-
         // 把表單資料打包給後端
-        const form = e.target
-        const formData = new FormData(form)
-        console.log(form, formData)
-        for(let [name, value] of formData.entries()){
-          console.log(name + ': ' + value)
+        const form = e.target;
+        const formData = new FormData(form);
+        console.log(form, formData);
+        for (let [name, value] of formData.entries()) {
+          console.log(name + ": " + value);
         }
 
         // console.log(formData);
@@ -340,12 +343,13 @@ export default {
 
         this.isProcessing = false
         this.$emit("after-submit-close");
+
       } catch (error) {
         // 想要拿到data.message，要知道是包在error.response裡
         const message = error.response.data.message;
-        this.isProcessing = false
+        this.isProcessing = false;
         Toast.fire({
-          html: innerHtml(message,'error')
+          html: innerHtml(message, "error"),
         });
       }
     },
@@ -377,6 +381,43 @@ export default {
       this.user = this.initialUser;
       this.$emit("after-submit-close");
     },
+    // 要刪除照片之前會先跳提示，toast點擊確認 & Modal點擊送出 才會真的刪除！
+    async handleRemoveCoverPhoto() {
+      const result = await Toast.fire({
+        html: innerHtmlConfirm("您確定嗎？刪除的照片是回不來的喔！"),
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "確認",
+        timer: undefined,
+      });
+
+      // 按取消可以取消動作，按確認功能可以刪貼文
+      if (result.dismiss === "cancel") {
+        return;
+      } else if (result.value) {
+        this.user.coverPhoto = "";
+        this.$emit("after-remove-cover-photo");
+      }
+    },
+  },
+  computed: {
+    // 只要狀態有報錯，就不會發請求給後端，避免一直重複發送請求
+    allFalse() {
+      if (
+      this.formErrorName ||
+      this.formErrorIntroduction ||
+      this.formErrorNameLimited ||
+      this.formErrorIntroductionLimited
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  destroyed() {
+    Toast.close();
   },
 };
 </script>

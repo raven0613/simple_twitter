@@ -12,7 +12,7 @@
         <!-- 圖片 -->
         <div class="tweet__input--avatar__container">
           <div class="tweet__input--avatar">
-            <img :src="initialTweet.User.profilePhoto" alt="" />
+            <img :src="initialTweet.User.profilePhoto | emptyImage" alt="" />
           </div>
           <span class="tweet__input--dash"></span>
         </div>
@@ -39,7 +39,7 @@
       <form class="tweet__input">
         <div class="tweet__input--info__container">
           <div class="tweet__input--avatar">
-            <img v-if="!isLoading" :src="userprofilePhoto" alt="" />
+            <img v-if="!isLoading" :src="userprofilePhoto | emptyImage" alt="" />
           </div>
           <textarea
             v-model="tweetContent"
@@ -74,7 +74,8 @@ import usersAPI from '../apis/users.js'
 import { mapState } from 'vuex'
 import {
   showDescriptionFilter,
-  fromNowFilter
+  fromNowFilter,
+  emptyImageFilter
 } from "../utils/mixins";
 
 export default {
@@ -92,7 +93,7 @@ export default {
       default: false
     }
   },
-  mixins: [showDescriptionFilter, fromNowFilter],
+  mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
   data() {
     return {
       tweetContent: '',
