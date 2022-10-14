@@ -4,22 +4,28 @@
 
             <router-link
             @click.native.stop.prevent="handleMainPage('main')" 
-            :to="{name: 'main-page'}" class="side-bar__icon">
+            :to="{name: 'main-page'}" 
+            class="side-bar__icon">
                 <img src="../assets/images/sidebar_logo.svg" alt="">
             </router-link>
 
             <router-link 
             @click.native.stop.prevent="handleMainPage('main')"
             :to="{name: 'main-page'}" 
-            class="side-bar__link">
-                <img v-if="currentPage === `main`" src="../assets/images/sidebar_home_active.svg" alt="">
-                <img v-else src="../assets/images/sidebar_home.svg" alt="">
+            class="side-bar__link"
+            :class="{link__hover: currentPage !== `main`}">
+                <img 
+                v-if="currentPage === `main`" src="../assets/images/sidebar_home_active.svg" alt="">
+                <img 
+                v-else src="../assets/images/sidebar_home.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `main`}">首頁</h5>
             </router-link>
             
             <router-link 
             @click.native.stop.prevent="handleMainPage('user')"
-            :to="{name: 'user-detail', params: {id: currentUser.id}, query: { 'tab': 'tweet'}}" class="side-bar__link">
+            :to="{name: 'user-detail', params: {id: currentUser.id}, query: { 'tab': 'tweet'}}" 
+            class="side-bar__link"
+            :class="{link__hover: currentPage !== `user`}">
                 <img v-if="currentPage === `user` && isCurrentUser" src="../assets/images/sidebar_user_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_user.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `user`}">個人資料</h5>
@@ -27,7 +33,9 @@
 
             <router-link 
             @click.native.stop.prevent="handleMainPage('setting')"
-            :to="{name: 'settings'}" class="side-bar__link">
+            :to="{name: 'settings'}" 
+            class="side-bar__link"
+            :class="{link__hover: currentPage !== `setting`}">
                 <img v-if="currentPage === `setting`" src="../assets/images/sidebar_setting_active.svg" alt="">
                 <img v-else src="../assets/images/sidebar_setting.svg" alt="">
                 <h5 :class="{sidebar__active: currentPage === `setting`}">設定</h5>
@@ -47,7 +55,8 @@
             </button>
         </div>
 
-        <div @click.stop.prevent="logout" class="side-bar__link side-bar__link--logout">
+        <div @click.stop.prevent="logout" 
+        class="side-bar__link side-bar__link--logout link__hover">
             <img src="../assets/images/sidebar_logout.svg" alt="">
             <h5>登出</h5>
         </div>

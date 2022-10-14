@@ -5,7 +5,8 @@
         <img src="../assets/images/sidebar_logo.svg" alt="" />
       </router-link>
 
-      <router-link :to="{ name: 'admin-tweet' }" class="side-bar__link">
+      <router-link :to="{ name: 'admin-tweet' }" class="side-bar__link"
+      :class="{link__hover: currentPage !== `tweets`}">
         <img
           v-if="currentPage === `tweets`"
           src="../assets/images/sidebar_home_active.svg"
@@ -15,7 +16,8 @@
         <h5 :class="{ sidebar__active: currentPage === `tweets` }">推文清單</h5>
       </router-link>
 
-      <router-link :to="{ name: 'admin-user' }" class="side-bar__link">
+      <router-link :to="{ name: 'admin-user' }" class="side-bar__link"
+      :class="{link__hover: currentPage !== `users`}">
         <img
           v-if="currentPage === `users`"
           src="../assets/images/sidebar_user_active.svg"
@@ -28,7 +30,8 @@
       </router-link>
     </div>
 
-    <div @click.stop.prevent="logout" class="side-bar__link">
+    <div @click.stop.prevent="logout" 
+    class="side-bar__link link__hover">
       <img src="../assets/images/sidebar_logout.svg" alt="" />
       <h5>登出</h5>
     </div>

@@ -22,7 +22,6 @@
         <MainTweetModal
           v-if="isModalToggled"
           @after-submit-close="handleCloseModal"
-          @after-submit="handleAddTweet"
         />
     <!-- 回覆視窗 -->
         <MainReplyModal
@@ -95,7 +94,7 @@
 
       <div
         class="modal__mask"
-        @click.stop.prevent="handleCloseModal"
+        @click.stop.prevent="handleCloseModal(false)"
         v-if="isModalToggled || isReplyModalToggled || isEditModalToggled"
         @touchmove.prevent
         @mousewheel.prevent
@@ -247,7 +246,7 @@ export default {
       try {
         this.isTweetLoading = true;
         const response = await usersAPI.getUserTweets({ userId });
-        console.log(response);
+        
         //裡面不是 likeCounts
         this.tweets = [...response.data];
         this.isTweetLoading = false;
@@ -277,10 +276,7 @@ export default {
       try {
         this.isTweetLoading = true;
         const response = await usersAPI.getUserLikes({ userId });
-        console.log(response);
-        // response.data = response.data.map(like => {
-        //     return { ...like.Tweet }
-        // })
+        
         this.likes = [...response.data];
         this.isTweetLoading = false;
       } catch (error) {
@@ -318,9 +314,6 @@ export default {
         } else if (message.includes("自我介紹字數限制需在 1~ 160 字之內")) {
           this.formErrorEmail = true;
         }
-
-
-
         Toast.fire({
           html: innerHtml('目前無法更新使用者資料，請稍後再試','error')
         });
@@ -330,15 +323,15 @@ export default {
       this.isModalToggled = isModalToggled;
       history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
     },
-    handleCloseModal() {
+    handleCloseModal(isSubmitted) {
       this.isModalToggled = false;
       this.isReplyModalToggled = false;
       this.isEditModalToggled = false;
-      this.$router.back();
-    },
-    handleAddTweet(tweet) {
-      this.tweets = [tweet, ...this.tweets];
-      this.fetchUserTweets(this.currentUser.id);
+      //如果不是在submit後回傳的關掉，就可以直接回上一頁
+      if (!isSubmitted) {
+        this.$router.back()
+      }
+
     },
     handleToggleReplyModal(isReplyModalToggled) {
       this.isReplyModalToggled = isReplyModalToggled;
@@ -353,24 +346,20 @@ export default {
     handlePassTweetData(tweet) {
       this.clickedTweet = tweet;
     },
-    handleAddReply(reply) {
-      // this.$router.push({name: 'tweet-detail', params: { id: this.clickedTweet.id }})
-      this.replies = this.replies.push(reply);
-    },
     handleClickTab (clickedTab) {
       if (this.currentTab === clickedTab) return
       this.currentTab = clickedTab
       if (clickedTab === 'tweet') {
         this.fetchUserTweets(this.user.id)
-        history.pushState({ name: "user-tweet" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`)
+        history.replaceState({ name: "user-tweet" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`)
       }
       else if (clickedTab === 'reply') {
         this.fetchUserReplies(this.user.id)
-        history.pushState({ name: "user-reply" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
+        history.replaceState({ name: "user-reply" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
       }
       else if (clickedTab === 'like'){
         this.fetchUserLikes(this.user.id)
-        history.pushState({ name: "user-like" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
+        history.replaceState({ name: "user-like" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
       }
     },
     // 別人直接貼網址的狀況

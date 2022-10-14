@@ -16,10 +16,13 @@
                 <button 
                 @click.stop.prevent="addFollowship(user.id)" 
                 v-if="!user.isFollowed" 
-                class="primbutton primbutton__unfollowed" :class="{primbutton__unfollowed_processing: user.isProcessing}">跟隨</button>
+                class="primbutton primbutton__unfollowed" 
+                :class="{primbutton__unfollowed_processing: user.isProcessing}">跟隨</button>
+                
                 <button 
                 @click.stop.prevent="deleteFollowship(user.id)" v-else 
-                class="primbutton primbutton__followed" :class="{primbutton__followed_processing: user.isProcessing}">正在跟隨</button>
+                class="primbutton primbutton__followed" 
+                :class="{primbutton__followed_processing: user.isProcessing}">取消跟隨</button>
             </router-link>
 
         </div>

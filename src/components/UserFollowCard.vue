@@ -11,13 +11,15 @@
             <div class="follow-user__info">
                 <span>{{ user.name }}</span>
             <!-- 按鈕區 -->
-                <button 
-                @click.stop.prevent="addFollowship(user.id)" 
-                v-if="!user.isFollowed" 
-                class="primbutton primbutton__unfollowed" :class="{primbutton__unfollowed_processing: isProcessing}">跟隨</button>
-                <button 
-                @click.stop.prevent="deleteFollowship(user.id)" v-else 
-                class="primbutton primbutton__followed" :class="{primbutton__followed_processing: isProcessing}">正在跟隨</button>
+                <div v-if="user.id !== currentUser.id">
+                    <button 
+                    @click.stop.prevent="addFollowship(user.id)" 
+                    v-if="!user.isFollowed" 
+                    class="primbutton primbutton__unfollowed" :class="{primbutton__unfollowed_processing: isProcessing}">跟隨</button>
+                    <button 
+                    @click.stop.prevent="deleteFollowship(user.id)" v-else 
+                    class="primbutton primbutton__followed" :class="{primbutton__followed_processing: isProcessing}">取消跟隨</button>
+                </div>
             </div>
             <div class="follow-user__description">
                 {{ user.introduction }}
@@ -29,7 +31,7 @@
 <script>
 import followshipsAPI from '../apis/followships.js'
 import { Toast, innerHtml } from '../utils/helpers.js'
-
+import { mapState } from 'vuex'
 
 export default {
     props: {
@@ -51,8 +53,17 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapState(['currentUser', 'isAuthenticated']),
+
+    },
     methods: {
         async addFollowship (id) {
+            if (id === this.currentUser.id) {
+                return Toast.fire({
+                    html: innerHtml('無法追蹤自己','error')
+                })
+            }
             try{
                 if (this.isProcessing) return
                 this.isProcessing = true

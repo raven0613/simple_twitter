@@ -1,13 +1,33 @@
+//消除預設的設定 所有按鈕都須確認
+button {
+    padding: 0;
+}
+
 .primbutton {
     height: 2rem;
     border-radius: 16px;
 
     &__followed {
-        color: var(--white);
+        //一開始按紐的取消跟隨隱藏
+        color: transparent;
         width: 5rem;
         background-color: var(--main-color);
+        position: relative;
+
+        &::before {
+            //只顯示偽元素的正在跟隨
+            color: var(--white);
+            content: '正在跟隨';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            line-height: 2rem;
+        }
 
         &_processing {
+            //手機版: 處理中照樣顯示偽元素的正在跟隨
             background-color: var(--top-user-second-color);
         }
     }
@@ -17,11 +37,15 @@
         border: 1px solid var(--main-color);
         background-color: var(--white);
 
+        &:hover {
+            color: #FF974A;
+        }
         &_processing {
-                color: var(---top-user-second-color);
-                border: 1px solid var(--top-user-second-color);
-            }
+            color: var(---top-user-second-color);
+            border: 1px solid var(--top-user-second-color);
+        }
     }
+
     &__edit {
         color: var(--main-color);
         width: 8rem;
@@ -38,6 +62,30 @@
 
         &__followed {
             width: 6rem;
+            color: transparent;
+            //只針對背景顏色做補間
+            transition: background-color 0.2s ease-in;
+
+            &::before {
+                opacity: 1;
+                content: '正在跟隨';
+                line-height: 2.5rem;
+                color: var(--white);
+            }
+            &:hover {
+                background-color: var(--main-button-color);
+                color: var(--white);
+                &::before {
+                    opacity: 0;
+                }
+            }
+            &_processing {
+                background-color: var(--top-user-second-color);
+                color: var(--white);
+                &::before {
+                    opacity: 0;
+                }
+            }
         }
     
         &__unfollowed {

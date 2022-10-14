@@ -4,6 +4,10 @@
     height: auto;
     border-bottom: solid 1px var(--border-color);
     padding: 1rem 1.5rem;
+    transition: 0.2s ease-out;
+    &:hover {
+        background-color: var(--top-user-background-color);
+    }
 }
 
 .tweet__avatar {
