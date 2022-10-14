@@ -6,13 +6,15 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+            <!-- 回覆視窗 -->
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
                 :initial-tweet="clickedTweet"/>
-
+            <!-- 推文視窗 -->
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                @after-submit="handleAddTweet"
+                :is-main-page="true"/>
                 
                 <MainHeader :content="`首頁`" :user="user" :is-mobile="true"/>
                 
@@ -89,6 +91,10 @@ export default {
         this.fetchTweets()
         this.fetchUser(this.currentUser.id)
     },
+    beforeRouteUpdate(to, from, next) {
+        this.getUrl()
+        next()
+    },
     computed: {
         ...mapState(['currentUser', 'isAuthenticated']),
     },
@@ -127,7 +133,7 @@ export default {
         },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
-            history.pushState({ name: "new-tweet" }, null, "/#/tweet/new");
+            history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
         },
         handleCloseModal(){
             this.isModalToggled = false
@@ -138,7 +144,8 @@ export default {
             this.tweets = [
                 tweet, ...this.tweets
             ]
-            this.fetchTweets()
+            //data裡面的tweets有增加  但是資料傳不進TweetCard
+            // this.fetchTweets()
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled

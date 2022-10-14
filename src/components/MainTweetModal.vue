@@ -57,6 +57,12 @@ import usersAPI from '../apis/users.js'
 import { mapState } from 'vuex'
 
 export default {
+  props: {
+    isMainPage: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       tweetContent: '',
@@ -106,13 +112,21 @@ export default {
           description: this.tweetContent
         })
         if(response.status !== 200) throw new Error(response.data.message)
-        this.$emit('after-submit-close', false)
+        
         this.$emit('after-submit', response.data)
 
         Toast.fire({
           html: innerHtml('建立推文成功！','succeed')
         })
         this.isProcessing = false
+        
+        //如果不是在首頁發推，就導到首頁去，因為在首頁不能又導到首頁
+        if (!this.isMainPage) {
+          // 用main頁面 蓋過新推文頁面的紀錄
+          history.replaceState({ name: "main-page" }, null, "/#/main")
+          this.$router.push({ name: 'main-page' })
+        }
+        this.$emit('after-submit-close', false)
       }
       catch (error) {
         console.log(error.message)

@@ -6,15 +6,16 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+            <!-- 回覆視窗 -->
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddReply"
                 :initial-tweet="tweet"
                 :is-in-detail-page="true"/>
-
+            <!-- 推文視窗 -->
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                />
 
                 <MainHeader :content="`推文`" :tweet-id="tweet.id"/>
 
@@ -151,9 +152,9 @@ export default {
             this.isReplyModalToggled = false
             this.$router.back();
         },
-        handleAddTweet(){
-            this.$router.push({name: 'main-page'})
-        },
+        // handleAddTweet(){
+        //     this.$router.push({name: 'main-page'})
+        // },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
             history.pushState({ name: "new-reply" }, null, "/#/reply/new");

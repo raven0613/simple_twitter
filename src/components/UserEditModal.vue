@@ -338,8 +338,8 @@ export default {
         this.formErrorNameLimited = false;
         this.formErrorIntroductionLimited = false;
 
-        this.$emit("after-submit-close");
         this.isProcessing = false
+        this.$emit("after-submit-close");
       } catch (error) {
         // 想要拿到data.message，要知道是包在error.response裡
         const message = error.response.data.message;

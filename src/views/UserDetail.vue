@@ -22,7 +22,6 @@
         <MainTweetModal
           v-if="isModalToggled"
           @after-submit-close="handleCloseModal"
-          @after-submit="handleAddTweet"
         />
     <!-- 回覆視窗 -->
         <MainReplyModal
@@ -336,10 +335,10 @@ export default {
       this.isEditModalToggled = false;
       this.$router.back();
     },
-    handleAddTweet(tweet) {
-      this.tweets = [tweet, ...this.tweets];
-      this.fetchUserTweets(this.currentUser.id);
-    },
+    // handleAddTweet(tweet) {
+    //   this.tweets = [tweet, ...this.tweets];
+    //   this.fetchUserTweets(this.currentUser.id);
+    // },
     handleToggleReplyModal(isReplyModalToggled) {
       this.isReplyModalToggled = isReplyModalToggled;
       history.pushState({ name: "new-reply" }, null, "/#/reply/new");
@@ -362,15 +361,15 @@ export default {
       this.currentTab = clickedTab
       if (clickedTab === 'tweet') {
         this.fetchUserTweets(this.user.id)
-        history.pushState({ name: "user-tweet" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`)
+        history.replaceState({ name: "user-tweet" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`)
       }
       else if (clickedTab === 'reply') {
         this.fetchUserReplies(this.user.id)
-        history.pushState({ name: "user-reply" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
+        history.replaceState({ name: "user-reply" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
       }
       else if (clickedTab === 'like'){
         this.fetchUserLikes(this.user.id)
-        history.pushState({ name: "user-like" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
+        history.replaceState({ name: "user-like" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
       }
     },
     // 別人直接貼網址的狀況

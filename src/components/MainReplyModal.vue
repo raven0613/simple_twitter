@@ -83,7 +83,8 @@ export default {
       required: true
     },
     isInDetailPage: {
-      type: Boolean
+      type: Boolean,
+      default: false
     }
   },
   mixins: [showDescriptionFilter, fromNowFilter],
@@ -137,7 +138,7 @@ export default {
           comment: this.tweetContent
         })
         if(response.status !== 200) throw new Error(response.data.message)
-        this.$emit('after-submit-close', false)
+        
         this.$emit('after-submit', response.data)
         
         //回覆完回到詳細頁面
@@ -152,6 +153,7 @@ export default {
           html: innerHtml('回覆成功','succeed')
         })
         this.isProcessing = false
+        this.$emit('after-submit-close', false)
       }
       catch (error) {
         console.log(error.message)
