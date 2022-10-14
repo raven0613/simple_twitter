@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="modal__container tweet-modal__container">
+    <div class="modal__container tweet-modal__container modal__show">
       <!-- 最上方的區塊 -->
       <div class="modal__input__container">
         <img
@@ -14,7 +14,7 @@
       <form @submit.stop.prevent="handleSubmit" class="tweet__input">
         <div class="tweet__input--info__container">
           <div class="tweet__input--avatar">
-            <img v-if="!isLoading" :src="userprofilePhoto" alt="" />
+            <img v-if="!isLoading" :src="userprofilePhoto" alt=""/>
           </div>
           <textarea
             v-model="tweetContent"

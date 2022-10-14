@@ -9,12 +9,14 @@
             <!-- 回覆視窗 -->
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
-                :initial-tweet="clickedTweet"/>
+                :initial-tweet="clickedTweet"
+                :modal-toggled="true"/>
             <!-- 推文視窗 -->
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddTweet"
-                :is-main-page="true"/>
+                :is-main-page="true"
+                :modal-toggled="true"/>
                 
                 <MainHeader :content="`首頁`" :user="user" :is-mobile="true"/>
                 

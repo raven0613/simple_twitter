@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="modal__container tweet-modal__container reply-modal__container">
+    <div class="modal__container tweet-modal__container reply-modal__container"
+    :class="{modal__show: modalToggled}">
       <!-- 最上方的區塊 -->
       <div class="modal__input__container">
         <img @click.stop.prevent="handleCancelClicked" src="../assets/images/cancel-orange.svg" alt="" class="modal__input--cancel" />
@@ -85,6 +86,10 @@ export default {
     isInDetailPage: {
       type: Boolean,
       default: false
+    },
+    modalToggled: {
+      type: Boolean,
+      default: false
     }
   },
   mixins: [showDescriptionFilter, fromNowFilter],
@@ -101,6 +106,9 @@ export default {
       if (newValue.length >= 140) {
         this.tweetContent = this.tweetContent.slice(0, 140)
       }
+    },
+    modalToggled (newValue) {
+      console.log(newValue)
     }
   },
   created() {

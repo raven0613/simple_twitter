@@ -45,7 +45,7 @@
             class="user-info__controller--message
               primbutton primbutton__followed"
             :class="{primbutton__followed_processing: isProcessing}">
-            正在跟隨
+            取消跟隨
           </button>
           <button
             @click.stop.prevent="addFollowship(user.id)"
