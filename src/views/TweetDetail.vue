@@ -6,15 +6,16 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+            <!-- 回覆視窗 -->
                 <MainReplyModal v-if="isReplyModalToggled"
                 @after-submit-close="handleCloseModal"
                 @after-submit="handleAddReply"
                 :initial-tweet="tweet"
                 :is-in-detail-page="true"/>
-
+            <!-- 推文視窗 -->
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                />
 
                 <MainHeader :content="`推文`" :tweet-id="tweet.id"/>
 
@@ -42,12 +43,14 @@
                 <RecommendUsers />
             </section>
             <div class="modal__mask" 
-            @click.stop.prevent="handleCloseModal"
+            @click.stop.prevent="handleCloseModal(false)"
             v-if="isModalToggled || isReplyModalToggled"
             @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
-        <Footer />
+        <Footer 
+        :ini-is-modal-toggled="isModalToggled"
+        @after-toggle-modal="handleToggleModal"/>
     </div>
 </template>
 
@@ -146,19 +149,19 @@ export default {
             this.isModalToggled = isModalToggled
             history.pushState({ name: "new-tweet" }, null, "/#/tweet/new");
         },
-        handleCloseModal(){
+        handleCloseModal(isSubmitted){
             this.isModalToggled = false
             this.isReplyModalToggled = false
-            this.$router.back();
-        },
-        handleAddTweet(){
-            this.$router.push({name: 'main-page'})
+            if (!isSubmitted) {
+                this.$router.back()
+            }
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
             history.pushState({ name: "new-reply" }, null, "/#/reply/new");
         },
         handleAddReply(reply){
+            this.$router.back()
             this.replies.push(reply)
             this.tweet = {
                 ...this.tweet,

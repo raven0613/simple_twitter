@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="modal__container tweet-modal__container reply-modal__container">
+    <div class="modal__container tweet-modal__container reply-modal__container"
+    :class="{modal__show: modalToggled}">
       <!-- 最上方的區塊 -->
       <div class="modal__input__container">
         <img @click.stop.prevent="handleCancelClicked" src="../assets/images/cancel-orange.svg" alt="" class="modal__input--cancel" />
@@ -84,7 +85,12 @@ export default {
       required: true
     },
     isInDetailPage: {
-      type: Boolean
+      type: Boolean,
+      default: false
+    },
+    modalToggled: {
+      type: Boolean,
+      default: false
     }
   },
   mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
@@ -101,7 +107,7 @@ export default {
       if (newValue.length >= 140) {
         this.tweetContent = this.tweetContent.slice(0, 140)
       }
-    }
+    },
   },
   created() {
     this.fetchUser(this.currentUser.id)
@@ -138,24 +144,25 @@ export default {
           comment: this.tweetContent
         })
         if(response.status !== 200) throw new Error(response.data.message)
-        this.$emit('after-submit-close', false)
+        
         this.$emit('after-submit', response.data)
         
-        //回覆完回到詳細頁面
+        //如果不是在詳細頁回覆，回覆完就導到詳細頁
         if (!this.isInDetailPage) {
-          console.log('11111')
+          history.replaceState({ name: "tweet-detail" }, null, `/#/tweets/${id}`);
           this.$router.push({name: 'tweet-detail', params: {id}})
-          // this.$router.push({name: 'tweet-detail', params: {id}}).catch(() => true)
         }
         
-
         Toast.fire({
           html: innerHtml('回覆成功','succeed')
         })
         this.isProcessing = false
+        //關掉modal，並回傳true代表新增成功
+        this.$emit('after-submit-close', true)
       }
       catch (error) {
         console.log(error.message)
+        this.$emit('after-submit-close', false)
         this.isProcessing = false
         return Toast.fire({
           html: innerHtml('無法回覆貼文，請稍後再試','error')
@@ -163,7 +170,7 @@ export default {
       }
     },
     handleCancelClicked () {
-      this.$emit('after-submit-close')
+      this.$emit('after-submit-close', false)
     }
   }
 }

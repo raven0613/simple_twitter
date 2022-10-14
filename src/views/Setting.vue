@@ -9,6 +9,7 @@
             <main class="main__container">
                 <MainHeader :content="`帳戶設定`"/>
                 <div class="tweets__container">
+            <!-- 設定面板 -->
                   <SettingPanel 
                     :initialUserData="userData"
                     :initialFormErrorAccountExisted="formErrorAccountExisted"
@@ -17,9 +18,10 @@
                     @after-submit="handleAfterSubmit"
                   />
                 </div>
+            <!-- 發新推文窗 -->
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                />
             </main>
 
 
@@ -30,7 +32,10 @@
         @mousewheel.prevent>
       </div>
     </div>
-    <Footer :current-page="`setting`" />
+    <Footer 
+    :current-page="`setting`"
+    :ini-is-modal-toggled="isModalToggled"
+    @after-toggle-modal="handleToggleModal"/>
   </div>
 </template>
 <script>
@@ -136,10 +141,7 @@ export default {
     },
     handleCloseModal() {
       this.isModalToggled = false
-      this.$router.back();
-    },
-    handleAddTweet() {
-      this.$router.push({ name: 'main-page' })
+      history.replaceState({ name: "main-page" }, null, "/#/main");
     },
   }
 

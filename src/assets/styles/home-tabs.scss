@@ -26,6 +26,7 @@
     line-height: 3.25rem;
     text-align: center;
     cursor: pointer;
+    transition: 0.15s ease-out;
     &:hover {
       background-color: var(--border-color);  
     }

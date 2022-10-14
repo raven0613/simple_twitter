@@ -6,13 +6,18 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
+            <!-- 回覆視窗 -->
                 <MainReplyModal v-if="isReplyModalToggled"
+                
                 @after-submit-close="handleCloseModal"
-                :initial-tweet="clickedTweet"/>
-
+                :initial-tweet="clickedTweet"
+                :modal-toggled="true"/>
+            <!-- 推文視窗 -->
                 <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                @after-submit="handleAddTweet"
+                :is-main-page="true"
+                :modal-toggled="true"/>
                 
                 <MainHeader :content="`首頁`" :user="user" :is-mobile="true"/>
                 
@@ -35,7 +40,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled || isReplyModalToggled"
+            <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)" v-if="isModalToggled || isReplyModalToggled"
             @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
@@ -85,9 +90,15 @@ export default {
         }
     },
     created () {
+        console.log('M created')
         this.getUrl()
         this.fetchTweets()
         this.fetchUser(this.currentUser.id)
+    },
+    beforeRouteUpdate(to, from, next) {
+        console.log('M beforeRouteUpdate')
+        this.getUrl()
+        next()
     },
     computed: {
         ...mapState(['currentUser', 'isAuthenticated']),
@@ -127,18 +138,22 @@ export default {
         },
         handleToggleModal(isModalToggled){
             this.isModalToggled = isModalToggled
-            history.pushState({ name: "new-tweet" }, null, "/#/tweet/new");
+            history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
         },
-        handleCloseModal(){
+        handleCloseModal(isSubmitted){
             this.isModalToggled = false
             this.isReplyModalToggled = false
-            this.$router.back();
+            //如果不是在submit後回傳的關掉，就可以直接回上一頁
+            if (!isSubmitted) {
+                this.$router.back()
+            }
         },
         handleAddTweet(tweet){
             this.tweets = [
                 tweet, ...this.tweets
             ]
-            this.fetchTweets()
+            //TODO:data裡面的tweets有增加  但是資料傳不進TweetCard
+            // this.fetchTweets()
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled
@@ -149,7 +164,7 @@ export default {
         },
         // 別人直接貼網址的狀況
         getUrl() {
-            console.log(this.$route.matched[0])
+            console.log('M getUrl')
             if(this.$route.matched[0].name === 'tweet-new') {
                 this.isModalToggled = true
             }
