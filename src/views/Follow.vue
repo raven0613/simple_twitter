@@ -7,18 +7,27 @@
             </section>
             <main class="main__container">
                 <MainTweetModal v-if="isModalToggled"
-                @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"/>
+                @after-submit-close="handleCloseModal"/>
                 
                 <UserHeader :content="currentUser.name" :counts="25"/>
                 <HomeTabs 
                 :clicked-tab="currentTab"
                 @after-click-tab="handleClickTab"/>
 
-                <div v-if="!isLoading" class="tweets__container">
-                    <p v-if="!followers.length">目前還沒有追隨者喔</p>
+                <div v-if="!isLoading && currentTab==='follower'" 
+                class="tweets__container">
+                    <p v-if="currentTab==='follower' && !followers.length">目前還沒有追隨者喔</p>
                     <UserFollowCard 
                     v-for="user in followers" 
+                    :key="user.id"
+                    :init-follower="user"/>
+                </div>
+
+                <div v-if="!isLoading && currentTab==='following'" 
+                class="tweets__container">
+                    <p v-if="currentTab==='following' && !followings.length">目前還沒有追隨任何人喔</p>
+                    <UserFollowCard 
+                    v-for="user in followings" 
                     :key="user.id"
                     :init-follower="user"/>
                 </div>
@@ -31,7 +40,9 @@
             @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
-        <Footer :current-page="`user`"/>
+        <Footer :current-page="`user`"
+        :ini-is-modal-toggled="isModalToggled"
+        @after-toggle-modal="handleToggleModal"/>
     </div>
 </template>
 
@@ -62,6 +73,7 @@ export default {
         return {
             userId: '',
             followers: [],
+            followings: [],
             isModalToggled: false,
             isLoading: true,
             currentTab: "follower",
@@ -70,13 +82,13 @@ export default {
     created () {
         const { id } = this.$route.params
         this.userId = id
+        this.getUrl()
         if (this.currentTab === 'follower') {
             this.fetchFollower(id)
         }
         else if (this.currentTab === 'following') {
             this.fetchFollowing(id)
         }
-        this.getUrl()
     },
     beforeRouteUpdate(to, from, next){
         this.isLoading = true
@@ -98,7 +110,6 @@ export default {
             try {
                 this.isLoading = true
                 const { data } = await usersAPI.getUserFollowrs({userId})
-                console.log(data)
                 this.followers = [...data]
                 this.isLoading = false
             }
@@ -114,8 +125,7 @@ export default {
             try {
                 this.isLoading = true
                 const { data } = await usersAPI.getUserFollowings({userId})
-                console.log(data)
-                this.followers = [...data]
+                this.followings = [...data]
                 this.isLoading = false
             }
             catch (error) {
@@ -133,21 +143,19 @@ export default {
         handleCloseModal(){
             this.isModalToggled = false
         },
-        handleAddTweet(){
-            this.$router.push({name: 'main-page'})
-        },
         handleClickTab (clickedTab) {
             this.currentTab = clickedTab
             if (clickedTab === 'follower') {
                 this.fetchFollower(this.userId)
-                history.pushState({ name: "user-follower" }, null, `/#/users/${this.userId}/follower`)
+                history.replaceState({ name: "user-follower" }, null, `/#/users/${this.userId}/follower`)
             }
             else if (clickedTab === 'following') {
                 this.fetchFollowing(this.userId)
-                history.pushState({ name: "user-following" }, null, `/#/users/${this.userId}/following`);
+                history.replaceState({ name: "user-following" }, null, `/#/users/${this.userId}/following`);
             }
         },
         getUrl() {
+            console.log(this.$route.matched[0])
             if(this.$route.matched[0].name === 'user-follower') {
                 this.currentTab = 'follower'
             }

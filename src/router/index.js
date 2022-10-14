@@ -11,60 +11,75 @@ Vue.use(VueRouter)
 
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
-
   if (currentUser && currentUser.role !== 'admin') {
     next('/not-found')
     return
   }
   next()
 }
-
+const authorizeIsUser = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && currentUser.role !== 'user') {
+    next('/not-found')
+    return
+  }
+  next()
+}
 
 const routes = [
   {
     path: '/',
     name: 'root',
-    redirect: '/main'
+    redirect: '/main',
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/main',
     name: 'main-page',
     component: Main,
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/reply/new',
     name: 'reply-new',
-    redirect: '/main'
+    redirect: '/main',
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/tweets/new',
     name: 'tweet-new',
     component: () => import('../views/Main.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/tweets/:id',
     name: 'tweet-detail',
     component: () => import('../views/TweetDetail.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/users/edit',
     name: 'user-edit',
-    component: () => import('../views/UserDetail.vue')
+    component: () => import('../views/UserDetail.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/users/:id/follower',
     name: 'user-follower',
-    component: () => import('../views/Follow.vue')
+    component: () => import('../views/Follow.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/users/:id/following',
     name: 'user-following',
-    component: () => import('../views/Follow.vue')
+    component: () => import('../views/Follow.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/users/:id',
     name: 'user-detail',
-    component: () => import('../views/UserDetail.vue')
+    component: () => import('../views/UserDetail.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/register',
@@ -74,7 +89,8 @@ const routes = [
   {
     path: '/settings',
     name: 'settings',
-    component: () => import('../views/Setting.vue')
+    component: () => import('../views/Setting.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/login',

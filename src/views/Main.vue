@@ -8,6 +8,7 @@
             <main class="main__container">
             <!-- 回覆視窗 -->
                 <MainReplyModal v-if="isReplyModalToggled"
+                
                 @after-submit-close="handleCloseModal"
                 :initial-tweet="clickedTweet"
                 :modal-toggled="true"/>
@@ -39,7 +40,7 @@
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled || isReplyModalToggled"
+            <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)" v-if="isModalToggled || isReplyModalToggled"
             @touchmove.prevent @mousewheel.prevent>
             </div>
         </div>
@@ -139,10 +140,13 @@ export default {
             this.isModalToggled = isModalToggled
             history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
         },
-        handleCloseModal(){
+        handleCloseModal(isSubmitted){
             this.isModalToggled = false
             this.isReplyModalToggled = false
-            this.$router.back();
+            //如果不是在submit後回傳的關掉，就可以直接回上一頁
+            if (!isSubmitted) {
+                this.$router.back()
+            }
         },
         handleAddTweet(tweet){
             this.tweets = [

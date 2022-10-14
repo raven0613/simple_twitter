@@ -42,7 +42,7 @@
           <button
             @click.stop.prevent="deleteFollowship(user.id)"
             v-if="user.isFollowed && currentUser.id !== user.id"
-            class="user-info__controller--message
+            class="user-info__controller--follow
               primbutton primbutton__followed"
             :class="{primbutton__followed_processing: isProcessing}">
             取消跟隨
@@ -50,7 +50,7 @@
           <button
             @click.stop.prevent="addFollowship(user.id)"
             v-else-if="!user.isFollowed && currentUser.id !== user.id"
-            class="user-info__controller--message
+            class="user-info__controller--follow
               primbutton primbutton__unfollowed"
             :class="{primbutton__unfollowed_processing: isProcessing}">
             跟隨

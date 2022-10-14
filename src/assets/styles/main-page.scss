@@ -52,6 +52,12 @@
 .tweets__container {
     width: 100%;
     height: auto;
+    p {
+        color: var(--top-user-second-color);
+        padding: 3rem;
+        width: 100%;
+        text-align: center;
+    }
 }
 
 

@@ -55,7 +55,8 @@
             </button>
         </div>
 
-        <div @click.stop.prevent="logout" class="side-bar__link side-bar__link--logout">
+        <div @click.stop.prevent="logout" 
+        class="side-bar__link side-bar__link--logout link__hover">
             <img src="../assets/images/sidebar_logout.svg" alt="">
             <h5>登出</h5>
         </div>

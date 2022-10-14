@@ -32,7 +32,10 @@
         @mousewheel.prevent>
       </div>
     </div>
-    <Footer :current-page="`setting`" />
+    <Footer 
+    :current-page="`setting`"
+    :ini-is-modal-toggled="isModalToggled"
+    @after-toggle-modal="handleToggleModal"/>
   </div>
 </template>
 <script>
@@ -138,7 +141,7 @@ export default {
     },
     handleCloseModal() {
       this.isModalToggled = false
-      this.$router.back();
+      history.replaceState({ name: "main-page" }, null, "/#/main");
     },
   }
 

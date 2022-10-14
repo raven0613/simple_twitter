@@ -107,9 +107,6 @@ export default {
         this.tweetContent = this.tweetContent.slice(0, 140)
       }
     },
-    modalToggled (newValue) {
-      console.log(newValue)
-    }
   },
   created() {
     this.fetchUser(this.currentUser.id)
@@ -155,15 +152,16 @@ export default {
           this.$router.push({name: 'tweet-detail', params: {id}})
         }
         
-
         Toast.fire({
           html: innerHtml('回覆成功','succeed')
         })
         this.isProcessing = false
-        this.$emit('after-submit-close', false)
+        //關掉modal，並回傳true代表新增成功
+        this.$emit('after-submit-close', true)
       }
       catch (error) {
         console.log(error.message)
+        this.$emit('after-submit-close', false)
         this.isProcessing = false
         return Toast.fire({
           html: innerHtml('無法回覆貼文，請稍後再試','error')
@@ -171,7 +169,7 @@ export default {
       }
     },
     handleCancelClicked () {
-      this.$emit('after-submit-close')
+      this.$emit('after-submit-close', false)
     }
   }
 }
