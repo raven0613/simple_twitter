@@ -22,6 +22,8 @@
     align-items: center;
     &--noti, &--message {
       margin-right: 0.5rem;
+      width: 2rem;
+      height: auto;
     }
   }
 
@@ -68,6 +70,8 @@
       &--noti,
       &--message {
         margin-right: 1rem;
+        width: 2.5rem;
+        height: auto;
       }
     }
   }

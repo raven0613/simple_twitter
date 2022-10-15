@@ -1,6 +1,6 @@
 <template>
   <div class="twitter__project"
-  :class="{modal__toggled: isModalToggled}">
+  :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
     <div class="container">
       <section class="left__container">
         <SideBar
@@ -33,7 +33,12 @@
           :is-in-detail-page="false"
         />
 
-        <UserHeader :content="user.name" :counts="tweets.length"/>
+        <UserHeader 
+        :content="user.name" 
+        :counts="tweets.length"
+        :is-tweet-modal="isModalToggled"
+        :is-reply-modal="isReplyModalToggled"/>
+
         <UserPanel
           v-if="!isUserLoading"
           :ini-is-modal-toggled="isModalToggled"
@@ -100,7 +105,10 @@
         v-if="isModalToggled || isReplyModalToggled || isEditModalToggled"
       ></div>
     </div>
-    <Footer :current-page="`user`" />
+    <Footer 
+    :current-page="`user`"
+    :ini-is-modal-toggled="isModalToggled"
+    @after-toggle-modal="handleToggleModal"/>
   </div>
 </template>
 

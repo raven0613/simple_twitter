@@ -1,6 +1,6 @@
 <template>
     <div class="twitter__project"
-    :class="{modal__toggled: isModalToggled}">
+    :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
         <div class="container">
             <section class="left__container">
                 <SideBar :current-page="`main`" :ini-is-modal-toggled="isModalToggled"
