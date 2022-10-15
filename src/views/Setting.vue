@@ -1,41 +1,33 @@
 <template>
-    <div class="twitter__project"
-    :class="{modal__toggled: isModalToggled}">
-        <div class="container setting-page">
-            <section class="left__container">
-                <SideBar :current-page="`setting`"
-                :ini-is-modal-toggled="isModalToggled"
-                @after-toggle-modal="handleToggleModal"/>
-            </section>
-            <main class="main__container">
-                <MainHeader :content="`帳戶設定`"/>
-                <div class="tweets__container">
-            <!-- 設定面板 -->
-                  <SettingPanel 
-                    :initialUserData="userData"
-                    :initialFormErrorAccountExisted="formErrorAccountExisted"
-                    :initialFormErrorEmailExisted="formErrorEmailExisted"
-                    :is-processing="isProcessing"
-                    @after-submit="handleAfterSubmit"
-                  />
-                </div>
-            <!-- 發新推文窗 -->
-                <MainTweetModal v-if="isModalToggled"
-                @after-submit-close="handleCloseModal"
-                />
-            </main>
+  <div class="twitter__project" :class="{modal__toggled: isModalToggled}">
+    <div class="container setting-page">
+      <section class="left__container">
+        <SideBar :current-page="`setting`" :ini-is-modal-toggled="isModalToggled"
+          @after-toggle-modal="handleToggleModal" />
+      </section>
+      <main class="main__container">
+        <MainHeader :content="`帳戶設定`" />
+        <div class="tweets__container">
+          <!-- 設定面板 -->
+          <SettingPanel :initialUserData="userData" :initialFormErrorAccountExisted="formErrorAccountExisted"
+            :initialFormErrorEmailExisted="formErrorEmailExisted" :is-processing="isProcessing"
+            @after-submit="handleAfterSubmit" />
+        </div>
+        <!-- 發新推文窗 -->
+        <transition name="modal">
+          <MainTweetModal v-if="isModalToggled" @after-submit-close="handleCloseModal" />
+        </transition>
+
+      </main>
       <section class="right__container">
       </section>
+      <transition :duration="{ enter: 350, leave: 150 }">
+        <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)" v-if="isModalToggled">
+        </div>
+      </transition>
 
-      <div class="modal__mask" 
-      @click.stop.prevent="handleCloseModal(false)" 
-      v-if="isModalToggled">
-      </div>
     </div>
-    <Footer 
-    :current-page="`setting`"
-    :ini-is-modal-toggled="isModalToggled"
-    @after-toggle-modal="handleToggleModal"/>
+    <Footer :current-page="`setting`" :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleModal" />
   </div>
 </template>
 <script>
@@ -96,7 +88,7 @@ export default {
 
       } catch (error) {
         Toast.fire({
-          html: innerHtml('無法取得使用者資料，請稍後再試','error')
+          html: innerHtml('無法取得使用者資料，請稍後再試', 'error')
         });
       }
     },
@@ -116,7 +108,7 @@ export default {
         }
 
         Toast.fire({
-          html: innerHtml('成功更新使用者資料','succeed')
+          html: innerHtml('成功更新使用者資料', 'succeed')
         })
         this.isProcessing = false
 
@@ -131,7 +123,7 @@ export default {
         }
 
         Toast.fire({
-          html: innerHtml(message,'error')
+          html: innerHtml(message, 'error')
         })
       }
     },
@@ -143,7 +135,7 @@ export default {
       this.isModalToggled = false
       //如果不是在submit後回傳的關掉，就可以直接回上一頁
       if (!isSubmitted) {
-          this.$router.back()
+        this.$router.back()
       }
     },
   }

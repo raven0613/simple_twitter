@@ -20,9 +20,12 @@
           height: 100%;
           display: flex;
           position: relative;
+
           textarea::placeholder {
             color: var(--modal-mobile-text);
+            font-weight: 400;
             line-height: 1.625rem;
+            padding-top: 0.75rem;
           }
         }
 
@@ -48,7 +51,7 @@
           height: 100%;
           font-size: var(--h5-size);
           font-weight: var(--bold-weight);
-            word-wrap : break-word;
+          word-wrap: break-word;
 
         }
 
@@ -65,6 +68,7 @@
         &--warning {
           color: var(--tab-error);
           margin-right: 1.5rem;
+          padding-bottom: 4.6875rem;
           font-weight: var(--medium-weight);
         }
 
@@ -75,22 +79,68 @@
 }
 
 
+// 回覆的modal
+.reply-modal__container {
+  height: 100vh;
+
+  .modal__input--tweet {
+    padding: 1rem 1.5rem 1rem 1rem;
+    display: flex;
+  }
+
+  .tweet {
+    &__input {
+      padding: 1rem 1.5rem 2.5rem 1rem;
+
+      &--warning {
+        padding-bottom: 12rem;
+      }
+
+      &--avatar__container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &--avatar {
+        height: 3.125rem;
+      }
+
+      &--dash {
+        display: block;
+        width: 2px;
+        height: 100%;
+        flex: 1;
+        margin: 1rem 0 0 1.5625rem;
+        background-color: var(--text-placeholder-color);
+      }
+
+    
+    }
+  }
+
+
+}
+
+
+
 @media screen and (min-width: 600px) {
   .tweet {
     &-modal__container {
       // border: 1px solid black;
       height: 18.75rem;
 
-      .modal__input{
+      .modal__input {
         &__container {
           display: block;
           border-bottom: 1px solid var(--border-color);
         }
-        &--cancel{
+
+        &--cancel {
           margin-left: 1.25rem;
         }
+
       }
-      
+
 
       .tweet {
         &__input {
@@ -100,6 +150,16 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          &--info__container {
+
+          textarea::placeholder {
+            padding-top: 0;
+          }
+        }
+
+          &--warning {
+            padding-bottom: 0;
+          }
 
           &--info__container {
             height: 100%;
@@ -142,36 +202,24 @@
     }
 
   }
-}
 
+  // 回覆的modal 
+  .reply-modal__container {
+    height: 31.25rem;
+    padding: 1rem 1rem 1rem 1rem;
 
+    .tweet {
+      &__input {
+        padding: 1rem 0 0 1rem;
+        height: 18.1875rem;
 
-// 回覆的modal
-.reply-modal__container{
-  height: 31.25rem;
-  .modal__input--tweet{
-    padding: 1rem 1.5rem 1rem 1rem;
-    display: flex;
-  }
-  .tweet{
-    &__input{
-      &--avatar__container{
-        display: flex;
-        flex-direction: column;
+        &--warning {
+          padding-bottom: 0;
+        }
       }
-      &--avatar{
-        height: 3.125rem;
-      }
-      &--dash{
-        display: block;
-        width: 2px;
-        height: 100%;
-        flex: 1;
-        margin: 1rem 0 0 1.5625rem; 
-        background-color: var(--text-placeholder-color);
-      }
+
     }
+
   }
 
-  
 }

@@ -8,7 +8,7 @@
           <div @click.stop.prevent="handleCancelClicked" class="user__header--icon">
               <img src="../assets/images/last-step.svg" alt="">
           </div>
-          <button type="button" class="formbutton">回覆
+          <button @click.stop.prevent="handleSubmit(initialTweet.id)" type="button" class="formbutton">回覆
           </button>
       </header>
 

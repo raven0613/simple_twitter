@@ -1,0 +1,33 @@
+// modal動畫
+.modal-enter-active{
+  transition: opacity 0.1s;
+}
+
+.modal-leave-active {
+  transition: opacity 0.2s;
+}
+
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-to,
+.modal-leave {
+  opacity: 1;
+}
+
+// UserEditModal
+.modal-edit-leave-active {
+  transition: opacity 0.2s;
+}
+
+.modal-edit-enter,
+.modal-edit-leave-to {
+  opacity: 0;
+}
+
+.modal-edit-enter-to,
+.modal-edit-leave {
+  opacity: 1;
+}

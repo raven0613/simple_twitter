@@ -1,54 +1,48 @@
 <template>
-    <div class="twitter__project"
-    :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
+    <div class="twitter__project" :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
         <div class="container">
             <section class="left__container">
                 <SideBar :current-page="`main`" :ini-is-modal-toggled="isModalToggled"
-                @after-toggle-modal="handleToggleModal"/>
+                    @after-toggle-modal="handleToggleModal" />
             </section>
             <main class="main__container">
-            <!-- 回覆視窗 -->
-                <MainReplyModal v-if="isReplyModalToggled"
+                <!-- 回覆視窗 -->
+                <transition name="modal">
+                    <MainReplyModal v-if="isReplyModalToggled" @after-submit-close="handleCloseModal"
+                    :initial-tweet="clickedTweet" :modal-toggled="true" />
+                </transition>
                 
-                @after-submit-close="handleCloseModal"
-                :initial-tweet="clickedTweet"
-                :modal-toggled="true"/>
-            <!-- 推文視窗 -->
-                <MainTweetModal v-if="isModalToggled"
-                @after-submit-close="handleCloseModal"
-                @after-submit="handleAddTweet"
-                :is-main-page="true"
-                :modal-toggled="true"/>
+                <!-- 推文視窗 -->
+                <transition name="modal">
+                    <MainTweetModal v-if="isModalToggled" @after-submit-close="handleCloseModal"
+                    @after-submit="handleAddTweet" :is-main-page="true" :modal-toggled="true" />
+                </transition>
                 
-                <MainHeader :content="`首頁`" :user="user" :is-mobile="true"/>
-                
-                <MainTweetInput :ini-is-modal-toggled="isModalToggled"
-                @after-toggle-modal="handleToggleModal"
-                :user-profile-photo="user.profilePhoto"/>
+
+                <MainHeader :content="`首頁`" :user="user" :is-mobile="true" />
+
+                <MainTweetInput :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleModal"
+                    :user-profile-photo="user.profilePhoto" />
 
                 <div v-if="!isTweetLoading" class="tweets__container">
-                    <TweetCard 
-                    :ini-is-modal-toggled="isModalToggled"
-                    @after-toggle-modal="handleToggleReplyModal"
-                    @after-clicked-reply="handlePassTweetData"
-                    v-for="tweet in tweets" 
-                    :key="tweet.id"
-                    :initial-tweet="tweet"/>
+                    <TweetCard :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleReplyModal"
+                        @after-clicked-reply="handlePassTweetData" v-for="tweet in tweets" :key="tweet.id"
+                        :initial-tweet="tweet" />
                 </div>
-                <Spinner v-else/>
+                <Spinner v-else />
             </main>
             <section class="right__container">
                 <RecommendUsers />
             </section>
 
-            <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)" v-if="isModalToggled || isReplyModalToggled"
-            >
-            </div>
+            <transition :duration="{ enter: 350, leave: 150 }">
+                <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)"
+                    v-if="isModalToggled || isReplyModalToggled">
+                </div>
+            </transition>
+
         </div>
-        <Footer 
-        :current-page="`main`"
-        :ini-is-modal-toggled="isModalToggled"
-        @after-toggle-modal="handleToggleModal"/>
+        <Footer :current-page="`main`" :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleModal" />
     </div>
 </template>
 
@@ -79,7 +73,7 @@ export default {
         MainTweetInput,
         MainReplyModal
     },
-    data () {
+    data() {
         return {
             user: {},
             tweets: [],
@@ -90,7 +84,7 @@ export default {
             isUserLoading: true
         }
     },
-    created () {
+    created() {
         this.getUrl()
         this.fetchTweets()
         this.fetchUser(this.currentUser.id)
@@ -103,10 +97,10 @@ export default {
         ...mapState(['currentUser', 'isAuthenticated']),
     },
     methods: {
-        async fetchUser (userId) {
+        async fetchUser(userId) {
             try {
                 this.isUserLoading = true
-                const { data } = await usersAPI.getUser({userId})
+                const { data } = await usersAPI.getUser({ userId })
                 this.user = {
                     ...data
                 }
@@ -115,15 +109,15 @@ export default {
                 console.log(error.message)
                 this.isUserLoading = false
                 return Toast.fire({
-                    html: innerHtml('無法取得使用者頭像，請稍後再試','error')
+                    html: innerHtml('無法取得使用者頭像，請稍後再試', 'error')
                 })
             }
         },
-        async fetchTweets () {
+        async fetchTweets() {
             try {
                 this.isTweetLoading = true
                 const response = await tweetsAPI.getTweets()
-                
+
                 this.tweets = response.data
                 this.isTweetLoading = false
             }
@@ -131,15 +125,15 @@ export default {
                 console.log(error)
                 this.isTweetLoading = false
                 Toast.fire({
-                    html: innerHtml('無法取得推文，請稍後再試','error')
+                    html: innerHtml('無法取得推文，請稍後再試', 'error')
                 })
             }
         },
-        handleToggleModal(isModalToggled){
+        handleToggleModal(isModalToggled) {
             this.isModalToggled = isModalToggled
             history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
         },
-        handleCloseModal(isSubmitted){
+        handleCloseModal(isSubmitted) {
             this.isModalToggled = false
             this.isReplyModalToggled = false
             //如果不是在submit後回傳的關掉，就可以直接回上一頁
@@ -147,24 +141,24 @@ export default {
                 this.$router.back()
             }
         },
-        handleAddTweet(tweet){
+        handleAddTweet(tweet) {
             this.tweets = [
                 tweet, ...this.tweets
             ]
             //TODO:data裡面的tweets有增加  但是資料傳不進TweetCard
             this.fetchTweets()
         },
-        handleToggleReplyModal(isReplyModalToggled){
+        handleToggleReplyModal(isReplyModalToggled) {
             this.isReplyModalToggled = isReplyModalToggled
             history.pushState({ name: "new-reply" }, null, "/#/reply/new");
         },
-        handlePassTweetData(tweet){
+        handlePassTweetData(tweet) {
             this.clickedTweet = tweet
         },
         // 別人直接貼網址的狀況
         getUrl() {
             console.log('M getUrl')
-            if(this.$route.matched[0].name === 'tweet-new') {
+            if (this.$route.matched[0].name === 'tweet-new') {
                 this.isModalToggled = true
             }
         }

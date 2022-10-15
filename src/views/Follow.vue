@@ -7,8 +7,11 @@
                 @after-toggle-modal="handleToggleModal"/>
             </section>
             <main class="main__container">
-                <MainTweetModal v-if="isModalToggled"
+                <transition name="modal">
+                    <MainTweetModal v-if="isModalToggled"
                 @after-submit-close="handleCloseModal"/>
+                </transition>
+                
                 
                 <UserHeader :content="currentUser.name" :counts="25"/>
                 <HomeTabs 
@@ -43,9 +46,12 @@
                 <RecommendUsers />
             </section>
 
+            <transition :duration="{ enter: 350, leave: 150 }">
             <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled"
             >
             </div>
+            </transition>
+            
         </div>
         <Footer :current-page="`user`"
         :ini-is-modal-toggled="isModalToggled"
