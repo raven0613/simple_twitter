@@ -105,11 +105,16 @@ export default {
   },
   created() {
     this.fetchUser(this.currentUser.id);
+    this.tweetContent = localStorage.getItem('tweet')
+  },
+  destroyed () {
+    localStorage.setItem('tweet', this.tweetContent)
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
     tweetLength() {
-      return this.tweetContent.length;
+      if (this.tweetContent) return this.tweetContent.length
+      return 0
     },
   },
   methods: {
@@ -150,7 +155,10 @@ export default {
           history.replaceState({ name: "main-page" }, null, "/#/main")
           this.$router.push({ name: 'main-page' })
         }
+  
         this.$emit('after-submit-close', false)
+         //這邊要把內容清空才不會被儲存進localStorage
+        this.tweetContent = ''
       }
       catch (error) {
         console.log(error.message)

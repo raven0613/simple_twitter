@@ -19,7 +19,7 @@
                 {{tweet.description}}
             </div>
             <div class="tweet__bottom">
-                <div @click.stop.prevent="toggleModal" class="tweet__bottom--icon">
+                <div @click.stop.prevent="toggleModal"              class="tweet__bottom--icon">
                     <img src="../assets/images/tweet_reply.svg" alt="">
                     <span class="montserrat-font">{{tweet.replyCounts}}</span>
                 </div>

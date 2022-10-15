@@ -152,7 +152,7 @@ export default {
                 tweet, ...this.tweets
             ]
             //TODO:data裡面的tweets有增加  但是資料傳不進TweetCard
-            // this.fetchTweets()
+            this.fetchTweets()
         },
         handleToggleReplyModal(isReplyModalToggled){
             this.isReplyModalToggled = isReplyModalToggled

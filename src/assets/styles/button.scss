@@ -38,7 +38,8 @@ button {
         background-color: var(--white);
 
         &:hover {
-            color: #FF974A;
+            color: #ff4901;
+            border: 1px solid #ff4901;
         }
         &_processing {
             color: var(---top-user-second-color);
@@ -51,6 +52,10 @@ button {
         width: 8rem;
         border: 1px solid var(--main-color);
         background-color: var(--white);
+        &:hover {
+            color: #ff4901;
+            border: 1px solid #ff4901;
+        }
     }
 }
 
