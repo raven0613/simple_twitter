@@ -2,6 +2,16 @@
   <div>
     <div class="modal__container tweet-modal__container reply-modal__container"
     :class="{modal__show: modalToggled}">
+    
+      <!-- header -->
+      <header class="header modal__header">
+          <div @click.stop.prevent="handleCancelClicked" class="user__header--icon">
+              <img src="../assets/images/last-step.svg" alt="">
+          </div>
+          <button type="button" class="formbutton">回覆
+          </button>
+      </header>
+
       <!-- 最上方的區塊 -->
       <div class="modal__input__container">
         <img @click.stop.prevent="handleCancelClicked" src="../assets/images/cancel-orange.svg" alt="" class="modal__input--cancel" />

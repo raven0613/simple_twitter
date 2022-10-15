@@ -21,7 +21,7 @@
       <h4>{{ content }}</h4>
     </div>
   </header>
-</template>
+</template> 
 
 <script>
 import { emptyImageFilter } from "./../utils/mixins";
@@ -36,6 +36,7 @@ export default {
     user: {
       type: Object,
     },
+    // 首頁是手機版的話就顯示頭像
     isMobile: {
       type: Boolean,
     },

@@ -35,21 +35,23 @@
 }
 
 .user__header {
-    grid-template-columns: auto 1fr;
-    grid-template-areas: "icon word";
-    padding-left: 1.5rem;
+    grid-template-columns: 4rem 1fr 7rem;
+    grid-template-areas: "icon word buttons";
     align-content: center;
+
 
     &--icon {
         grid-area: icon;
         display: flex;
         align-items: center;
+        justify-content: center;
         cursor: pointer;
 
         img {
             width: 1.0625rem;
             height: 0.875rem;
             margin-right: 1rem;
+            margin: auto;
         }
     }
 
@@ -62,10 +64,27 @@
             font-weight: var(--medium-weight);
         }
     }
+    &--buttons {
+        grid-area: buttons;
+        margin: auto;
+    }
+}
+
+.modal__header {
+    grid-template-columns: 4rem 1fr 7rem;
+    grid-template-areas: "icon . button";
+    align-content: center;
+    .formbutton {
+        grid-area: button;
+        margin: auto;
+    }
 }
 
 @media screen and (min-width: 600px) {
     .main__header--icon-avatar {
+        display: none;
+    }
+    .modal__header {
         display: none;
     }
 }

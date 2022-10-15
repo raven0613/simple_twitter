@@ -1,5 +1,6 @@
 <template>
-    <div class="twitter__project">
+    <div class="twitter__project"
+    :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
         <div class="container">
             <section class="left__container">
                 <SideBar :current-page="`main`" :ini-is-modal-toggled="isModalToggled"
@@ -17,7 +18,11 @@
                 @after-submit-close="handleCloseModal"
                 />
 
-                <MainHeader :content="`推文`" :tweet-id="tweet.id"/>
+                <UserHeader 
+                :content="`推文`"
+                :is-tweet-modal="isModalToggled"
+                :is-reply-modal="isReplyModalToggled"/>
+                <!-- <MainHeader :content="`推文`" :tweet-id="tweet.id"/> -->
 
                 <MainTweet 
                 v-if="!isLoading"
@@ -45,7 +50,7 @@
             <div class="modal__mask" 
             @click.stop.prevent="handleCloseModal(false)"
             v-if="isModalToggled || isReplyModalToggled"
-            @touchmove.prevent @mousewheel.prevent>
+            >
             </div>
         </div>
         <Footer 
@@ -58,7 +63,8 @@
 import ReplyCard from '../components/ReplyCard.vue'
 import SideBar from '../components/SideBar.vue'
 import RecommendUsers from '../components/RecommendUsers.vue'
-import MainHeader from '../components/MainHeader.vue'
+// import MainHeader from '../components/MainHeader.vue'
+import UserHeader from '../components/UserHeader.vue'
 import MainTweet from '../components/MainTweet.vue'
 import Footer from '../components/Footer.vue'
 import MainReplyModal from '../components/MainReplyModal.vue'
@@ -74,7 +80,8 @@ export default {
         ReplyCard,
         SideBar,
         RecommendUsers,
-        MainHeader,
+        // MainHeader,
+        UserHeader,
         MainTweet,
         Footer,
         MainReplyModal,

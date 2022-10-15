@@ -4,10 +4,20 @@
     display: none;
   }
 
+  &__toggled {
+    .container,
+    .main__container,
+    .container {
+    .main__container {
+        overflow: hidden;
+      }
+    }
+  }
+
   &__container {
     position: absolute;
     z-index: 10;
-    top: 4.6875rem;
+    top: 0;
     bottom: 0;
     width: 100%;
     background-color: var(--white);
