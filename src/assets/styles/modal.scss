@@ -141,10 +141,10 @@
       bottom: -2.5rem;
       z-index: 999;
       background-color: var(--white);
+    }
 
-      img {
-        border-radius: 50%;
-      }
+    &--photo{
+      border-radius: 50%;
     }
 
     &--mask {
@@ -177,13 +177,7 @@
 
 // UserEditModal
 .user-edit {
-  .modal{
-    &__container{
-      height: 39.625rem;
-    }
-    
-  }
-  // 滑過背景照片才可以開啟編輯照片功能
+  // // 滑過背景照片才可以開啟編輯照片功能
   .hover__background {
     &-container {
       display: none;
@@ -304,6 +298,12 @@
         margin-bottom: 5rem;
       }
     }
+    .modal{
+    &__container{
+      height: 39.625rem;
+    }
+    
+  }
   }
 }
 

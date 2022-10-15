@@ -1,10 +1,5 @@
 <template>
-  <div class="notfound">
-    <div class="notfound__background"></div>
-    <div class="notfound__text">
-      <h1>404 Not found</h1>
-    </div>
-  </div>
+  <h1 class="notfound">404 Not Found</h1>
 </template>
 
 <script>
@@ -12,3 +7,4 @@ export default {
   setup() {},
 };
 </script>
+

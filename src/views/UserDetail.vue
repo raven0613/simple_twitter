@@ -1,114 +1,71 @@
 <template>
-  <div class="twitter__project"
-  :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
+  <div class="twitter__project" :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
     <div class="container">
       <section class="left__container">
-        <SideBar
-          :current-page="`user`"
-          :ini-is-modal-toggled="isModalToggled"
-          @after-toggle-modal="handleToggleModal"
-        />
+        <SideBar :current-page="`user`" :ini-is-modal-toggled="isModalToggled"
+          @after-toggle-modal="handleToggleModal" />
       </section>
       <main class="main__container">
-    <!-- 使用者資料編輯視窗 -->
-        <UserEditModal
-          v-if="isEditModalToggled"
-          :initialUser="user"
-          :initialFormErrorEmail="formErrorEmail"
-          :initialFormErrorIntroduction="formErrorIntroduction"
-          @after-submit-close="handleCloseModal"
-          @after-submit="handleAfterSubmit"
-          @after-remove-cover-photo="handleRemoveCoverPhoto"
-        />
-    <!-- 推文視窗 -->
-        <MainTweetModal
-          v-if="isModalToggled"
-          @after-submit-close="handleCloseModal"
-        />
-    <!-- 回覆視窗 -->
-        <MainReplyModal
-          v-if="isReplyModalToggled"
-          @after-submit-close="handleCloseModal"
-          :initial-tweet="clickedTweet"
-          :is-in-detail-page="false"
-        />
+        <!-- 使用者資料編輯視窗 -->
+        <transition name="modal-edit">
+          <UserEditModal v-if="isEditModalToggled" :initialUser="user" :initialFormErrorEmail="formErrorEmail"
+            :initialFormErrorIntroduction="formErrorIntroduction" @after-submit-close="handleCloseModal"
+            @after-submit="handleAfterSubmit" @after-remove-cover-photo="handleRemoveCoverPhoto" />
+        </transition>
 
-        <UserHeader 
-        :content="user.name" 
-        :counts="tweets.length"
-        :is-tweet-modal="isModalToggled"
-        :is-reply-modal="isReplyModalToggled"/>
+        <!-- 推文視窗 -->
+        <transition name="modal">
+          <MainTweetModal v-if="isModalToggled" @after-submit-close="handleCloseModal" />
+        </transition>
 
-        <UserPanel
-          v-if="!isUserLoading"
-          :ini-is-modal-toggled="isModalToggled"
-          :initialUser="user"
-          @after-toggle-modal="handleToggleEditModal"
-        />
-        <Spinner v-else/>
-        
-        <HomeTabs 
-        :clicked-tab="currentTab"
-        :user-id="currentUser.id"
-        @after-click-tab="handleClickTab"
-        />
-    <!-- tab=tweet -->
-        <div v-if="!isTweetLoading && currentTab==='tweet'" 
-        class="tweets__container">
-            <p v-if="!tweets.length">目前還沒有推文</p>
-            <TweetCard 
-            v-else
-            :ini-is-modal-toggled="isModalToggled"
-            @after-toggle-modal="handleToggleReplyModal"
-            @after-clicked-reply="handlePassTweetData"
-            v-for="tweet in tweets" 
-            :key="tweet.id"
-            :initial-tweet="tweet"
-            />
+        <!-- 回覆視窗 -->
+        <transition name="modal">
+          <MainReplyModal v-if="isReplyModalToggled" @after-submit-close="handleCloseModal"
+            :initial-tweet="clickedTweet" :is-in-detail-page="false" />
+        </transition>
+
+
+        <UserHeader :content="user.name" :counts="tweets.length" :is-tweet-modal="isModalToggled"
+          :is-reply-modal="isReplyModalToggled" />
+
+        <UserPanel v-if="!isUserLoading" :ini-is-modal-toggled="isModalToggled" :initialUser="user"
+          @after-toggle-modal="handleToggleEditModal" />
+        <Spinner v-else />
+
+        <HomeTabs :clicked-tab="currentTab" :user-id="currentUser.id" @after-click-tab="handleClickTab" />
+        <!-- tab=tweet -->
+        <div v-if="!isTweetLoading && currentTab==='tweet'" class="tweets__container">
+          <p v-if="!tweets.length">目前還沒有推文</p>
+          <TweetCard v-else :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleReplyModal"
+            @after-clicked-reply="handlePassTweetData" v-for="tweet in tweets" :key="tweet.id" :initial-tweet="tweet" />
         </div>
-    <!-- tab=reply -->
-        <div v-else-if="!isTweetLoading && currentTab==='reply'" 
-        class="tweets__container">
-            <p v-if="!replies.length">目前還沒有回覆</p>
-            <ReplyCard 
-            v-else
-            v-for="reply in replies" 
-            :key="reply.id"
-            :reply="reply"
-            :user="user"/>
-        </div>
-        
-    <!-- tab=like -->
-        <div v-else-if="!isTweetLoading && currentTab==='like'" 
-        class="tweets__container">
-            <p v-if="!likes.length">目前還沒有喜歡的內容</p>
-            <TweetCard 
-            v-else
-            :ini-is-modal-toggled="isModalToggled"
-            @after-toggle-modal="handleToggleReplyModal"
-            @after-clicked-reply="handlePassTweetData"
-            v-for="like in likes" 
-            :key="like.id"
-            :initial-tweet="like"
-            :user="user"/>
+        <!-- tab=reply -->
+        <div v-else-if="!isTweetLoading && currentTab==='reply'" class="tweets__container">
+          <p v-if="!replies.length">目前還沒有回覆</p>
+          <ReplyCard v-else v-for="reply in replies" :key="reply.id" :reply="reply" :user="user" />
         </div>
 
-        <Spinner v-else/>
+        <!-- tab=like -->
+        <div v-else-if="!isTweetLoading && currentTab==='like'" class="tweets__container">
+          <p v-if="!likes.length">目前還沒有喜歡的內容</p>
+          <TweetCard v-else :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleReplyModal"
+            @after-clicked-reply="handlePassTweetData" v-for="like in likes" :key="like.id" :initial-tweet="like"
+            :user="user" />
+        </div>
+
+        <Spinner v-else />
       </main>
       <section class="right__container">
         <RecommendUsers />
       </section>
 
-      <div
-        class="modal__mask"
-        @click.stop.prevent="handleCloseModal(false)"
-        v-if="isModalToggled || isReplyModalToggled || isEditModalToggled"
-      ></div>
+      <transition :duration="{ enter: 500, leave: 150 }">
+        <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)"
+        v-if="isModalToggled || isReplyModalToggled || isEditModalToggled"></div>
+      </transition>
+      
     </div>
-    <Footer 
-    :current-page="`user`"
-    :ini-is-modal-toggled="isModalToggled"
-    @after-toggle-modal="handleToggleModal"/>
+    <Footer :current-page="`user`" :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleModal" />
   </div>
 </template>
 
@@ -204,9 +161,9 @@ export default {
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
-    isLoading () {
+    isLoading() {
       if (!this.isTweetLoading && !this.isUserLoading) {
-          return false
+        return false
       }
       return true
     }
@@ -246,7 +203,7 @@ export default {
         console.log(error);
         this.isUserLoading = false;
         Toast.fire({
-          html: innerHtml('目前無法取得推文，請稍後再試','error')
+          html: innerHtml('目前無法取得推文，請稍後再試', 'error')
         });
       }
     },
@@ -254,7 +211,7 @@ export default {
       try {
         this.isTweetLoading = true;
         const response = await usersAPI.getUserTweets({ userId });
-        
+
         //裡面不是 likeCounts
         this.tweets = [...response.data];
         this.isTweetLoading = false;
@@ -262,7 +219,7 @@ export default {
         console.log(error);
         this.isTweetLoading = false;
         Toast.fire({
-          html: innerHtml('目前無法取得推文，請稍後再試','error')
+          html: innerHtml('目前無法取得推文，請稍後再試', 'error')
         });
       }
     },
@@ -276,7 +233,7 @@ export default {
         console.log(error);
         this.isTweetLoading = false;
         Toast.fire({
-          html: innerHtml('目前無法取得推文，請稍後再試','error')
+          html: innerHtml('目前無法取得推文，請稍後再試', 'error')
         });
       }
     },
@@ -284,14 +241,14 @@ export default {
       try {
         this.isTweetLoading = true;
         const response = await usersAPI.getUserLikes({ userId });
-        
+
         this.likes = [...response.data];
         this.isTweetLoading = false;
       } catch (error) {
         console.log(error);
         this.isTweetLoading = false;
         Toast.fire({
-          html: innerHtml('目前無法取得推文，請稍後再試','error')
+          html: innerHtml('目前無法取得推文，請稍後再試', 'error')
         });
       }
     },
@@ -312,7 +269,7 @@ export default {
         this.fetchUserTweets(this.currentUser.id)
 
         Toast.fire({
-          html: innerHtml('成功更新使用者資料','succeed')
+          html: innerHtml('成功更新使用者資料', 'succeed')
         });
       } catch (error) {
         const message = error.response.data.message.toLowerCase();
@@ -323,7 +280,7 @@ export default {
           this.formErrorEmail = true;
         }
         Toast.fire({
-          html: innerHtml('目前無法更新使用者資料，請稍後再試','error')
+          html: innerHtml('目前無法更新使用者資料，請稍後再試', 'error')
         });
       }
     },
@@ -344,7 +301,7 @@ export default {
       this.isReplyModalToggled = isReplyModalToggled;
       history.pushState({ name: "new-reply" }, null, "/#/reply/new");
     },
-     handleToggleEditModal(isEditModalToggled) {
+    handleToggleEditModal(isEditModalToggled) {
       this.isEditModalToggled = isEditModalToggled;
 
       history.pushState({ name: "user-edit" }, null, "/#/users/edit");
@@ -353,7 +310,7 @@ export default {
     handlePassTweetData(tweet) {
       this.clickedTweet = tweet;
     },
-    handleClickTab (clickedTab) {
+    handleClickTab(clickedTab) {
       if (this.currentTab === clickedTab) return
       this.currentTab = clickedTab
       if (clickedTab === 'tweet') {
@@ -364,27 +321,27 @@ export default {
         this.fetchUserReplies(this.user.id)
         history.replaceState({ name: "user-reply" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
       }
-      else if (clickedTab === 'like'){
+      else if (clickedTab === 'like') {
         this.fetchUserLikes(this.user.id)
         history.replaceState({ name: "user-like" }, null, `/#/users/${this.user.id}?tab=${clickedTab}`);
       }
     },
     // 別人直接貼網址的狀況
     getUrl() {
-        if(this.$route.matched[0].name === 'user-edit') {
-            this.isEditModalToggled = true
-        }
+      if (this.$route.matched[0].name === 'user-edit') {
+        this.isEditModalToggled = true
+      }
     },
     // 刪除封面照片
-    async handleRemoveCoverPhoto(){
-      try{
+    async handleRemoveCoverPhoto() {
+      try {
         const { data } = await usersAPI.removeCoverPhoto({
           userId: this.currentUser.id
         })
         console.log(data)
-      } catch(error) {
+      } catch (error) {
         Toast.fire({
-          html: innerHtml('目前無法刪除照片，請稍後再試','error')
+          html: innerHtml('目前無法刪除照片，請稍後再試', 'error')
         });
       }
     }

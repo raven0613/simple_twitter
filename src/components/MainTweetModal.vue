@@ -7,7 +7,7 @@
         <div @click.stop.prevent="handleCancelClicked" class="user__header--icon">
             <img src="../assets/images/last-step.svg" alt="">
         </div>
-        <button type="button" class="formbutton">推文
+        <button @click.stop.prevent="handleSubmit" type="button" class="formbutton">推文
         </button>
     </header>
 
