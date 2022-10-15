@@ -1,6 +1,6 @@
 <template>
   <div class="twitter__project"
-  :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
+  :class="{modal__toggled: isModalToggled || isReplyModalToggled || isEditModalToggled}">
     <div class="container">
       <section class="left__container">
         <SideBar
@@ -9,6 +9,7 @@
           @after-toggle-modal="handleToggleModal"
         />
       </section>
+      
       <main class="main__container">
     <!-- 使用者資料編輯視窗 -->
         <UserEditModal
@@ -39,13 +40,14 @@
         :is-tweet-modal="isModalToggled"
         :is-reply-modal="isReplyModalToggled"/>
 
+        <Spinner v-if="isUserLoading"/>
+        <template v-else>
         <UserPanel
           v-if="!isUserLoading"
           :ini-is-modal-toggled="isModalToggled"
           :initialUser="user"
           @after-toggle-modal="handleToggleEditModal"
         />
-        <Spinner v-else/>
         
         <HomeTabs 
         :clicked-tab="currentTab"
@@ -93,7 +95,8 @@
             :user="user"/>
         </div>
 
-        <Spinner v-else/>
+        <!-- <Spinner v-else/> -->
+        </template>
       </main>
       <section class="right__container">
         <RecommendUsers />

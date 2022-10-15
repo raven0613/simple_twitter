@@ -4,6 +4,9 @@
     height: auto;
     border-bottom: solid 1px var(--border-color);
     padding: 1rem 1.5rem;
+    &:hover {
+        background-color: var(--top-user-background-color);
+    }
 
     &__info {
         height: 2.5rem;
