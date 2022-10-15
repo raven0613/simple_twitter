@@ -1,5 +1,5 @@
 <template>
-  <div class="side-bar__panel">
+  <div class="side-bar__panel side-bar__admin">
     <div class="side-bar__container">
       <router-link :to="{ name: 'admin-tweet' }" class="side-bar__icon">
         <img src="../assets/images/sidebar_logo.svg" alt="" />

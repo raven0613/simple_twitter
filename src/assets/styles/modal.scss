@@ -6,11 +6,8 @@
 
   &__toggled {
     .container,
-    .main__container,
-    .container {
     .main__container {
-        overflow: hidden;
-      }
+      overflow: hidden;
     }
   }
 
@@ -41,6 +38,13 @@
       display: grid;
       grid-template-columns: 2.8125rem auto 7rem;
       align-items: center;
+      img {
+        cursor: pointer;
+        transition: 0.2s ease-out;
+        &:hover {
+          transform: scale(1.2, 1.2);
+        }
+      }
     }
 
     &--last-step {

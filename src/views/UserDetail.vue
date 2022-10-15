@@ -1,10 +1,14 @@
 <template>
-  <div class="twitter__project" :class="{modal__toggled: isModalToggled || isReplyModalToggled}">
+
+  <div class="twitter__project"
+  :class="{modal__toggled: isModalToggled || isReplyModalToggled || isEditModalToggled}">
+
     <div class="container">
       <section class="left__container">
         <SideBar :current-page="`user`" :ini-is-modal-toggled="isModalToggled"
           @after-toggle-modal="handleToggleModal" />
       </section>
+      
       <main class="main__container">
         <!-- 使用者資料編輯視窗 -->
         <transition name="modal-edit">
@@ -23,21 +27,43 @@
           <MainReplyModal v-if="isReplyModalToggled" @after-submit-close="handleCloseModal"
             :initial-tweet="clickedTweet" :is-in-detail-page="false" />
         </transition>
+        
+        <UserHeader 
+        :content="user.name" 
+        :counts="tweets.length"
+        :is-tweet-modal="isModalToggled"
+        :is-reply-modal="isReplyModalToggled"/>
 
+        
 
-        <UserHeader :content="user.name" :counts="tweets.length" :is-tweet-modal="isModalToggled"
-          :is-reply-modal="isReplyModalToggled" />
-
-        <UserPanel v-if="!isUserLoading" :ini-is-modal-toggled="isModalToggled" :initialUser="user"
-          @after-toggle-modal="handleToggleEditModal" />
-        <Spinner v-else />
-
-        <HomeTabs :clicked-tab="currentTab" :user-id="currentUser.id" @after-click-tab="handleClickTab" />
-        <!-- tab=tweet -->
-        <div v-if="!isTweetLoading && currentTab==='tweet'" class="tweets__container">
-          <p v-if="!tweets.length">目前還沒有推文</p>
-          <TweetCard v-else :ini-is-modal-toggled="isModalToggled" @after-toggle-modal="handleToggleReplyModal"
-            @after-clicked-reply="handlePassTweetData" v-for="tweet in tweets" :key="tweet.id" :initial-tweet="tweet" />
+        <Spinner v-if="isUserLoading"/>
+        <template v-else>
+        <UserPanel
+          v-if="!isUserLoading"
+          :ini-is-modal-toggled="isModalToggled"
+          :initialUser="user"
+          @after-toggle-modal="handleToggleEditModal"
+        />
+        
+        <HomeTabs 
+        :clicked-tab="currentTab"
+        :user-id="currentUser.id"
+        @after-click-tab="handleClickTab"
+        />
+    <!-- tab=tweet -->
+        <div v-if="!isTweetLoading && currentTab==='tweet'" 
+        class="tweets__container">
+            <p v-if="!tweets.length">目前還沒有推文</p>
+            <TweetCard 
+            v-else
+            :ini-is-modal-toggled="isModalToggled"
+            @after-toggle-modal="handleToggleReplyModal"
+            @after-clicked-reply="handlePassTweetData"
+            v-for="tweet in tweets" 
+            :key="tweet.id"
+            :initial-tweet="tweet"
+            />
+            
         </div>
         <!-- tab=reply -->
         <div v-else-if="!isTweetLoading && currentTab==='reply'" class="tweets__container">
@@ -52,8 +78,9 @@
             @after-clicked-reply="handlePassTweetData" v-for="like in likes" :key="like.id" :initial-tweet="like"
             :user="user" />
         </div>
+        <Spinner v-else/>
+        </template>
 
-        <Spinner v-else />
       </main>
       <section class="right__container">
         <RecommendUsers />

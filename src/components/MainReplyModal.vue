@@ -121,12 +121,17 @@ export default {
   },
   created() {
     this.fetchUser(this.currentUser.id)
+    this.tweetContent = localStorage.getItem('reply')
+  },
+  destroyed () {
+    localStorage.setItem('reply', this.tweetContent)
   },
   computed: {
     ...mapState(['currentUser', 'isAuthenticated']),
     tweetLength() {
-      return this.tweetContent.length
-    }
+      if (this.tweetContent) return this.tweetContent.length
+      return 0
+    },
   },
   methods: {
     async fetchUser (userId) {
@@ -169,6 +174,9 @@ export default {
         this.isProcessing = false
         //關掉modal，並回傳true代表新增成功
         this.$emit('after-submit-close', true)
+
+         //這邊要把內容清空才不會被儲存進localStorage
+        this.tweetContent = ''
       }
       catch (error) {
         console.log(error.message)

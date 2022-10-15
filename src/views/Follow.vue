@@ -18,7 +18,10 @@
                 :clicked-tab="currentTab"
                 @after-click-tab="handleClickTab"/>
 
-                <div v-if="!isLoading && currentTab==='follower'" 
+            <template v-if="!isLoading">
+
+            
+                <div v-if="currentTab==='follower'" 
                 class="tweets__container">
                     <p v-if="currentTab==='follower' && !followers.length">目前還沒有追隨者喔</p>
                     <UserFollowCard 
@@ -27,7 +30,7 @@
                     :init-follower="user"/>
                 </div>
 
-                <div v-if="!isLoading && currentTab==='following'" 
+                <div v-if="currentTab==='following'" 
                 class="tweets__container">
                     <p v-if="currentTab==='following' && !followings.length">目前還沒有追隨任何人喔</p>
                     <UserFollowCard 
@@ -35,6 +38,9 @@
                     :key="user.id"
                     :init-follower="user"/>
                 </div>
+                
+            </template>
+            <Spinner v-else/>
             </main>
             <section class="right__container">
                 <RecommendUsers />
@@ -64,7 +70,7 @@ import Footer from '../components/Footer.vue'
 import usersAPI from '../apis/users.js'
 import { Toast, innerHtml } from '../utils/helpers.js'
 import { mapState } from 'vuex'
-
+import Spinner from '../components/Spinner.vue'
 
 export default {
     components: {
@@ -74,7 +80,8 @@ export default {
         MainTweetModal,
         UserFollowCard,
         HomeTabs,
-        Footer
+        Footer,
+        Spinner
     },
     data () {
         return {
