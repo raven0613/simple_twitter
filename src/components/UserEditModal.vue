@@ -398,6 +398,9 @@ export default {
       } else if (result.value) {
         this.user.coverPhoto = "";
         this.$emit("after-remove-cover-photo");
+        Toast.fire({
+          html: innerHtml('照片已成功刪除！','succeed')
+        })
       }
     },
   },
