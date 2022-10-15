@@ -40,7 +40,6 @@
           :is-tweet-modal="isModalToggled"
           :is-reply-modal="isReplyModalToggled"
         />
-        <!-- <MainHeader :content="`推文`" :tweet-id="tweet.id"/> -->
 
         <MainTweet
           v-if="!isLoading"
@@ -49,11 +48,9 @@
         />
         <Spinner v-else />
 
-        <div class="tweet-detail__input">
-          <MainReplyInput
-            :ini-is-modal-toggled="isModalToggled"
-            @after-toggle-modal="handleToggleModal"
-          />
+        <div class="tweet-detail__input"
+        @click.stop.prevent="handleToggleReplyModal(true)">
+          <MainReplyInput />
         </div>
         <div v-if="!isLoading" class="tweets__container">
           <ReplyCard
