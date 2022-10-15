@@ -1,5 +1,6 @@
 <template>
-  <div class="twitter__project">
+  <div class="twitter__project"
+  :class="{modal__toggled: isModalToggled}">
     <div class="container">
       <section class="left__container">
         <SideBar
@@ -97,8 +98,6 @@
         class="modal__mask"
         @click.stop.prevent="handleCloseModal(false)"
         v-if="isModalToggled || isReplyModalToggled || isEditModalToggled"
-        @touchmove.prevent
-        @mousewheel.prevent
       ></div>
     </div>
     <Footer :current-page="`user`" />

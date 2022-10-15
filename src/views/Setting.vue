@@ -1,5 +1,6 @@
 <template>
-    <div class="twitter__project">
+    <div class="twitter__project"
+    :class="{modal__toggled: isModalToggled}">
         <div class="container setting-page">
             <section class="left__container">
                 <SideBar :current-page="`setting`"
@@ -23,13 +24,12 @@
                 @after-submit-close="handleCloseModal"
                 />
             </main>
-
-
       <section class="right__container">
       </section>
 
-      <div class="modal__mask" @click.stop.prevent="handleCloseModal" v-if="isModalToggled" @touchmove.prevent
-        @mousewheel.prevent>
+      <div class="modal__mask" 
+      @click.stop.prevent="handleCloseModal(false)" 
+      v-if="isModalToggled">
       </div>
     </div>
     <Footer 
@@ -139,9 +139,12 @@ export default {
       this.isModalToggled = isModalToggled
       history.pushState({ name: "new-tweet" }, null, "/#/tweets/new");
     },
-    handleCloseModal() {
+    handleCloseModal(isSubmitted) {
       this.isModalToggled = false
-      history.replaceState({ name: "main-page" }, null, "/#/main");
+      //如果不是在submit後回傳的關掉，就可以直接回上一頁
+      if (!isSubmitted) {
+          this.$router.back()
+      }
     },
   }
 

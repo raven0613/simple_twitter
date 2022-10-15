@@ -1,5 +1,6 @@
 <template>
-    <div class="twitter__project">
+    <div class="twitter__project"
+    :class="{modal__toggled: isModalToggled}">
         <div class="container">
             <section class="left__container">
                 <SideBar :current-page="`main`" :ini-is-modal-toggled="isModalToggled"
@@ -41,7 +42,7 @@
             </section>
 
             <div class="modal__mask" @click.stop.prevent="handleCloseModal(false)" v-if="isModalToggled || isReplyModalToggled"
-            @touchmove.prevent @mousewheel.prevent>
+            >
             </div>
         </div>
         <Footer 
@@ -90,13 +91,11 @@ export default {
         }
     },
     created () {
-        console.log('M created')
         this.getUrl()
         this.fetchTweets()
         this.fetchUser(this.currentUser.id)
     },
     beforeRouteUpdate(to, from, next) {
-        console.log('M beforeRouteUpdate')
         this.getUrl()
         next()
     },
@@ -124,7 +123,7 @@ export default {
             try {
                 this.isTweetLoading = true
                 const response = await tweetsAPI.getTweets()
-                if (response.statusText !== 'OK') throw new Error(response.statusText)
+                
                 this.tweets = response.data
                 this.isTweetLoading = false
             }

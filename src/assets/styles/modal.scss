@@ -4,6 +4,13 @@
     display: none;
   }
 
+  &__toggled {
+    .container,
+    .main__container {
+      overflow: hidden;
+    }
+  }
+
   &__container {
     position: absolute;
     z-index: 10;
