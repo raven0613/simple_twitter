@@ -30,10 +30,6 @@
             @after-submit-close="handleCloseModal"
           />
         </transition>
-        <MainTweetModal
-          v-if="isModalToggled"
-          @after-submit-close="handleCloseModal"
-        />
 
         <UserHeader
           :content="`推文`"

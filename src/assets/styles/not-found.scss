@@ -18,8 +18,8 @@ h1::after {
   color: transparent;
   position: absolute;
   font-size: 8rem;
-  -webkit-clip-path: ellipse(300px 300px at 0% 50%);
-  clip-path: ellipse(300px 300px at 0% 50%);
+  -webkit-clip-path: ellipse(175px 175px at 0% 50%);
+  clip-path: ellipse(175px 175px at 0% 50%);
   animation: spotlight 5s infinite;
   background-image: url(https://images.unsplash.com/photo-1647642343605-da260cbeb037?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80);
   background-size: 150%;
@@ -30,52 +30,27 @@ h1::after {
 
 @keyframes spotlight {
   0% {
-    webkit-clip-path: ellipse(300px 300px at 0% 50%);
-    clip-path: ellipse(300px 300px at 0% 50%);
+    webkit-clip-path: ellipse(175px 175px at 0% 50%);
+    clip-path: ellipse(175px 175px at 0% 50%);
   }
 
   50% {
-    webkit-clip-path: ellipse(300px 300px at 100% 50%);
-    clip-path: ellipse(300px 300px at 100% 50%);
+    webkit-clip-path: ellipse(175px 175px at 100% 50%);
+    clip-path: ellipse(175px 175px at 100% 50%);
   }
 
   100% {
-    webkit-clip-path: ellipse(300px 300px at 0% 50%);
-    clip-path: ellipse(300px 300px at 0% 50%);
+    webkit-clip-path: ellipse(175px 175px at 0% 50%);
+    clip-path: ellipse(175px 175px at 0% 50%);
   }
 }
 
 
 
 @media screen and (min-width: 992px) {
-  .notfound {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-
-  h1 {
-    color: var(--top-user-background-color);
-    margin: 0;
-    padding: 0;
-    font-size: 8rem;
-    position: relative;
-  }
-
   h1::after {
-    content: '404 Not Found';
-    color: transparent;
-    position: absolute;
-    font-size: 8rem;
     -webkit-clip-path: ellipse(100px 100px at 0% 50%);
     clip-path: ellipse(100px 100px at 0% 50%);
-    animation: spotlight 5s infinite;
-    background-image: url(https://images.unsplash.com/photo-1647642343605-da260cbeb037?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80);
-    background-size: 150%;
-    background-position: center center;
-    -webkit-background-clip: text;
-    background-clip: text;
   }
 
   @keyframes spotlight {
