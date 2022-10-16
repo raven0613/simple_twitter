@@ -18,7 +18,7 @@
         </div>
         
         <div class="tweet-detail__time">
-            {{tweet.createdAt | fromNow}}
+            {{tweet.createdAt | detailTime}}
         </div>
         <div class="tweet-detail__info">
             <div class="tweet-detail__info--reply">
@@ -51,7 +51,8 @@ import { Toast, innerHtml } from '../utils/helpers.js'
 import {
   showDescriptionFilter,
   fromNowFilter,
-  emptyImageFilter
+  emptyImageFilter,
+  detailTimeFilter
 } from "../utils/mixins";
 
 export default {
@@ -64,7 +65,7 @@ export default {
             type: Boolean,
         }
     },
-    mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
+    mixins: [showDescriptionFilter, fromNowFilter, detailTimeFilter, emptyImageFilter],
     data() {
         return {
             tweet: this.initialData,
