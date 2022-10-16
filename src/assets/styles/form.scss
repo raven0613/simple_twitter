@@ -82,9 +82,13 @@
     color: var(--white);
     margin-bottom: 1.375rem;
     font-size: 1.25rem;
-    
+
     &_processing {
       background-color: var(--top-user-second-color);
+    }
+    transition: 0.2s ease-out;
+    &:hover {
+      transform: scale(1.05, 1.05);
     }
   }
 

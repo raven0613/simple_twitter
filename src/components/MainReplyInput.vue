@@ -26,17 +26,27 @@ export default {
     ...mapState(["currentUser", "isAuthenticated"])
   },
   mixins: [showDescriptionFilter, fromNowFilter, emptyImageFilter],
+  props: {
+      iniIsModalToggled: {
+          type: Boolean,
+      }
+  },
   data(){
     return{
       userprofilePhoto: '',
       isLoading: true,
-      isProcessing: false
+      isProcessing: false,
+      isModalToggled: this.iniIsModalToggled
     }
   },
   created() {
     this.fetchUser(this.currentUser.id)
   },
   methods: {
+    toggleModal () {
+        this.isModalToggled = true
+        this.$emit("after-toggle-modal", this.isModalToggled)
+    },
     async fetchUser (userId) {
       try {
         this.isLoading = true

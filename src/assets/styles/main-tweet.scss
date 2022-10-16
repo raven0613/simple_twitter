@@ -23,7 +23,6 @@
         }
     }
     &__content {
-        font-size: var(--h4-size);
         font-weight: var(--regular-weight);
     }
     &__time {
@@ -80,6 +79,9 @@
 @media screen and (min-width: 600px) {
     .tweet-detail__input {
         display: none;
+    }
+    .tweet-detail__content {
+        font-size: var(--h4-size);
     }
 }
 
