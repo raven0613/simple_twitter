@@ -105,7 +105,9 @@ export default {
   },
   created() {
     this.fetchUser(this.currentUser.id);
-    this.tweetContent = localStorage.getItem('tweet')
+    if (localStorage.getItem('tweet')) {
+      this.tweetContent = localStorage.getItem('tweet')
+    }
   },
   destroyed () {
     localStorage.setItem('tweet', this.tweetContent)

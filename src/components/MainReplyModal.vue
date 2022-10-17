@@ -21,25 +21,29 @@
       <div class="modal__input--tweet">
         <!-- 圖片 -->
         <div class="tweet__input--avatar__container">
-          <div class="tweet__input--avatar">
+          <router-link :to="{name: 'user-detail', params: {id: initialTweet.User.id}, query: {tab: 'tweet'}}" 
+          class="tweet__input--avatar">
             <img :src="initialTweet.User.profilePhoto | emptyImage" alt="" />
-          </div>
+          </router-link>
           <span class="tweet__input--dash"></span>
         </div>
 
         <!-- 內容 -->
         <div class="tweet__info">
           <div class="tweet__top">
-            <span class="tweet__top--prim">{{initialTweet.User.name}}</span>
-            <span class="tweet__top--sec">@{{initialTweet.User.account}}</span>
-            <span class="tweet__top--sec">．{{initialTweet.createdAt | fromNow}}</span>
+            <router-link :to="{name: 'user-detail', params: {id: initialTweet.User.id}, query: {tab: 'tweet'}}" 
+            class="tweet__top--prim">{{initialTweet.User.name}}</router-link>
+            <router-link :to="{name: 'user-detail', params: {id: initialTweet.User.id}, query: {tab: 'tweet'}}" 
+            class="tweet__top--sec">@{{initialTweet.User.account}}</router-link>
+            <router-link :to="{name: 'tweet-detail', params: {id: initialTweet.id}}" class="tweet__top--sec">．{{initialTweet.createdAt | fromNow}}</router-link>
           </div>
           <div class="tweet__info--content">
             {{initialTweet.description}}
           </div>
           <div class="tweet__target">
             <span class="tweet__target--sec">回覆給</span>
-            <span class="tweet__target--prim">@apple</span>
+            <router-link :to="{name: 'user-detail', params: {id: initialTweet.User.id}, query: {tab: 'tweet'}}" 
+            class="tweet__target--prim">@{{initialTweet.User.account}}</router-link>
           </div>
         </div>
       </div>
@@ -121,7 +125,9 @@ export default {
   },
   created() {
     this.fetchUser(this.currentUser.id)
-    this.tweetContent = localStorage.getItem('reply')
+    if (localStorage.getItem('reply')) {
+      this.tweetContent = localStorage.getItem('reply')
+    }
   },
   destroyed () {
     localStorage.setItem('reply', this.tweetContent)
