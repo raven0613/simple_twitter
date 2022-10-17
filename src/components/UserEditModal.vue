@@ -3,7 +3,9 @@
     <form @submit.prevent.stop="handleSubmit">
       <div class="modal__container">
         <!-- 最上方的區塊 -->
-        <div class="modal__input__container">
+        <div
+        @click.stop.prevent="handleCancelClicked"
+        class="modal__input__container">
           <img
             src="../assets/images/last-step.svg"
             alt=""
